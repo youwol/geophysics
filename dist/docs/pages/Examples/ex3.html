@@ -1,0 +1,170 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Flatten horizon cost function | @youwol/geophysics - v0.0.0</title>
+	<meta name="description" content="Documentation for @youwol/geophysics - v0.0.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../../assets/css/main.css">
+	<link rel="stylesheet" href="../../assets/css/pages.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../../assets/js/search.json" data-base="../..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../../index.html" class="title">@youwol/geophysics - v0.0.0</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../../modules.html">Globals</a>
+				</li>
+				<li>
+					<a href="ex1.html">Examples</a>
+				</li>
+				<li>
+					<a href="ex3.html">Flatten horizon cost function</a>
+				</li>
+			</ul>
+			<h1>Flatten horizon cost function</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<p>In this example, we build a Arche model containing faults, and load
+					a 3D horizon as grid when the stress field is computed at vertices.
+					Then, the horizon is flatten in a least squares sens, and the different
+					in z-coordinate for each vertex will be used as a vertical Gps to
+				compute the corresponding cost:</p>
+				<pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">loadTsFile</span><span style="color: #000000">, </span><span style="color: #001080">computDispl</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;otherLib&#039;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">utils</span><span style="color: #000000">, </span><span style="color: #001080">geophysics</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">phy</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;fast-computation&#039;</span>
+
+<span style="color: #008000">// Preamble</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">horizon</span><span style="color: #000000"> = </span><span style="color: #795E26">loadTsFile</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;horizon.ts&#039;</span><span style="color: #000000">) </span><span style="color: #008000">// set of 3D points in a flat array</span>
+<span style="color: #008000">// ... build a Arche model ... then:</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">displ</span><span style="color: #000000"> = </span><span style="color: #795E26">computDispl</span><span style="color: #000000">(</span><span style="color: #001080">model</span><span style="color: #000000">, </span><span style="color: #001080">horizon</span><span style="color: #000000">)</span>
+
+<span style="color: #008000">// Get the fitting plane for the horizon</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">plane</span><span style="color: #000000"> = </span><span style="color: #001080">utils</span><span style="color: #000000">.</span><span style="color: #795E26">fittingPlane</span><span style="color: #000000">(</span><span style="color: #001080">horizon</span><span style="color: #000000">)</span>
+
+<span style="color: #008000">// and compute the vertical displacements</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">size</span><span style="color: #000000"> = </span><span style="color: #001080">horizon</span><span style="color: #000000">.</span><span style="color: #001080">length</span><span style="color: #000000">/</span><span style="color: #098658">3</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">vGps</span><span style="color: #000000">     = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Array</span><span style="color: #000000">(</span><span style="color: #001080">size</span><span style="color: #000000">).</span><span style="color: #795E26">fill</span><span style="color: #000000">(</span><span style="color: #098658">0</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">computed</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Array</span><span style="color: #000000">(</span><span style="color: #001080">size</span><span style="color: #000000">).</span><span style="color: #795E26">fill</span><span style="color: #000000">(</span><span style="color: #098658">0</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">j</span><span style="color: #000000"> = </span><span style="color: #098658">0</span>
+<span style="color: #AF00DB">for</span><span style="color: #000000"> (</span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000">=</span><span style="color: #098658">0</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000">&lt;</span><span style="color: #001080">horizon</span><span style="color: #000000">.</span><span style="color: #001080">length</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000">+=</span><span style="color: #098658">3</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">p</span><span style="color: #000000"> = [</span><span style="color: #001080">horizon</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">], </span><span style="color: #001080">horizon</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">+</span><span style="color: #098658">1</span><span style="color: #000000">], </span><span style="color: #001080">horizon</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">+</span><span style="color: #098658">2</span><span style="color: #000000">]]</span>
+<span style="color: #000000">    </span><span style="color: #001080">vGps</span><span style="color: #000000">[</span><span style="color: #001080">j</span><span style="color: #000000">] = </span><span style="color: #001080">utils</span><span style="color: #000000">.</span><span style="color: #795E26">distanceFromPointToPlane</span><span style="color: #000000">(</span><span style="color: #001080">p</span><span style="color: #000000">, </span><span style="color: #001080">plane</span><span style="color: #000000">)</span>
+<span style="color: #000000">    </span><span style="color: #001080">computed</span><span style="color: #000000">[</span><span style="color: #001080">j</span><span style="color: #000000">++] = </span><span style="color: #001080">displ</span><span style="color: #000000">[</span><span style="color: #098658">2</span><span style="color: #000000">]</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #008000">// and compute the cost</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">cost</span><span style="color: #000000"> = </span><span style="color: #001080">computedGps</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">reduce</span><span style="color: #000000">( (</span><span style="color: #001080">acc</span><span style="color: #000000">, </span><span style="color: #001080">v</span><span style="color: #000000">, </span><span style="color: #001080">i</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">acc</span><span style="color: #000000"> + </span><span style="color: #001080">phy</span><span style="color: #000000">.</span><span style="color: #795E26">costVerticalGps</span><span style="color: #000000">(</span><span style="color: #001080">vGps</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">], </span><span style="color: #001080">v</span><span style="color: #000000">) / </span><span style="color: #001080">size</span><span style="color: #000000"> )</span>
+</code></pre>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="label pp-nav pp-group">
+						<span>Info</span>
+					</li>
+					<li class=" pp-nav pp-page">
+						<a href="../Info/desc.html">Description</a>
+					</li>
+					<li class=" pp-nav pp-page">
+						<a href="../Info/biblio.html">References</a>
+					</li>
+					<li class="label pp-nav pp-group">
+						<span>Examples</span>
+					</li>
+					<li class=" pp-nav pp-page">
+						<a href="ex1.html">Superposition</a>
+					</li>
+					<li class=" pp-nav pp-page">
+						<a href="ex2.html">cost functions</a>
+					</li>
+					<li class="current pp-nav pp-page">
+						<a href="ex3.html">Flatten horizon cost function</a>
+					</li>
+					<li class=" pp-nav pp-page">
+						<a href="ex4.html">Inversion 1</a>
+					</li>
+					<li class=" pp-nav pp-page">
+						<a href="ex5.html">Inversion 2</a>
+					</li>
+					<li class="label pp-nav pp-group">
+						<span>API</span>
+					</li>
+					<li class=" ">
+						<a href="../../modules.html">Exports</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+<script src="../../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../../assets/js/search.json"><' + '/script>');</script>
+</body>
+</html>

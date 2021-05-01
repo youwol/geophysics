@@ -1,5 +1,42 @@
 {
     "groups": [
-       
+        {
+            "title": "Info",
+            "pages": [
+                {
+                    "title": "Description",
+                    "source": "./documentation/desc.md"
+                },
+                {
+                    "title": "References",
+                    "source": "./documentation/biblio.md"
+                }
+            ]
+        },
+        {
+            "title": "Examples",
+            "pages": [
+                {
+                    "title": "Superposition",
+                    "source": "./documentation/ex1.md"
+                },
+                {
+                    "title": "cost functions",
+                    "source": "./documentation/ex2.md"
+                },
+                {
+                    "title": "Flatten horizon cost function",
+                    "source": "./documentation/ex3.md"
+                },
+                {
+                    "title": "Inversion 1",
+                    "source": "./documentation/ex4.md"
+                },
+                {
+                    "title": "Inversion 2",
+                    "source": "./documentation/ex5.md"
+                }
+            ]
+        }
     ]
 }

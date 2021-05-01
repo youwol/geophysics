@@ -1,0 +1,10 @@
+node_modules
+**/node_modules/**/*
+coverage/
+junit.xml
+src/auto_generated.ts
+
+dist/lib
+dist/@youwol
+dist/index.d.ts
+dist/src

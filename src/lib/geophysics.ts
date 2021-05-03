@@ -1,7 +1,10 @@
 /**
  * Cost functions (aka, mistfit functions) and utility functions for geophysics
  */
-import { abs, add, ASerie, div, dot, mult, negate, norm, square } from '../../../dataframe/src/lib'
+import {
+    abs, add, addNumber, ASerie, div, dot, mult,
+    negate, norm, square
+} from '../../../dataframe/src/lib'
 import * as math from '../../../math/src/lib'
 
 /**
@@ -22,15 +25,16 @@ export function costGps(obs: ASerie, calc: ASerie, w = 1): ASerie {
     if (calc === undefined) throw new Error('calc is undefined')
     if (obs.itemSize !== 3) throw new Error('obs should have itemSize = 3')
     if (calc.itemSize !== 3) throw new Error('calc should have itemSize = 3')
+    
     const d  = dot(obs, calc)
     const no = norm(obs)
     const nc = norm(calc)
 
     // 0.5*w*( (1-d/(no*nc))**2 + (1-no/nc)**2 )
-    return mult( add(
-        add(negate( div(d, square(mult(no, nc))) ), 1),
-        square(add(negate(div(no, nc)), 1))
-    ), 0.5*w)
+    return mult( add([
+        addNumber(negate( div(d, square(mult(no, nc))) ), 1),
+        square(addNumber(negate(div(no, nc)), 1))
+    ]), 0.5*w)
 }
 
 /**
@@ -40,18 +44,21 @@ export function costGps(obs: ASerie, calc: ASerie, w = 1): ASerie {
  * @param w Weight with default value 1
  * @example
  * ```ts
+ * import * as geom   from '@youwol/geometry'
+ * import * as geophy from '@youwol/geophysics'
+ * 
  * const displ   = computDispl() // user function
  * const horizon = [...] // set of 3D points in a flat array
  * 
  * // Get the fitting plane for the horizon
- * const plane = fittingPlane(horizon)
+ * const plane = geom.fittingPlane(horizon)
  * 
  * // and compute the cost
  * let cost = 0
  * for (let i=0; i<horizon.length; i+=3) {
  *     const p = [horizon[i], horizon[i+1], horizon[i+2]]
- *     const d = distanceFromPointToPlane(p, plane)
- *     cost += costVerticalGps(p, d, 1)
+ *     const d = geom.distanceFromPointToPlane(p, plane)
+ *     cost += geophy.costVerticalGps(p, d, 1)
  * }
  * cost /= horizon.length/3
  * ```
@@ -65,7 +72,7 @@ export function costGps(obs: ASerie, calc: ASerie, w = 1): ASerie {
  */
 export function costVerticalGps(obs: ASerie, calc: ASerie, w = 1): ASerie {
     // w*(1-calc/obs)**2
-    return mult(square(add(negate(div(calc, obs)), 1)), w)
+    return mult(square(addNumber(negate(div(calc, obs)), 1)), w)
 }
 
 /**
@@ -86,7 +93,7 @@ export function costVerticalGps(obs: ASerie, calc: ASerie, w = 1): ASerie {
  */
 export function costInsar(obs: ASerie, calc: ASerie, w = 1): ASerie {
     // w*(1 - Math.abs(calc/obs))**2
-    return mult(square(add(negate(abs(div(calc, obs))), 1)), w)
+    return mult(square(addNumber(negate(abs(div(calc, obs))), 1)), w)
 }
 
 /**

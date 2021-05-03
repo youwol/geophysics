@@ -31,8 +31,8 @@ module.exports = {
             commonjs2:'rxjs/operators',
             root:['rxjs','operators']
         },
-        '@youwol/flux-lib-core': "@youwol/flux-lib-core",
-        '@youwol/flux-view': "@youwol/flux-view"
+        '@youwol/dataframe': "@youwol/dataframe",
+        '@youwol/math': "@youwol/math"
     }],
     module: {
         rules: [

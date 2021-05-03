@@ -8,3 +8,6 @@ dist/lib
 dist/@youwol
 dist/index.d.ts
 dist/src
+dist/geophysics
+dist/math
+dist/dataframe

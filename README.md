@@ -2,6 +2,7 @@
 
 
 ## Description
+Online documentation can be found [here](https://youwol.github.io/geophysics/dist/docs/)
 
 
 ## Use 

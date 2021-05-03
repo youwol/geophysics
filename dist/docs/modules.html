@@ -69,19 +69,26 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Utils Classes</h3>
+							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class"><a href="classes/trianglecs.html" class="tsd-kind-icon">TriangleCS</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/alphamapping.html" class="tsd-kind-icon">Alpha<wbr>Mapping</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/costfunction.html" class="tsd-kind-icon">Cost<wbr>Function</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias"><a href="modules.html#alpha" class="tsd-kind-icon">Alpha</a></li>
-								<li class="tsd-kind-type-alias"><a href="modules.html#plane" class="tsd-kind-icon">Plane</a></li>
+								<li class="tsd-kind-type-alias"><a href="modules.html#data" class="tsd-kind-icon">Data</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
+							<h3>Alpha Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function"><a href="modules.html#defaultmapping" class="tsd-kind-icon">Default<wbr>Mapping</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#gradientpressuremapping" class="tsd-kind-icon">Gradient<wbr>Pressure<wbr>Mapping</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#simpleandersonmapping" class="tsd-kind-icon">Simple<wbr>Anderson<wbr>Mapping</a></li>
+							</ul>
 							<h3>Geology Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function"><a href="modules.html#costconjugate" class="tsd-kind-icon">cost<wbr>Conjugate</a></li>
@@ -96,10 +103,9 @@
 								<li class="tsd-kind-function"><a href="modules.html#costverticalgps" class="tsd-kind-icon">cost<wbr>Vertical<wbr>Gps</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#generateinsar" class="tsd-kind-icon">generate<wbr>Insar</a></li>
 							</ul>
-							<h3>Utils Functions</h3>
+							<h3>Inversion Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function"><a href="modules.html#distancefrompointtoplane" class="tsd-kind-icon">distance<wbr>From<wbr>Point<wbr>ToPlane</a></li>
-								<li class="tsd-kind-function"><a href="modules.html#fittingplane" class="tsd-kind-icon">fitting<wbr>Plane</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#cost" class="tsd-kind-icon">cost</a></li>
 							</ul>
 						</section>
 					</div>
@@ -116,35 +122,166 @@
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-comment-tags">
 							<dt>brief</dt>
-							<dd><p>Alpha vector which can be of any size</p>
+							<dd><p>Alpha vector which can be of any size. This is essentially a renaming
+								in order to mathch <a href="https://www.sciencedirect.com/science/article/abs/pii/S0040195116000731">the publication</a></p>
 							</dd>
 						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
-					<a name="plane" class="tsd-anchor"></a>
-					<h3>Plane</h3>
-					<div class="tsd-signature tsd-kind-icon">Plane<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>normal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">math.Vector3</span><span class="tsd-signature-symbol">; </span>point<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">math.Vector3</span><span class="tsd-signature-symbol"> }</span></div>
+					<a name="data" class="tsd-anchor"></a>
+					<h3>Data</h3>
+					<div class="tsd-signature tsd-kind-icon">Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>calculus<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>cost<span class="tsd-signature-symbol">: </span><a href="interfaces/costfunction.html" class="tsd-signature-type">CostFunction</a><span class="tsd-signature-symbol">; </span>dataframe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DataFrame</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>weight<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>brief</dt>
-							<dd><p>The definition of a plane in 3D</p>
-							</dd>
-						</dl>
+						<div class="lead">
+							<p>Interface for a data that comprises the measurement (name of in the dataframe), the associated
+								cost function, the name of the series in order to perform the superposition, and the
+							dataframe itself</p>
+						</div>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter">
-								<h5>normal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">math.Vector3</span></h5>
+								<h5>calculus<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 							</li>
 							<li class="tsd-parameter">
-								<h5>point<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">math.Vector3</span></h5>
+								<h5>cost<span class="tsd-signature-symbol">: </span><a href="interfaces/costfunction.html" class="tsd-signature-type">CostFunction</a></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>dataframe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DataFrame</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>weight<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 							</li>
 						</ul>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Alpha Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="defaultmapping" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Default<wbr>Mapping</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">Default<wbr>Mapping<span class="tsd-signature-symbol">(</span>alpha<span class="tsd-signature-symbol">: </span><a href="modules.html#alpha" class="tsd-signature-type">Alpha</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="modules.html#alpha" class="tsd-signature-type">Alpha</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A default mapping for any <a href="modules.html#alpha">Alpha</a>. Basically it return the same alpha.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>alpha: <a href="modules.html#alpha" class="tsd-signature-type">Alpha</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="modules.html#alpha" class="tsd-signature-type">Alpha</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="gradientpressuremapping" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Gradient<wbr>Pressure<wbr>Mapping</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">Gradient<wbr>Pressure<wbr>Mapping<span class="tsd-signature-symbol">(</span>alpha<span class="tsd-signature-symbol">: </span><a href="modules.html#alpha" class="tsd-signature-type">Alpha</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="modules.html#alpha" class="tsd-signature-type">Alpha</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Transform the user-parameter-space <code>[theta, Rh, RH, rockDensity, cavityDensity, shift1, shift2...]</code>
+										to the global one <code>[Sxx, Sxy, Syy, Szz, density, shift1, shift2...]</code>, where theta is the orientation
+										of the maximum principal horizontal stress according to the north, clock-wize and in <code>[0..180]</code>,
+										Rh is the ratio of Sigma_h/Sigma_v, RH is the ratio of Sigma_H/Sigma_v, and the shifts are the pressure
+									shift of the cavity at <code>z=0</code>.</p>
+								</div>
+								<p>Note that this regional stress and the pressure use the gradient and that you can provide as many
+									shift pressures as necessary (as long as the number of linearly independent simulations are
+								computed)</p>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p>[[Mapping]]</p>
+									</dd>
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #008000">// provide 2 pressure shifts</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">alpha</span><span style="color: #000000"> = </span><span style="color: #795E26">GradientPressureMapping</span><span style="color: #000000">([</span><span style="color: #098658">45</span><span style="color: #000000">, </span><span style="color: #098658">0.1</span><span style="color: #000000">, </span><span style="color: #098658">0.2</span><span style="color: #000000">, </span><span style="color: #098658">2300</span><span style="color: #000000">, </span><span style="color: #098658">2200</span><span style="color: #000000">, -</span><span style="color: #098658">1e6</span><span style="color: #000000">, -</span><span style="color: #098658">1e7</span><span style="color: #000000">])</span>
+</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>alpha: <a href="modules.html#alpha" class="tsd-signature-type">Alpha</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The user-define parameter space</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="modules.html#alpha" class="tsd-signature-type">Alpha</a></h4>
+							<p><code>[Sxx, Sxy, Syy, Szz, cavityDensity, shift1, shift2...]</code></p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="simpleandersonmapping" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Simple<wbr>Anderson<wbr>Mapping</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">Simple<wbr>Anderson<wbr>Mapping<span class="tsd-signature-symbol">(</span>alpha<span class="tsd-signature-symbol">: </span><a href="modules.html#alpha" class="tsd-signature-type">Alpha</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="modules.html#alpha" class="tsd-signature-type">Alpha</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>brief</dt>
+									<dd><p>Convert the regional Andersonian stress (theta, R) into the global CS [xx, xy, yy].
+											Basically, this fonction convert a non-linear space into a linear one in order to be
+										used by the superposition. This regional stress is not defined with gradient.</p>
+									</dd>
+									<dt>see</dt>
+									<dd><p>[[Mapping]]</p>
+									</dd>
+									<dt>see</dt>
+									<dd><p>publication <br>
+										<code>Maerten, F., Madden, E. H., Pollard, D. D., &amp; Maerten, L. (2016). Incorporating fault mechanics into inversions of aftershock data for the regional remote stress, with application to the 1992 Landers, California earthquake. Tectonophysics, 674, 52-64.</code></p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>alpha: <a href="modules.html#alpha" class="tsd-signature-type">Alpha</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>In the form [theta, R], with theta the angle in degrees of the maximum principal horizontal
+											stress according to the north and clock wize and defined in the range [0..180], R the extended
+										stress ratio in [0..3].</p>
+										<p>For instance:</p>
+										<ul>
+											<li>if R ∈ [0..1], then it is a normal fault regime
+												<li>if R ∈ [1..2], then it is a strike slip fault regime
+													<li>if R ∈ [2..3], then it is a reverse fault regime
+										</ul>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="modules.html#alpha" class="tsd-signature-type">Alpha</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -269,7 +406,7 @@
 										computed slip vector.</p>
 									</dd>
 									<dt>note</dt>
-									<dd><p>You can use the class <a href="classes/trianglecs.html">TriangleCS</a>.</p>
+									<dd><p>You can use the class [[TriangleCS]].</p>
 									</dd>
 								</dl>
 							</div>
@@ -450,18 +587,21 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><pre><code class="language-ts"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">displ</span><span style="color: #000000">   = </span><span style="color: #795E26">computDispl</span><span style="color: #000000">() </span><span style="color: #008000">// user function</span>
+									<dd><pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">geom</span><span style="color: #000000">   </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@youwol/geometry&#039;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">geophy</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@youwol/geophysics&#039;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">displ</span><span style="color: #000000">   = </span><span style="color: #795E26">computDispl</span><span style="color: #000000">() </span><span style="color: #008000">// user function</span>
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">horizon</span><span style="color: #000000"> = [...] </span><span style="color: #008000">// set of 3D points in a flat array</span>
 
 <span style="color: #008000">// Get the fitting plane for the horizon</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">plane</span><span style="color: #000000"> = </span><span style="color: #795E26">fittingPlane</span><span style="color: #000000">(</span><span style="color: #001080">horizon</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">plane</span><span style="color: #000000"> = </span><span style="color: #001080">geom</span><span style="color: #000000">.</span><span style="color: #795E26">fittingPlane</span><span style="color: #000000">(</span><span style="color: #001080">horizon</span><span style="color: #000000">)</span>
 
 <span style="color: #008000">// and compute the cost</span>
 <span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">cost</span><span style="color: #000000"> = </span><span style="color: #098658">0</span>
 <span style="color: #AF00DB">for</span><span style="color: #000000"> (</span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000">=</span><span style="color: #098658">0</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000">&lt;</span><span style="color: #001080">horizon</span><span style="color: #000000">.</span><span style="color: #001080">length</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000">+=</span><span style="color: #098658">3</span><span style="color: #000000">) {</span>
 <span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">p</span><span style="color: #000000"> = [</span><span style="color: #001080">horizon</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">], </span><span style="color: #001080">horizon</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">+</span><span style="color: #098658">1</span><span style="color: #000000">], </span><span style="color: #001080">horizon</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">+</span><span style="color: #098658">2</span><span style="color: #000000">]]</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">d</span><span style="color: #000000"> = </span><span style="color: #795E26">distanceFromPointToPlane</span><span style="color: #000000">(</span><span style="color: #001080">p</span><span style="color: #000000">, </span><span style="color: #001080">plane</span><span style="color: #000000">)</span>
-<span style="color: #000000">    </span><span style="color: #001080">cost</span><span style="color: #000000"> += </span><span style="color: #795E26">costVerticalGps</span><span style="color: #000000">(</span><span style="color: #001080">p</span><span style="color: #000000">, </span><span style="color: #001080">d</span><span style="color: #000000">, </span><span style="color: #098658">1</span><span style="color: #000000">)</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">d</span><span style="color: #000000"> = </span><span style="color: #001080">geom</span><span style="color: #000000">.</span><span style="color: #795E26">distanceFromPointToPlane</span><span style="color: #000000">(</span><span style="color: #001080">p</span><span style="color: #000000">, </span><span style="color: #001080">plane</span><span style="color: #000000">)</span>
+<span style="color: #000000">    </span><span style="color: #001080">cost</span><span style="color: #000000"> += </span><span style="color: #001080">geophy</span><span style="color: #000000">.</span><span style="color: #795E26">costVerticalGps</span><span style="color: #000000">(</span><span style="color: #001080">p</span><span style="color: #000000">, </span><span style="color: #001080">d</span><span style="color: #000000">, </span><span style="color: #098658">1</span><span style="color: #000000">)</span>
 <span style="color: #000000">}</span>
 <span style="color: #001080">cost</span><span style="color: #000000"> /= </span><span style="color: #001080">horizon</span><span style="color: #000000">.</span><span style="color: #001080">length</span><span style="color: #000000">/</span><span style="color: #098658">3</span>
 </code></pre>
@@ -551,72 +691,38 @@
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Utils Functions</h2>
+				<h2>Inversion Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="distancefrompointtoplane" class="tsd-anchor"></a>
-					<h3>distance<wbr>From<wbr>Point<wbr>ToPlane</h3>
+					<a name="cost" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> cost</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">distance<wbr>From<wbr>Point<wbr>ToPlane<span class="tsd-signature-symbol">(</span>p<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">math.Vector3</span>, plane<span class="tsd-signature-symbol">: </span><a href="modules.html#plane" class="tsd-signature-type">Plane</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">cost<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Data</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Data</span><span class="tsd-signature-symbol">[]</span>, alpha<span class="tsd-signature-symbol">: </span><a href="modules.html#alpha" class="tsd-signature-type">Alpha</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
 							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Compute the associated cost to alpha given an array of <a href="modules.html#data">Data</a>.</p>
+								</div>
 								<dl class="tsd-comment-tags">
-									<dt>brief</dt>
-									<dd><p>Get the distance from a 3D plabe to a plane</p>
+									<dt>note</dt>
+									<dd><p>When data is an array, the resulting weighted costs.
+										Otherwise, the returned cost (not multipled by the weight of the data).</p>
 									</dd>
 								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>p: <span class="tsd-signature-type">math.Vector3</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The considered 3D point</p>
-									</div>
+									<h5>data: <span class="tsd-signature-type">Data</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Data</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>plane: <a href="modules.html#plane" class="tsd-signature-type">Plane</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The plane defined with a point and its normal</p>
-									</div>
+									<h5>alpha: <a href="modules.html#alpha" class="tsd-signature-type">Alpha</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="fittingplane" class="tsd-anchor"></a>
-					<h3>fitting<wbr>Plane</h3>
-					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">fitting<wbr>Plane<span class="tsd-signature-symbol">(</span>points<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="modules.html#plane" class="tsd-signature-type">Plane</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>brief</dt>
-									<dd><p>Plane fitting to many 3D points</p>
-									</dd>
-								</dl>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>points: <span class="tsd-signature-type">ASerie</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The points coordinates in flat array</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="modules.html#plane" class="tsd-signature-type">Plane</a></h4>
-							<p>The plane parameters fitting the points
-							in a least squares sens</p>
 						</li>
 					</ul>
 				</section>
@@ -662,14 +768,29 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class">
-						<a href="classes/trianglecs.html" class="tsd-kind-icon">TriangleCS</a>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/alphamapping.html" class="tsd-kind-icon">Alpha<wbr>Mapping</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/costfunction.html" class="tsd-kind-icon">Cost<wbr>Function</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="modules.html#alpha" class="tsd-kind-icon">Alpha</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#plane" class="tsd-kind-icon">Plane</a>
+						<a href="modules.html#data" class="tsd-kind-icon">Data</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#defaultmapping" class="tsd-kind-icon">Default<wbr>Mapping</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#gradientpressuremapping" class="tsd-kind-icon">Gradient<wbr>Pressure<wbr>Mapping</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#simpleandersonmapping" class="tsd-kind-icon">Simple<wbr>Anderson<wbr>Mapping</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#cost" class="tsd-kind-icon">cost</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="modules.html#costconjugate" class="tsd-kind-icon">cost<wbr>Conjugate</a>
@@ -693,12 +814,6 @@
 						<a href="modules.html#costverticalgps" class="tsd-kind-icon">cost<wbr>Vertical<wbr>Gps</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="modules.html#distancefrompointtoplane" class="tsd-kind-icon">distance<wbr>From<wbr>Point<wbr>ToPlane</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#fittingplane" class="tsd-kind-icon">fitting<wbr>Plane</a>
-					</li>
-					<li class=" tsd-kind-function">
 						<a href="modules.html#generateinsar" class="tsd-kind-icon">generate<wbr>Insar</a>
 					</li>
 				</ul>
@@ -710,13 +825,6 @@
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
-			</ul>
 		</div>
 	</div>
 </footer>

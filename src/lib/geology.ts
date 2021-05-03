@@ -5,9 +5,8 @@
 
 import { 
     ASerie, eigenVector, abs, dot, normalize, square, 
-    div, mult, sub, norm, negate, add
+    div, mult, sub, norm, negate, addNumber
 } from '../../../dataframe/src/lib'
-
 import * as math from '../../../math/src'
 
 /**
@@ -25,7 +24,7 @@ export function costStriation(obs: ASerie, calc: ASerie, w = 1): ASerie {
     const d  = dot(obs, calc)
     const no = norm(obs)
     const nc = norm(calc)
-    return mult( add(negate(abs(div(dot(obs, calc), mult(no, nc)))), 1), w)
+    return mult( addNumber(negate(abs(div(dot(obs, calc), mult(no, nc)))), 1), w)
     // w*(1 - Math.abs( dot(obs, calc)/(no*nc) ))
 }
 

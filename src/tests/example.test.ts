@@ -23,8 +23,7 @@ test('test inverse', () => {
                 dataframe: d,
                 measure  : 'insar',
                 calculus : ['d1', 'd2', 'd3'],
-                cost     : geo.costInsar,
-                weight   : 1
+                cost     : geo.costInsar
             },
             {
                 dataframe: d,

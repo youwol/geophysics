@@ -91,7 +91,7 @@ export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
  * shift pressures as necessary (as long as the number of linearly independent simulations are
  * computed)
  * @param alpha The user-define parameter space
- * @see [[Mapping]]
+ * @see [[alphaMapping]]
  * @returns `[Sxx, Sxy, Syy, Szz, cavityDensity, shift1, shift2...]`
  * @example
  * ```ts

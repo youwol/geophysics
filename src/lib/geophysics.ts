@@ -9,9 +9,9 @@ import { Vector3 } from '@youwol/math'
 
 /**
  * Cost for a Gps measure (at one point)
- * @param obs The measure gps vector
- * @param u The computed displacement vector
- * @param w Weight with default value 1
+ * @param measure The measure gps vector
+ * @param compute The computed displacement vector
+ * @param weights Weight of the data points
  * 
  * <center><img style="width:60%; height:60%;" src="media://gps.png"></center>
  * <center><blockquote><i>
@@ -20,28 +20,32 @@ import { Vector3 } from '@youwol/math'
  * 
  * @category Geophysics
  */
-export function costGps(obs: ASerie, calc: ASerie, w = 1): number {
-    if (obs === undefined) throw new Error('obs is undefined')
-    if (calc === undefined) throw new Error('calc is undefined')
-    if (obs.itemSize !== 3) throw new Error('obs should have itemSize = 3')
-    if (calc.itemSize !== 3) throw new Error('calc should have itemSize = 3')
+export function costGps(
+    {measure, compute, weights, ...others}:
+    {measure: ASerie, compute: ASerie, weights?: ASerie}
+    //obs: ASerie, calc: ASerie, w = 1
+): number {
+    if (measure === undefined)  throw new Error('measure is undefined')
+    if (compute === undefined)  throw new Error('compute is undefined')
+    if (measure.itemSize !== 3) throw new Error('measure should have itemSize = 3')
+    if (compute.itemSize !== 3) throw new Error('compute should have itemSize = 3')
     
-    const d  = dot(obs, calc)
-    const no = norm(obs)
-    const nc = norm(calc)
+    const d  = dot(measure, compute)
+    const no = norm(measure)
+    const nc = norm(compute)
 
     // 0.5*w*( (1-d/(no*nc))**2 + (1-no/nc)**2 )
     return mean(mult( add([
         addNumber(negate( div(d, square(mult(no, nc))) ), 1),
         square(addNumber(negate(div(no, nc)), 1))
-    ]), 0.5*w) ) as number
+    ]), 0.5) ) as number
 }
 
 /**
  * Cost for a vertical Gps measure (at one point)
- * @param obs The measure vertical gps value
- * @param u The computed vertical displacement value
- * @param w Weight with default value 1
+ * @param measure The measure vertical gps value
+ * @param compute The computed vertical displacement value
+ * @param weights Weight of the data points
  * @example
  * ```ts
  * import * as geom   from '@youwol/geometry'
@@ -70,16 +74,20 @@ export function costGps(obs: ASerie, calc: ASerie, w = 1): number {
  * 
  * @category Geophysics
  */
-export function costVerticalGps(obs: ASerie, calc: ASerie, w = 1): number {
+export function costVerticalGps(
+    {measure, compute, weights, ...others}:
+    {measure: ASerie, compute: ASerie, weights?: ASerie}
+): number {
     // w*(1-calc/obs)**2
-    return mean(mult(square(addNumber(negate(div(calc, obs)), 1)), w)) as number
+    return mean( square(addNumber(negate(div(compute, measure)), 1)) ) as number
 }
 
 /**
  * Cost for an Insar measure (at one point)
- * @param obs The Insar measure along the satellite line of sight
- * @param d The computed insar value along the satellite line of sight
- * @param w Weight with default value 1
+ * @param measure The Insar measure along the satellite line of sight
+ * @param compute The computed insar value along the satellite line of sight
+ * @param weights Weight of the data points
+ * 
  * @see [[generateInsar]]
  * 
  * <center><img style="width:25%; height:25%;" src="media://insar.png"></center>
@@ -91,9 +99,12 @@ export function costVerticalGps(obs: ASerie, calc: ASerie, w = 1): number {
  * 
  * @category Geophysics
  */
-export function costInsar(obs: ASerie, calc: ASerie, w = 1): number {
+export function costInsar(
+    {measure, compute, weights, ...others}:
+    {measure: ASerie, compute: ASerie, weights?: ASerie}
+): number {
     // w*(1 - Math.abs(calc/obs))**2
-    return mean(mult(square(addNumber(negate(abs(div(calc, obs))), 1)), w)) as number
+    return mean( square(addNumber(negate(abs(div(compute, measure))), 1)) ) as number
 }
 
 /**

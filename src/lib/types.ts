@@ -4,23 +4,30 @@ import { ASerie, DataFrame } from "@youwol/dataframe"
  * Interface for any cost function
  */
 export interface CostFunction {
-    (measured: ASerie, computed: ASerie, ...others: any[]): number
+    ({measure, compute, w, weights, ...others}:
+     {measure: ASerie, compute: ASerie, w?: number, weights?: ASerie}): number
 }
 
 /**
- * Interface for a data that comprises the measurement (name of in the dataframe), the associated
- * cost function, the name of the series in order to perform the superposition, and the
- * dataframe itself
+ * Interface for a data that comprises the measurement (name of in the dataframe) and the weights
+ * of the measurements, the associated cost function, the name of the series in order to perform
+ * the superposition, and the dataframe itself
  */
 export type Data = {
     /**
-     * The dataframe supporting all series (measures and calculus)
+     * The dataframe supporting all series (measures, weights and calculus) for
+     * a given type of data
      */
     dataframe: DataFrame,
     /**
      * The name of the serie for the measures (must be in the dataframe)
      */
     measure  : string,
+    /**
+     * The name of the serie for the measures weight. When used, each point should
+     * have a weight (number). This parameter can be skipped
+     */
+    weights?: string,
     /**
      * The names of the series to perform superpposition (must be in the dataframe)
      */
@@ -30,9 +37,9 @@ export type Data = {
      */
     cost     : CostFunction,
     /**
-     * The weight of this data
+     * The weight of this data. Default value is 1
      */
-    weight   : number
+    weight?  : number
 }
 
 /**

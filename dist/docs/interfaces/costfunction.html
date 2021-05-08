@@ -85,7 +85,7 @@
 			<section class="tsd-panel">
 				<h3 class="tsd-before-signature">Callable</h3>
 				<ul class="tsd-signatures tsd-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">Cost<wbr>Function<span class="tsd-signature-symbol">(</span>measured<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span>, computed<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span>, <span class="tsd-signature-symbol">...</span>others<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					<li class="tsd-signature tsd-kind-icon">Cost<wbr>Function<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>w<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
@@ -99,13 +99,21 @@
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>measured: <span class="tsd-signature-type">ASerie</span></h5>
-							</li>
-							<li>
-								<h5>computed: <span class="tsd-signature-type">ASerie</span></h5>
-							</li>
-							<li>
-								<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>others: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+								<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>w<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span></h5>
+								<ul class="tsd-parameters">
+									<li class="tsd-parameter">
+										<h5>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
+									</li>
+									<li class="tsd-parameter">
+										<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
+									</li>
+									<li class="tsd-parameter">
+										<h5><span class="tsd-flag ts-flagOptional">Optional</span> w<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+									</li>
+									<li class="tsd-parameter">
+										<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span></h5>
+									</li>
+								</ul>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -121,6 +129,9 @@
 					</li>
 					<li class=" pp-nav pp-page">
 						<a href="../pages/Info/desc.html">Description</a>
+					</li>
+					<li class=" pp-nav pp-page">
+						<a href="../pages/Info/todo.html">Todo</a>
 					</li>
 					<li class=" pp-nav pp-page">
 						<a href="../pages/Info/biblio.html">References</a>

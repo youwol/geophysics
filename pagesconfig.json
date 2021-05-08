@@ -8,6 +8,10 @@
                     "source": "./documentation/desc.md"
                 },
                 {
+                    "title": "Todo",
+                    "source": "./documentation/todo.md"
+                },
+                {
                     "title": "References",
                     "source": "./documentation/biblio.md"
                 }

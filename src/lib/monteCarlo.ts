@@ -21,6 +21,9 @@ export const monteCarlo = ( params: InversionModel, n: number): InversionResult 
     // Check the generated alpha
     params.alphaParameters.mapping( limits.map( l => genRandom(l.min, l.max) ) )
 
+    // Set the data weight if necessary
+    params.data.forEach( d => d.weight===undefined ? d.weight=1 : 1)
+
 
     let solution: InversionResult = {
         alpha: [],

@@ -1,9 +1,13 @@
 {
   "name": "@youwol/geophysics",
   "version": "0.0.1",
+  "license": "MIT",
   "description": "geophysics package for YouWol",
   "author": "fmaerten@youwol.com",
-  "keywords": [],
+  "keywords": [
+    "youwol",
+    "geophysics"
+  ],
   "main": "dist/@youwol/geophysics.js",
   "types": "src/index.ts",
   "scripts": {

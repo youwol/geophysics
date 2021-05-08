@@ -3,9 +3,9 @@
  */
 import {
     abs, add, addNumber, ASerie, div, dot, mult,
-    negate, norm, square
-} from '../../../dataframe/src/lib'
-import * as math from '../../../math/src/lib'
+    negate, norm, square, mean
+} from '@youwol/dataframe'
+import { Vector3 } from '@youwol/math'
 
 /**
  * Cost for a Gps measure (at one point)
@@ -20,7 +20,7 @@ import * as math from '../../../math/src/lib'
  * 
  * @category Geophysics
  */
-export function costGps(obs: ASerie, calc: ASerie, w = 1): ASerie {
+export function costGps(obs: ASerie, calc: ASerie, w = 1): number {
     if (obs === undefined) throw new Error('obs is undefined')
     if (calc === undefined) throw new Error('calc is undefined')
     if (obs.itemSize !== 3) throw new Error('obs should have itemSize = 3')
@@ -31,10 +31,10 @@ export function costGps(obs: ASerie, calc: ASerie, w = 1): ASerie {
     const nc = norm(calc)
 
     // 0.5*w*( (1-d/(no*nc))**2 + (1-no/nc)**2 )
-    return mult( add([
+    return mean(mult( add([
         addNumber(negate( div(d, square(mult(no, nc))) ), 1),
         square(addNumber(negate(div(no, nc)), 1))
-    ]), 0.5*w)
+    ]), 0.5*w) ) as number
 }
 
 /**
@@ -70,9 +70,9 @@ export function costGps(obs: ASerie, calc: ASerie, w = 1): ASerie {
  * 
  * @category Geophysics
  */
-export function costVerticalGps(obs: ASerie, calc: ASerie, w = 1): ASerie {
+export function costVerticalGps(obs: ASerie, calc: ASerie, w = 1): number {
     // w*(1-calc/obs)**2
-    return mult(square(addNumber(negate(div(calc, obs)), 1)), w)
+    return mean(mult(square(addNumber(negate(div(calc, obs)), 1)), w)) as number
 }
 
 /**
@@ -91,9 +91,9 @@ export function costVerticalGps(obs: ASerie, calc: ASerie, w = 1): ASerie {
  * 
  * @category Geophysics
  */
-export function costInsar(obs: ASerie, calc: ASerie, w = 1): ASerie {
+export function costInsar(obs: ASerie, calc: ASerie, w = 1): number {
     // w*(1 - Math.abs(calc/obs))**2
-    return mult(square(addNumber(negate(abs(div(calc, obs))), 1)), w)
+    return mean(mult(square(addNumber(negate(abs(div(calc, obs))), 1)), w)) as number
 }
 
 /**
@@ -119,7 +119,7 @@ export function costInsar(obs: ASerie, calc: ASerie, w = 1): ASerie {
  * ```
  * @category Geophysics
  */
-export function generateInsar(displ: ASerie, satellite: math.Vector3): ASerie {
+export function generateInsar(displ: ASerie, satellite: Vector3): number {
     // displ.map( u => u[0]*satellite[0] + u[1]*satellite[1] + u[2]*satellite[2] )
-    return dot(displ, satellite)
+    return mean(dot(displ, satellite)) as number
 }

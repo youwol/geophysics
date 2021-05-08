@@ -6,13 +6,9 @@
  * @module mapping
  */
 
-/**
- * @brief Alpha vector which can be of any size. This is essentially a renaming
- * in order to mathch [the publication](https://www.sciencedirect.com/science/article/abs/pii/S0040195116000731)
- */
- export type Alpha = number[]
+import { Alpha } from "./types"
 
-export interface AlphaMapping {
+export interface alphaMapping {
     /**
      * @brief A mapping for any [[Alpha]]. Basically, it transforms a user-defined
      * alpha to a global one that can be used by superposition.
@@ -23,13 +19,34 @@ export interface AlphaMapping {
 }
 
 /**
- * A default mapping for any [[Alpha]]. Basically it return the same alpha.
- * @category Alpha
+ * @brief Parameters for defining [[Alpha]], i.e., the min/max of each value as well
+ * as an optional [[AlphaMapping]] which allows to convert a user-defined parameter space to the
+ * global one. For stochastic smulation, parameters will be sampled in these ranges.
+ * @example
+ * ```ts
+ * // First parameters is theta in [0°, 180°]
+ * // Second parameter is stress ratio in [0, 3]
+ * const parameters = { 
+ *     mapping: new SimpleAndersonMapping,
+ *     min: [  0, 0],
+ *     max: [180, 3]
+ * }
+ * ```
  */
-export const DefaultMapping: AlphaMapping = (params: Alpha) => params
+export type AlphaParameters = {
+    min: number[],
+    max: number[],
+    mapping?: alphaMapping
+}
 
 /**
- * @brief Convert the regional Andersonian stress (theta, R) into the global CS [xx, xy, yy].
+ * A default mapping for any [[Alpha]]. Basically it return the same alpha.
+ * @see [[AlphaMapping]]
+ */
+export const defaultMapping: alphaMapping = (params: Alpha) => params
+
+/**
+ * @brief Convert the regional Andersonian stress (theta, R) into the global CSys [xx, xy, yy].
  * Basically, this fonction convert a non-linear space into a linear one in order to be
  * used by the superposition. This regional stress is not defined with gradient.
  * @param alpha In the form [theta, R], with theta the angle in degrees of the maximum principal horizontal
@@ -42,12 +59,11 @@ export const DefaultMapping: AlphaMapping = (params: Alpha) => params
  *   <li>if R ∈ [1..2], then it is a strike slip fault regime
  *   <li>if R ∈ [2..3], then it is a reverse fault regime
  * </ul>
- * @see [[Mapping]]
+ * @see [[AlphaMapping]]
  * @see publication <br>
  * `Maerten, F., Madden, E. H., Pollard, D. D., & Maerten, L. (2016). Incorporating fault mechanics into inversions of aftershock data for the regional remote stress, with application to the 1992 Landers, California earthquake. Tectonophysics, 674, 52-64.`
- * @category Alpha
  */
-export const SimpleAndersonMapping: AlphaMapping = (alpha: Alpha): Alpha => {
+export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
     const theta = alpha[0]
     const R     = alpha[1]
 
@@ -82,9 +98,8 @@ export const SimpleAndersonMapping: AlphaMapping = (alpha: Alpha): Alpha => {
  * // provide 2 pressure shifts
  * const alpha = GradientPressureMapping([45, 0.1, 0.2, 2300, 2200, -1e6, -1e7])
  * ```
- * @category Alpha
  */
-export const GradientPressureMapping: AlphaMapping = (alpha: Alpha): Alpha => {
+export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
     if (alpha.length < 6) throw new Error(`argument alpha should be of size greater or equal to 6:
         alpha = [theta, Rh, RH, rockDensity, cavityDensity, shift1, shift2, ...]`) ;
     

@@ -10,4 +10,5 @@ dist/index.d.ts
 dist/src
 dist/geophysics
 dist/math
+dist/tests
 dist/dataframe

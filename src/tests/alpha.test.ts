@@ -1,14 +1,14 @@
-import { SimpleAndersonMapping, GradientPressureMapping } from '../lib/alpha'
+import { simpleAndersonMapping, gradientPressureMapping } from '../lib/mapping'
 
 test('Mapping theta-R', () => {
-    const alpha = SimpleAndersonMapping([60, 1.1])
+    const alpha = simpleAndersonMapping([60, 1.1])
     expect(alpha[0]).toBeCloseTo(-0.35)             // Sxx
     expect(alpha[1]).toBeCloseTo(0.4330127018922194)// Sxy
     expect(alpha[2]).toBeCloseTo(-0.85)             // Syy
 })
 
 test('Mapping kh-kH-pressure', () => {
-    const alpha = GradientPressureMapping([45, 0.1, 0.2, 2300, 2200, 1e7])
+    const alpha = gradientPressureMapping([45, 0.1, 0.2, 2300, 2200, 1e7])
     expect(alpha[0]).toEqual(3889.9442500361242)    // Sxx
     expect(alpha[1]).toEqual(1008.5623360409696)    // Sxy
     expect(alpha[2]).toEqual(2878.9557499638777)    // Syy
@@ -18,7 +18,7 @@ test('Mapping kh-kH-pressure', () => {
 })
 
 test('Mapping kh-kH-pressure multi shifts', () => {
-    const alpha = GradientPressureMapping([45, 0.1, 0.2, 2300, 2200, 1e7, -1e6, 0.1])
+    const alpha = gradientPressureMapping([45, 0.1, 0.2, 2300, 2200, 1e7, -1e6, 0.1])
     expect(alpha[0]).toEqual(3889.9442500361242)    // Sxx
     expect(alpha[1]).toEqual(1008.5623360409696)    // Sxy
     expect(alpha[2]).toEqual(2878.9557499638777)    // Syy

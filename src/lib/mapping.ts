@@ -20,7 +20,7 @@ export interface alphaMapping {
 
 /**
  * @brief Parameters for defining [[Alpha]], i.e., the min/max of each value as well
- * as an optional [[AlphaMapping]] which allows to convert a user-defined parameter space to the
+ * as an optional [[alphaMapping]] which allows to convert a user-defined parameter space to the
  * global one. For stochastic smulation, parameters will be sampled in these ranges.
  * @example
  * ```ts
@@ -41,7 +41,7 @@ export type AlphaParameters = {
 
 /**
  * A default mapping for any [[Alpha]]. Basically it return the same alpha.
- * @see [[AlphaMapping]]
+ * @see [[alphaMapping]]
  */
 export const defaultMapping: alphaMapping = (params: Alpha) => params
 
@@ -59,7 +59,7 @@ export const defaultMapping: alphaMapping = (params: Alpha) => params
  *   <li>if R ∈ [1..2], then it is a strike slip fault regime
  *   <li>if R ∈ [2..3], then it is a reverse fault regime
  * </ul>
- * @see [[AlphaMapping]]
+ * @see [[alphaMapping]]
  * @see publication <br>
  * `Maerten, F., Madden, E. H., Pollard, D. D., & Maerten, L. (2016). Incorporating fault mechanics into inversions of aftershock data for the regional remote stress, with application to the 1992 Landers, California earthquake. Tectonophysics, 674, 52-64.`
  */

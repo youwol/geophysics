@@ -31,7 +31,7 @@ dataframe.add(measure, 0, insar)
 
 const invParams = {
     n: 100000,
-    alphaParameters: { 
+    alpha: { 
         dim: 3,
         mapping: undefined,
         min: [-10, -5,  0],

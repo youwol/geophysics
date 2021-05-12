@@ -1,5 +1,5 @@
-import { weight } from "@youwol/dataframe"
-import { Alpha, Data } from "./types"
+import { Alpha } from "./types"
+import { Data } from './data'
 
 /**
  * Compute the associated cost to alpha given a [[Data]] or an array of [[Data]].
@@ -10,21 +10,25 @@ import { Alpha, Data } from "./types"
     if (Array.isArray(data)) {
         let w = 0
         return data.reduce( (acc, d) => {
-            const dw = d.weight!==undefined ? d.weight : 1
+            const dw = d.weight
             w += dw
-            return acc + d.cost({
-                measure: d.dataframe.get(d.measure),
-                compute: weight(d.calculus.map( name => d.dataframe.get(name)), alpha),
-                weights: d.dataframe.get(d.weights)
-            }) * dw
+            return acc + d.cost(
+                // {
+                //     measure: d.dataframe.get(d.measure),
+                //     compute: weightedSum(d.compute.map( name => d.dataframe.get(name)), alpha),
+                //     weights: d.dataframe.get(d.weights)
+                // }
+                alpha
+            ) * dw
         }, 0) / w
     }
 
-    const calc = weight(data.calculus.map( name => data.dataframe.get(name)), alpha)
-    const meas = data.dataframe.get(data.measure)
-    return data.cost({
-        measure: meas,
-        compute: calc,
-        weights: data.dataframe.get(data.weights)
-    })
+    // const calc = weightedSum(data.compute.map( name => data.dataframe.get(name)), alpha)
+    // const meas = data.dataframe.get(data.measure)
+    // return data.cost({
+    //     measure: meas,
+    //     compute: calc,
+    //     weights: data.dataframe.get(data.weights)
+    // })
+    return data.cost(alpha)
 }

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Inversion 1 | @youwol/geophysics - v0.0.1</title>
+	<title>Inversion | @youwol/geophysics - v0.0.1</title>
 	<meta name="description" content="Documentation for @youwol/geophysics - v0.0.1">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../../assets/css/main.css">
@@ -57,13 +57,13 @@
 					<a href="../../modules.html">Globals</a>
 				</li>
 				<li>
-					<a href="ex1.html">Examples</a>
+					<a href="ex4.html">Examples</a>
 				</li>
 				<li>
-					<a href="ex4.html">Inversion 1</a>
+					<a href="ex4.html">Inversion</a>
 				</li>
 			</ul>
-			<h1>Inversion 1</h1>
+			<h1>Inversion</h1>
 		</div>
 	</div>
 </header>
@@ -71,52 +71,63 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">dataframe</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">df</span><span style="color: #000000">, </span><span style="color: #001080">superposition</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">su</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;fast-computation&#039;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">geology</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">geol</span><span style="color: #000000">, </span><span style="color: #001080">geophysics</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">phy</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;fast-computation&#039;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">utils</span><span style="color: #000000">, </span><span style="color: #001080">mapping</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;fast-computation&#039;</span>
+				<pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">math</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@youwol/math&#039;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">createSerie</span><span style="color: #000000">, </span><span style="color: #001080">DataFrame</span><span style="color: #000000">, </span><span style="color: #001080">dot</span><span style="color: #000000">, </span><span style="color: #001080">weightedSum</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@youwol/dataframe&#039;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">monteCarlo</span><span style="color: #000000">, </span><span style="color: #001080">InsarData</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;../lib&#039;</span>
 
-<span style="color: #008000">// Create a dataframe of 10000 points in order to store the</span>
-<span style="color: #008000">// computed attributes</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dataframe</span><span style="color: #000000"> = </span><span style="color: #001080">df</span><span style="color: #000000">.</span><span style="color: #795E26">create</span><span style="color: #000000">(</span><span style="color: #098658">10000</span><span style="color: #000000">)</span>
+<span style="color: #008000">// Computations</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">displField1</span><span style="color: #000000"> = [</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #098658">2</span><span style="color: #000000">,</span><span style="color: #098658">3</span><span style="color: #000000">,   </span><span style="color: #098658">4</span><span style="color: #000000">,</span><span style="color: #098658">5</span><span style="color: #000000">,</span><span style="color: #098658">8</span><span style="color: #000000">,  </span><span style="color: #098658">5</span><span style="color: #000000">,</span><span style="color: #098658">6</span><span style="color: #000000">,</span><span style="color: #098658">3</span><span style="color: #000000">,   </span><span style="color: #098658">9</span><span style="color: #000000">,</span><span style="color: #098658">9</span><span style="color: #000000">,</span><span style="color: #098658">1</span><span style="color: #000000">,   </span><span style="color: #098658">3</span><span style="color: #000000">,</span><span style="color: #098658">2</span><span style="color: #000000">,</span><span style="color: #098658">4</span><span style="color: #000000">  ]</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">displField2</span><span style="color: #000000"> = [</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #098658">8</span><span style="color: #000000">,   </span><span style="color: #098658">11</span><span style="color: #000000">,</span><span style="color: #098658">9</span><span style="color: #000000">,</span><span style="color: #098658">4</span><span style="color: #000000">, </span><span style="color: #098658">10</span><span style="color: #000000">,</span><span style="color: #098658">6</span><span style="color: #000000">,</span><span style="color: #098658">11</span><span style="color: #000000">, </span><span style="color: #098658">13</span><span style="color: #000000">,</span><span style="color: #098658">27</span><span style="color: #000000">,</span><span style="color: #098658">7</span><span style="color: #000000">, </span><span style="color: #098658">9</span><span style="color: #000000">,</span><span style="color: #098658">7</span><span style="color: #000000">,</span><span style="color: #098658">5</span><span style="color: #000000">  ]</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">displField3</span><span style="color: #000000"> = [</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #098658">12</span><span style="color: #000000">,</span><span style="color: #098658">13</span><span style="color: #000000">, </span><span style="color: #098658">5</span><span style="color: #000000">,</span><span style="color: #098658">8</span><span style="color: #000000">,</span><span style="color: #098658">10</span><span style="color: #000000">, </span><span style="color: #098658">10</span><span style="color: #000000">,</span><span style="color: #098658">6</span><span style="color: #000000">,</span><span style="color: #098658">7</span><span style="color: #000000">,  </span><span style="color: #098658">5</span><span style="color: #000000">,</span><span style="color: #098658">9</span><span style="color: #000000">,</span><span style="color: #098658">17</span><span style="color: #000000">,  </span><span style="color: #098658">9</span><span style="color: #000000">,</span><span style="color: #098658">14</span><span style="color: #000000">,</span><span style="color: #098658">20</span><span style="color: #000000">]</span>
 
-<span style="color: #008000">// The 3 linearly independent constraints to apply to the model</span>
-<span style="color: #008000">// in order to compute stress and displacement fields at the points</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">constraints</span><span style="color: #000000"> = [</span>
-<span style="color: #000000">    [</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">],</span>
-<span style="color: #000000">    [</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">],</span>
-<span style="color: #000000">    [</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">1</span><span style="color: #000000">]</span>
-<span style="color: #000000">]</span>
+<span style="color: #008000">// Measurements</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">insarMeasurements</span><span style="color: #000000"> = [-</span><span style="color: #098658">8.732</span><span style="color: #000000">, </span><span style="color: #098658">45.8457</span><span style="color: #000000">, </span><span style="color: #098658">22.518</span><span style="color: #000000">, -</span><span style="color: #098658">20.6505</span><span style="color: #000000">, -</span><span style="color: #098658">25.394</span><span style="color: #000000">]</span>
 
-<span style="color: #008000">// For each linearly independent simulation (i.e., 3), compute the stress</span>
-<span style="color: #008000">// and displacement at the 10000 points, and add them in the dataframe</span>
-<span style="color: #AF00DB">for</span><span style="color: #000000"> (</span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000">=</span><span style="color: #098658">0</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000">&lt;</span><span style="color: #098658">3</span><span style="color: #000000">; ++</span><span style="color: #001080">i</span><span style="color: #000000">) {</span>
-<span style="color: #000000">    </span><span style="color: #795E26">performSimulation</span><span style="color: #000000">( </span><span style="color: #001080">constraints</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">] )</span>
-<span style="color: #000000">    </span><span style="color: #001080">df</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">(</span><span style="color: #001080">dataframe</span><span style="color: #000000">, </span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #795E26">computedDispl</span><span style="color: #000000">() )</span>
-<span style="color: #000000">    </span><span style="color: #001080">df</span><span style="color: #000000">.</span><span style="color: #795E26">add</span><span style="color: #000000">(</span><span style="color: #001080">dataframe</span><span style="color: #000000">, </span><span style="color: #098658">1</span><span style="color: #000000">, </span><span style="color: #795E26">computedStress</span><span style="color: #000000">())</span>
+<span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">dataframe</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">DataFrame</span><span style="color: #000000">({</span>
+<span style="color: #000000">    </span><span style="color: #A31515">&#039;U1&#039;</span><span style="color: #001080">   :</span><span style="color: #000000"> </span><span style="color: #795E26">createSerie</span><span style="color: #000000">({</span><span style="color: #001080">data:</span><span style="color: #000000"> </span><span style="color: #001080">displField1</span><span style="color: #000000">, </span><span style="color: #001080">itemSize:</span><span style="color: #000000"> </span><span style="color: #098658">3</span><span style="color: #000000">}),</span>
+<span style="color: #000000">    </span><span style="color: #A31515">&#039;U2&#039;</span><span style="color: #001080">   :</span><span style="color: #000000"> </span><span style="color: #795E26">createSerie</span><span style="color: #000000">({</span><span style="color: #001080">data:</span><span style="color: #000000"> </span><span style="color: #001080">displField2</span><span style="color: #000000">, </span><span style="color: #001080">itemSize:</span><span style="color: #000000"> </span><span style="color: #098658">3</span><span style="color: #000000">}),</span>
+<span style="color: #000000">    </span><span style="color: #A31515">&#039;U3&#039;</span><span style="color: #001080">   :</span><span style="color: #000000"> </span><span style="color: #795E26">createSerie</span><span style="color: #000000">({</span><span style="color: #001080">data:</span><span style="color: #000000"> </span><span style="color: #001080">displField3</span><span style="color: #000000">, </span><span style="color: #001080">itemSize:</span><span style="color: #000000"> </span><span style="color: #098658">3</span><span style="color: #000000">}),</span>
+<span style="color: #000000">    </span><span style="color: #A31515">&#039;insar&#039;</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #795E26">createSerie</span><span style="color: #000000">({</span><span style="color: #001080">data:</span><span style="color: #000000"> </span><span style="color: #001080">insarMeasurements</span><span style="color: #000000">})</span>
+<span style="color: #000000">})</span>
+
+<span style="color: #008000">// The insar dataset</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">los</span><span style="color: #000000"> = [</span><span style="color: #098658">0.01</span><span style="color: #000000">, -</span><span style="color: #098658">0.2</span><span style="color: #000000">, -</span><span style="color: #098658">0.95</span><span style="color: #000000">] </span><span style="color: #008000">// sat line of sight</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">insar</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">InsarData</span><span style="color: #000000">({</span>
+<span style="color: #000000">    </span><span style="color: #001080">dataframe</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">los</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">measure:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;insar&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">compute:</span><span style="color: #000000"> [</span><span style="color: #A31515">&#039;U1&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;U2&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;U3&#039;</span><span style="color: #000000">]</span>
+<span style="color: #000000">})</span>
+
+<span style="color: #008000">// The stochastic inversion</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">result</span><span style="color: #000000"> = </span><span style="color: #795E26">monteCarlo</span><span style="color: #000000">({</span>
+<span style="color: #000000">    </span><span style="color: #001080">data:</span><span style="color: #000000"> [</span><span style="color: #001080">insar</span><span style="color: #000000">],</span>
+<span style="color: #000000">    </span><span style="color: #001080">alpha:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #001080">mapping:</span><span style="color: #000000"> </span><span style="color: #0000FF">undefined</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">min:</span><span style="color: #000000"> [-</span><span style="color: #098658">10</span><span style="color: #000000">, -</span><span style="color: #098658">5</span><span style="color: #000000">,  </span><span style="color: #098658">0</span><span style="color: #000000">],</span>
+<span style="color: #000000">        </span><span style="color: #001080">max:</span><span style="color: #000000"> [ -</span><span style="color: #098658">7</span><span style="color: #000000">,  </span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #098658">10</span><span style="color: #000000">]</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}, </span><span style="color: #098658">100000</span><span style="color: #000000">)</span>
+
+<span style="color: #008000">// Display the result</span>
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;inversion result:&#039;</span><span style="color: #000000">, </span><span style="color: #001080">result</span><span style="color: #000000"> )</span>
+
+<span style="color: #008000">// Compare the measurements with the recovered insar</span>
+<span style="color: #008000">// from the best solution</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">recoveredInsar</span><span style="color: #000000"> = </span><span style="color: #001080">insar</span><span style="color: #000000">.</span><span style="color: #795E26">generate</span><span style="color: #000000">(</span><span style="color: #001080">result</span><span style="color: #000000">.</span><span style="color: #001080">alpha</span><span style="color: #000000">).</span><span style="color: #001080">array</span><span style="color: #000000">)</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;measured &#039;</span><span style="color: #000000">, </span><span style="color: #001080">dataframe</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;insar&#039;</span><span style="color: #000000">).</span><span style="color: #001080">array</span><span style="color: #000000"> )</span>
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;recovered&#039;</span><span style="color: #000000">, </span><span style="color: #001080">recoveredInsar</span><span style="color: #000000">.</span><span style="color: #001080">array</span><span style="color: #000000">)</span>
+</code></pre>
+				<p>Should display</p>
+				<pre><code class="language-js"><span style="color: #001080">inversion</span><span style="color: #000000"> result: {</span>
+<span style="color: #000000">    alpha: [ -</span><span style="color: #098658">8.640479569761252</span><span style="color: #000000">, -</span><span style="color: #098658">1.0189215710991784</span><span style="color: #000000">, </span><span style="color: #098658">3.0912827744896254</span><span style="color: #000000"> ],</span>
+<span style="color: #000000">    user:  [ -</span><span style="color: #098658">8.640479569761252</span><span style="color: #000000">, -</span><span style="color: #098658">1.0189215710991784</span><span style="color: #000000">, </span><span style="color: #098658">3.0912827744896254</span><span style="color: #000000"> ],</span>
+<span style="color: #000000">    cost: </span><span style="color: #098658">0.0002217</span><span style="color: #000000">,</span>
+<span style="color: #000000">    fit: </span><span style="color: #098658">99.98</span>
 <span style="color: #000000">}</span>
-
-<span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">solution</span><span style="color: #000000"> = {</span>
-<span style="color: #000000">    </span><span style="color: #001080">cost :</span><span style="color: #000000"> </span><span style="color: #098658">1e10</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">theta:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">R    :</span><span style="color: #000000"> </span><span style="color: #098658">0</span>
-<span style="color: #000000">}</span>
-
-<span style="color: #008000">// Perform a brut Monte Carlo simulation using 50000 iteration</span>
-<span style="color: #AF00DB">for</span><span style="color: #000000"> (</span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000">=</span><span style="color: #098658">0</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000">&lt;</span><span style="color: #098658">50000</span><span style="color: #000000">; ++</span><span style="color: #001080">i</span><span style="color: #000000">) {</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">theta</span><span style="color: #000000"> = </span><span style="color: #267F99">Math</span><span style="color: #000000">.</span><span style="color: #795E26">random</span><span style="color: #000000">()*</span><span style="color: #098658">180</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">R</span><span style="color: #000000">     = </span><span style="color: #267F99">Math</span><span style="color: #000000">.</span><span style="color: #795E26">random</span><span style="color: #000000">()*</span><span style="color: #098658">3</span>
-
-<span style="color: #000000">    </span><span style="color: #008000">// attrs[0] is displ, attr[1] is stress</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">attrs</span><span style="color: #000000"> = </span><span style="color: #001080">su</span><span style="color: #000000">.</span><span style="color: #795E26">combine</span><span style="color: #000000">( </span><span style="color: #001080">dataframe</span><span style="color: #000000">, </span><span style="color: #001080">mapping</span><span style="color: #000000">.</span><span style="color: #795E26">SimpleAndersonMapping</span><span style="color: #000000">(</span><span style="color: #001080">theta</span><span style="color: #000000">, </span><span style="color: #0070C1">R</span><span style="color: #000000">) )</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">cost</span><span style="color: #000000"> = (</span>
-<span style="color: #000000">        </span><span style="color: #001080">phy</span><span style="color: #000000">.</span><span style="color: #795E26">generateInsar</span><span style="color: #000000">(</span><span style="color: #001080">attrs</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">], [</span><span style="color: #098658">0.01</span><span style="color: #000000">, -</span><span style="color: #098658">0.1</span><span style="color: #000000">, -</span><span style="color: #098658">0.9856</span><span style="color: #000000">])</span>
-<span style="color: #000000">            .</span><span style="color: #795E26">reduce</span><span style="color: #000000">( (</span><span style="color: #001080">acc</span><span style="color: #000000">, </span><span style="color: #001080">v</span><span style="color: #000000">, </span><span style="color: #001080">i</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">acc</span><span style="color: #000000"> + </span><span style="color: #001080">phy</span><span style="color: #000000">.</span><span style="color: #795E26">costInsar</span><span style="color: #000000">(</span><span style="color: #001080">insars</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">], </span><span style="color: #001080">v</span><span style="color: #000000">, </span><span style="color: #098658">3</span><span style="color: #000000">) / </span><span style="color: #001080">insars</span><span style="color: #000000">.</span><span style="color: #001080">length</span><span style="color: #000000"> )</span>
-<span style="color: #000000">        +</span>
-<span style="color: #000000">        </span><span style="color: #001080">utils</span><span style="color: #000000">.</span><span style="color: #795E26">chuncks</span><span style="color: #000000">(</span><span style="color: #001080">attrs</span><span style="color: #000000">[</span><span style="color: #098658">1</span><span style="color: #000000">], </span><span style="color: #098658">6</span><span style="color: #000000">)</span>
-<span style="color: #000000">            .</span><span style="color: #795E26">reduce</span><span style="color: #000000">( (</span><span style="color: #001080">acc</span><span style="color: #000000">, </span><span style="color: #001080">s</span><span style="color: #000000">, </span><span style="color: #001080">i</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">acc</span><span style="color: #000000"> + </span><span style="color: #001080">geol</span><span style="color: #000000">.</span><span style="color: #795E26">costDike</span><span style="color: #000000">(</span><span style="color: #001080">dikes</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">], </span><span style="color: #001080">s</span><span style="color: #000000">, </span><span style="color: #098658">1</span><span style="color: #000000">) / </span><span style="color: #001080">dikes</span><span style="color: #000000">.</span><span style="color: #001080">length</span><span style="color: #000000"> / </span><span style="color: #098658">3</span><span style="color: #000000"> )</span>
-<span style="color: #000000">    ) / </span><span style="color: #098658">2</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">cost</span><span style="color: #000000"> &lt; </span><span style="color: #001080">solution</span><span style="color: #000000">.</span><span style="color: #001080">cost</span><span style="color: #000000">) </span><span style="color: #001080">solution</span><span style="color: #000000"> = {</span><span style="color: #001080">cost</span><span style="color: #000000">, </span><span style="color: #001080">theta</span><span style="color: #000000">, </span><span style="color: #001080">R</span><span style="color: #000000">}</span>
-<span style="color: #000000">}</span>
+<span style="color: #001080">recovered</span><span style="color: #000000"> [ -</span><span style="color: #098658">8.471</span><span style="color: #000000">, </span><span style="color: #098658">45.398</span><span style="color: #000000">, </span><span style="color: #098658">22.373</span><span style="color: #000000">, -</span><span style="color: #098658">20.205</span><span style="color: #000000">, -</span><span style="color: #098658">24.906</span><span style="color: #000000"> ]</span>
+<span style="color: #001080">measured</span><span style="color: #000000">  [ -</span><span style="color: #098658">8.732</span><span style="color: #000000">, </span><span style="color: #098658">45.846</span><span style="color: #000000">, </span><span style="color: #098658">22.518</span><span style="color: #000000">, -</span><span style="color: #098658">20.650</span><span style="color: #000000">, -</span><span style="color: #098658">25.394</span><span style="color: #000000"> ]</span>
 </code></pre>
 			</div>
 		</div>
@@ -138,20 +149,11 @@
 					<li class="label pp-nav pp-group">
 						<span>Examples</span>
 					</li>
-					<li class=" pp-nav pp-page">
-						<a href="ex1.html">Superposition</a>
-					</li>
-					<li class=" pp-nav pp-page">
-						<a href="ex2.html">cost functions</a>
-					</li>
-					<li class=" pp-nav pp-page">
-						<a href="ex3.html">Flatten horizon cost function</a>
-					</li>
 					<li class="current pp-nav pp-page">
-						<a href="ex4.html">Inversion 1</a>
+						<a href="ex4.html">Inversion</a>
 					</li>
 					<li class=" pp-nav pp-page">
-						<a href="ex5.html">Inversion 2</a>
+						<a href="ex6.html">Flatten horizon as GPS</a>
 					</li>
 					<li class="label pp-nav pp-group">
 						<span>API</span>
@@ -172,6 +174,20 @@
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
 		</div>
 	</div>
 </footer>

@@ -69,6 +69,25 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
+							<h3>Geology Classes</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-class"><a href="classes/conjugatedata.html" class="tsd-kind-icon">Conjugate<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/jointdata.html" class="tsd-kind-icon">Joint<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/striationdata.html" class="tsd-kind-icon">Striation<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/stylolitedata.html" class="tsd-kind-icon">Stylolite<wbr>Data</a></li>
+							</ul>
+							<h3>Geophysics Classes</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-class"><a href="classes/gpsdata.html" class="tsd-kind-icon">Gps<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/insardata.html" class="tsd-kind-icon">Insar<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/verticalgpsdata.html" class="tsd-kind-icon">Vertical<wbr>Gps<wbr>Data</a></li>
+							</ul>
+							<h3>Other Classes</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-class"><a href="classes/data.html" class="tsd-kind-icon">Data</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface"><a href="interfaces/costfunction.html" class="tsd-kind-icon">Cost<wbr>Function</a></li>
@@ -80,24 +99,13 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias"><a href="modules.html#alpha" class="tsd-kind-icon">Alpha</a></li>
 								<li class="tsd-kind-type-alias"><a href="modules.html#alphaparameters" class="tsd-kind-icon">Alpha<wbr>Parameters</a></li>
-								<li class="tsd-kind-type-alias"><a href="modules.html#data" class="tsd-kind-icon">Data</a></li>
 								<li class="tsd-kind-type-alias"><a href="modules.html#inversionmodel" class="tsd-kind-icon">Inversion<wbr>Model</a></li>
 								<li class="tsd-kind-type-alias"><a href="modules.html#inversionresult" class="tsd-kind-icon">Inversion<wbr>Result</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
-							<h3>Geology Functions</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-function"><a href="modules.html#costconjugate" class="tsd-kind-icon">cost<wbr>Conjugate</a></li>
-								<li class="tsd-kind-function"><a href="modules.html#costjoint" class="tsd-kind-icon">cost<wbr>Joint</a></li>
-								<li class="tsd-kind-function"><a href="modules.html#coststriation" class="tsd-kind-icon">cost<wbr>Striation</a></li>
-								<li class="tsd-kind-function"><a href="modules.html#coststylolite" class="tsd-kind-icon">cost<wbr>Stylolite</a></li>
-							</ul>
 							<h3>Geophysics Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function"><a href="modules.html#costgps" class="tsd-kind-icon">cost<wbr>Gps</a></li>
-								<li class="tsd-kind-function"><a href="modules.html#costinsar" class="tsd-kind-icon">cost<wbr>Insar</a></li>
-								<li class="tsd-kind-function"><a href="modules.html#costverticalgps" class="tsd-kind-icon">cost<wbr>Vertical<wbr>Gps</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#generateinsar" class="tsd-kind-icon">generate<wbr>Insar</a></li>
 							</ul>
 							<h3>Inversion Functions</h3>
@@ -107,6 +115,7 @@
 							<h3>Other Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function"><a href="modules.html#cost" class="tsd-kind-icon">cost</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#createdata" class="tsd-kind-icon">create<wbr>Data</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#defaultmapping" class="tsd-kind-icon">default<wbr>Mapping</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#gradientpressuremapping" class="tsd-kind-icon">gradient<wbr>Pressure<wbr>Mapping</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#simpleandersonmapping" class="tsd-kind-icon">simple<wbr>Anderson<wbr>Mapping</a></li>
@@ -142,7 +151,7 @@
 						<dl class="tsd-comment-tags">
 							<dt>brief</dt>
 							<dd><p>Parameters for defining <a href="modules.html#alpha">Alpha</a>, i.e., the min/max of each value as well
-									as an optional [[AlphaMapping]] which allows to convert a user-defined parameter space to the
+									as an optional <a href="interfaces/alphamapping.html">alphaMapping</a> which allows to convert a user-defined parameter space to the
 								global one. For stochastic smulation, parameters will be sampled in these ranges.</p>
 							</dd>
 							<dt>example</dt>
@@ -173,78 +182,9 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
-					<a name="data" class="tsd-anchor"></a>
-					<h3>Data</h3>
-					<div class="tsd-signature tsd-kind-icon">Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>calculus<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>cost<span class="tsd-signature-symbol">: </span><a href="interfaces/costfunction.html" class="tsd-signature-type">CostFunction</a><span class="tsd-signature-symbol">; </span>dataframe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DataFrame</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>weight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
-					<aside class="tsd-sources">
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Interface for a data that comprises the measurement (name of in the dataframe) and the weights
-								of the measurements, the associated cost function, the name of the series in order to perform
-							the superposition, and the dataframe itself</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>calculus<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The names of the series to perform superpposition (must be in the dataframe)</p>
-									</div>
-								</div>
-							</li>
-							<li class="tsd-parameter">
-								<h5>cost<span class="tsd-signature-symbol">: </span><a href="interfaces/costfunction.html" class="tsd-signature-type">CostFunction</a></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The associated cost function</p>
-									</div>
-								</div>
-							</li>
-							<li class="tsd-parameter">
-								<h5>dataframe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DataFrame</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The dataframe supporting all series (measures, weights and calculus) for
-										a given type of data</p>
-									</div>
-								</div>
-							</li>
-							<li class="tsd-parameter">
-								<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The name of the serie for the measures (must be in the dataframe)</p>
-									</div>
-								</div>
-							</li>
-							<li class="tsd-parameter">
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> weight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The weight of this data. Default value is 1</p>
-									</div>
-								</div>
-							</li>
-							<li class="tsd-parameter">
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The name of the serie for the measures weight. When used, each point should
-										have a weight (number). This parameter can be skipped</p>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="inversionmodel" class="tsd-anchor"></a>
 					<h3>Inversion<wbr>Model</h3>
-					<div class="tsd-signature tsd-kind-icon">Inversion<wbr>Model<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>alphaParameters<span class="tsd-signature-symbol">: </span><a href="modules.html#alphaparameters" class="tsd-signature-type">AlphaParameters</a><span class="tsd-signature-symbol">; </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Data</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span></div>
+					<div class="tsd-signature tsd-kind-icon">Inversion<wbr>Model<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>alpha<span class="tsd-signature-symbol">: </span><a href="modules.html#alphaparameters" class="tsd-signature-type">AlphaParameters</a><span class="tsd-signature-symbol">; </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Data</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -260,7 +200,7 @@
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter">
-								<h5>alpha<wbr>Parameters<span class="tsd-signature-symbol">: </span><a href="modules.html#alphaparameters" class="tsd-signature-type">AlphaParameters</a></h5>
+								<h5>alpha<span class="tsd-signature-symbol">: </span><a href="modules.html#alphaparameters" class="tsd-signature-type">AlphaParameters</a></h5>
 								<div class="tsd-comment tsd-typography">
 									<div class="lead">
 										<p>The parameter space to use with the mapping if necessary</p>
@@ -271,7 +211,7 @@
 								<h5>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Data</span><span class="tsd-signature-symbol">[]</span></h5>
 								<div class="tsd-comment tsd-typography">
 									<div class="lead">
-										<p>All the provided <a href="modules.html#data">Data</a> to perform the inversion</p>
+										<p>All the provided <a href="classes/data.html">Data</a> to constrain the inversion</p>
 									</div>
 								</div>
 							</li>
@@ -281,7 +221,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="inversionresult" class="tsd-anchor"></a>
 					<h3>Inversion<wbr>Result</h3>
-					<div class="tsd-signature tsd-kind-icon">Inversion<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>alpha<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>cost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>user<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span></div>
+					<div class="tsd-signature tsd-kind-icon">Inversion<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>alpha<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>cost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>fit<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>user<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -306,7 +246,16 @@
 								<h5>cost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 								<div class="tsd-comment tsd-typography">
 									<div class="lead">
-										<p>The best cost from inversion</p>
+										<p>The best cost from inversion in [0, 1]. A value close to zero means a &quot;good&quot; inversion.
+										A value close to one means the opposite.</p>
+									</div>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5>fit<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>The best fit in %. The fit is related to cost by: <code>fit = 100(1-cost)</code></p>
 									</div>
 								</div>
 							</li>
@@ -314,7 +263,8 @@
 								<h5>user<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								<div class="tsd-comment tsd-typography">
 									<div class="lead">
-										<p>The corresponding inverted user parameters (inverse mapping)</p>
+										<p>The corresponding inverted user parameters (inverse mapping).
+										If the mapping was not provided, then <code>user</code> will be equal to <code>alpha</code></p>
 									</div>
 								</div>
 							</li>
@@ -323,404 +273,12 @@
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Geology Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="costconjugate" class="tsd-anchor"></a>
-					<h3>cost<wbr>Conjugate</h3>
-					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">cost<wbr>Conjugate<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>fric<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>projected<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Cost for conjugate planes</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>fric<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>projected<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The computed symetric stress tensor</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> fric<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>Friction angle in degrees with default value 60</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The normal to the observed fracture</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> projected<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>If we have to project on a plane with default value false</p>
-												<center><img style="width:50%; height:50%;" src="media/conjugate.png"></center>
-												<center><blockquote><i>
-															Relation between a shear fracture and the three principales stresses
-												</i></blockquote></center>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>Weight of the data points</p>
-											</div>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="costjoint" class="tsd-anchor"></a>
-					<h3>cost<wbr>Joint</h3>
-					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">cost<wbr>Joint<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Cost for joint fractures</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The computed symetric stress tensor</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The normal to the observed fracture</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>Weight of the data points</p>
-												<center><img style="width:40%; height:40%;" src="media/joint.png"></center>
-												<center><blockquote><i>
-															Relation between a joint and the three principales stresses
-												</i></blockquote></center>
-											</div>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="coststriation" class="tsd-anchor"></a>
-					<h3>cost<wbr>Striation</h3>
-					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">cost<wbr>Striation<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Cost for a fault striation</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>note</dt>
-									<dd><p>Make sure that the coordinate system of the measure is the same as the
-										computed slip vector.</p>
-									</dd>
-									<dt>note</dt>
-									<dd><p>You can use the class [[TriangleCS]].</p>
-									</dd>
-								</dl>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The computed displacement in the triangle coordinate system</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The observed striation vector in the triangle coordinate system</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>Weight of the data points</p>
-											</div>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="coststylolite" class="tsd-anchor"></a>
-					<h3>cost<wbr>Stylolite</h3>
-					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">cost<wbr>Stylolite<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Cost for stylolite fractures</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The computed symetric stress tensor</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The normal to the observed fracture</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>Weight of the data points</p>
-												<center><img style="width:40%; height:40%;" src="media/stylolite.png"></center>
-												<center><blockquote><i>
-															Relation between a stylolite and the three principales stresses
-												</i></blockquote></center>
-											</div>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Geophysics Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="costgps" class="tsd-anchor"></a>
-					<h3>cost<wbr>Gps</h3>
-					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">cost<wbr>Gps<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Cost for a Gps measure (at one point)</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The computed displacement vector</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The measure gps vector</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>Weight of the data points</p>
-												<center><img style="width:60%; height:60%;" src="media/gps.png"></center>
-												<center><blockquote><i>
-															Equation for a GPS data. Upper sripts m and c stand for measured and computed, respectively
-												</i></blockquote></center>
-											</div>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="costinsar" class="tsd-anchor"></a>
-					<h3>cost<wbr>Insar</h3>
-					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">cost<wbr>Insar<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Cost for an Insar measure (at one point)</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>see</dt>
-									<dd><p><a href="modules.html#generateinsar">generateInsar</a></p>
-										<center><img style="width:25%; height:25%;" src="media/insar.png"></center>
-										<center><blockquote><i>
-													Equation for an Insar data. Upper sripts m and c stand for measured and computed, respectively.
-													Computed Insar is using the function <a href="modules.html#generateinsar">generateInsar</a>, which makes use of the satellite line
-													of sight.
-										</i></blockquote></center>
-									</dd>
-								</dl>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The computed insar value along the satellite line of sight</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The Insar measure along the satellite line of sight</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>Weight of the data points</p>
-											</div>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="costverticalgps" class="tsd-anchor"></a>
-					<h3>cost<wbr>Vertical<wbr>Gps</h3>
-					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">cost<wbr>Vertical<wbr>Gps<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Cost for a vertical Gps measure (at one point)</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>example</dt>
-									<dd><pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">geom</span><span style="color: #000000">   </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@youwol/geometry&#039;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">geophy</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@youwol/geophysics&#039;</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">displ</span><span style="color: #000000">   = </span><span style="color: #795E26">computDispl</span><span style="color: #000000">() </span><span style="color: #008000">// user function</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">horizon</span><span style="color: #000000"> = [...] </span><span style="color: #008000">// set of 3D points in a flat array</span>
-
-<span style="color: #008000">// Get the fitting plane for the horizon</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">plane</span><span style="color: #000000"> = </span><span style="color: #001080">geom</span><span style="color: #000000">.</span><span style="color: #795E26">fittingPlane</span><span style="color: #000000">(</span><span style="color: #001080">horizon</span><span style="color: #000000">)</span>
-
-<span style="color: #008000">// and compute the cost</span>
-<span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">cost</span><span style="color: #000000"> = </span><span style="color: #098658">0</span>
-<span style="color: #AF00DB">for</span><span style="color: #000000"> (</span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000">=</span><span style="color: #098658">0</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000">&lt;</span><span style="color: #001080">horizon</span><span style="color: #000000">.</span><span style="color: #001080">length</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000">+=</span><span style="color: #098658">3</span><span style="color: #000000">) {</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">p</span><span style="color: #000000"> = [</span><span style="color: #001080">horizon</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">], </span><span style="color: #001080">horizon</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">+</span><span style="color: #098658">1</span><span style="color: #000000">], </span><span style="color: #001080">horizon</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">+</span><span style="color: #098658">2</span><span style="color: #000000">]]</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">d</span><span style="color: #000000"> = </span><span style="color: #001080">geom</span><span style="color: #000000">.</span><span style="color: #795E26">distanceFromPointToPlane</span><span style="color: #000000">(</span><span style="color: #001080">p</span><span style="color: #000000">, </span><span style="color: #001080">plane</span><span style="color: #000000">)</span>
-<span style="color: #000000">    </span><span style="color: #001080">cost</span><span style="color: #000000"> += </span><span style="color: #001080">geophy</span><span style="color: #000000">.</span><span style="color: #795E26">costVerticalGps</span><span style="color: #000000">(</span><span style="color: #001080">p</span><span style="color: #000000">, </span><span style="color: #001080">d</span><span style="color: #000000">, </span><span style="color: #098658">1</span><span style="color: #000000">)</span>
-<span style="color: #000000">}</span>
-<span style="color: #001080">cost</span><span style="color: #000000"> /= </span><span style="color: #001080">horizon</span><span style="color: #000000">.</span><span style="color: #001080">length</span><span style="color: #000000">/</span><span style="color: #098658">3</span>
-</code></pre>
-										<center><img style="width:25%; height:25%;" src="media/horizon.png"></center>
-										<center><blockquote><i>
-													Equation for a vertical GPS data.
-										</i></blockquote></center>
-									</dd>
-								</dl>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The computed vertical displacement value</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>The measure vertical gps value</p>
-											</div>
-										</li>
-										<li class="tsd-parameter">
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span></h5>
-											<div class="tsd-comment tsd-typography">
-												<p>Weight of the data points</p>
-											</div>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="generateinsar" class="tsd-anchor"></a>
 					<h3>generate<wbr>Insar</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">generate<wbr>Insar<span class="tsd-signature-symbol">(</span>displ<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span>, satellite<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vector3</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>Insar<span class="tsd-signature-symbol">(</span>displ<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span>, satellite<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">vec.Vector3</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -733,7 +291,7 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>see</dt>
-									<dd><p><a href="modules.html#costinsar">costInsar</a></p>
+									<dd><p><a href="classes/insardata.html">InsarData</a></p>
 									</dd>
 									<dt>example</dt>
 									<dd><p>In the following example, the displacement field <code>displ</code> is computed using
@@ -750,6 +308,9 @@
 <span style="color: #001080">cost</span><span style="color: #000000"> /= </span><span style="color: #001080">computedInsar</span><span style="color: #000000">.</span><span style="color: #001080">length</span>
 </code></pre>
 									</dd>
+									<dt>see</dt>
+									<dd><p><a href="classes/data.html">Data</a></p>
+									</dd>
 								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -761,13 +322,13 @@
 									</div>
 								</li>
 								<li>
-									<h5>satellite: <span class="tsd-signature-type">Vector3</span></h5>
+									<h5>satellite: <span class="tsd-signature-type">vec.Vector3</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The satellite line of sight</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ASerie</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -789,6 +350,38 @@
 									<dt>brief</dt>
 									<dd><p>A monte-carlo algorithm to perform an inversion.</p>
 									</dd>
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">result</span><span style="color: #000000"> = </span><span style="color: #795E26">monteCarlo</span><span style="color: #000000">({</span>
+<span style="color: #000000">    </span><span style="color: #001080">data:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">        </span><span style="color: #795E26">createData</span><span style="color: #000000">(</span><span style="color: #001080">GpsData</span><span style="color: #000000">, {</span>
+<span style="color: #000000">            </span><span style="color: #001080">dataframe:</span><span style="color: #000000"> </span><span style="color: #001080">dataframe</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #001080">measure  :</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;gps&#039;</span><span style="color: #000000">,             </span><span style="color: #008000">// &lt;--- loaded data</span>
+<span style="color: #000000">            </span><span style="color: #001080">compute  :</span><span style="color: #000000"> [</span><span style="color: #A31515">&#039;u1&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;u2&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;u3&#039;</span><span style="color: #000000">] </span><span style="color: #008000">// &lt;--- 3 computed simulations</span>
+<span style="color: #000000">        }),</span>
+<span style="color: #000000">        </span><span style="color: #795E26">createData</span><span style="color: #000000">(</span><span style="color: #001080">InsarData</span><span style="color: #000000">, {</span>
+<span style="color: #000000">            </span><span style="color: #001080">dataframe:</span><span style="color: #000000"> </span><span style="color: #001080">dataframe</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #001080">los      :</span><span style="color: #000000"> </span><span style="color: #0070C1">LOS</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #267F99">math</span><span style="color: #000000">.</span><span style="color: #267F99">Vector3</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #001080">measure  :</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;insar&#039;</span><span style="color: #000000">,           </span><span style="color: #008000">// &lt;--- loaded data</span>
+<span style="color: #000000">            </span><span style="color: #001080">compute  :</span><span style="color: #000000"> [</span><span style="color: #A31515">&#039;d1&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;d2&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;d3&#039;</span><span style="color: #000000">] </span><span style="color: #008000">// &lt;--- 3 computed simulations</span>
+<span style="color: #000000">        })</span>
+<span style="color: #000000">    ],</span>
+<span style="color: #000000">    </span><span style="color: #001080">alpha:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #001080">mapping:</span><span style="color: #000000"> </span><span style="color: #0000FF">undefined</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">min    :</span><span style="color: #000000"> [</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">], </span><span style="color: #008000">// therefore dim = 3</span>
+<span style="color: #000000">        </span><span style="color: #001080">max    :</span><span style="color: #000000"> [</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #098658">1</span><span style="color: #000000">,</span><span style="color: #098658">1</span><span style="color: #000000">]</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}, </span><span style="color: #098658">10000</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+									<dt>see</dt>
+									<dd><p><a href="interfaces/alphamapping.html">alphaMapping</a></p>
+									</dd>
+									<dt>see</dt>
+									<dd><p><a href="modules.html#alphaparameters">AlphaParameters</a></p>
+									</dd>
+									<dt>see</dt>
+									<dd><p><a href="classes/data.html">Data</a></p>
+									</dd>
 								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -801,6 +394,9 @@
 								</li>
 								<li>
 									<h5>n: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The number of simulations</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="modules.html#inversionresult" class="tsd-signature-type">InversionResult</a></h4>
@@ -822,7 +418,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Compute the associated cost to alpha given a <a href="modules.html#data">Data</a> or an array of <a href="modules.html#data">Data</a>.</p>
+									<p>Compute the associated cost to alpha given a <a href="classes/data.html">Data</a> or an array of <a href="classes/data.html">Data</a>.</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>note</dt>
@@ -845,6 +441,55 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="createdata" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> create<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Data<span class="tsd-signature-symbol">(</span>Type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, param<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes/data.html" class="tsd-signature-type">Data</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Convenient  function to create a specific <a href="classes/data.html">Data</a> with its
+									associated parameters</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="classes/data.html">Data</a></p>
+									</dd>
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">data</span><span style="color: #000000"> = </span><span style="color: #795E26">createData</span><span style="color: #000000">(</span><span style="color: #001080">InsarData</span><span style="color: #000000">, {</span>
+<span style="color: #000000">    </span><span style="color: #001080">dataframe:</span><span style="color: #000000"> </span><span style="color: #001080">dfInsar</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">los:</span><span style="color: #000000"> [</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">1</span><span style="color: #000000">],</span>
+<span style="color: #000000">    </span><span style="color: #001080">measure:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;insar&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">compute:</span><span style="color: #000000"> [</span><span style="color: #A31515">&#039;d1&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;d2&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;d3&#039;</span><span style="color: #000000">]</span>
+<span style="color: #000000">})</span>
+</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>Type: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The type of data (class name)</p>
+									</div>
+								</li>
+								<li>
+									<h5>param: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The parameters</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="classes/data.html" class="tsd-signature-type">Data</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="defaultmapping" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> default<wbr>Mapping</h3>
 					<ul class="tsd-signatures tsd-kind-function">
@@ -860,7 +505,7 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>see</dt>
-									<dd><p>[[AlphaMapping]]</p>
+									<dd><p><a href="interfaces/alphamapping.html">alphaMapping</a></p>
 									</dd>
 								</dl>
 							</div>
@@ -938,7 +583,7 @@
 										used by the superposition. This regional stress is not defined with gradient.</p>
 									</dd>
 									<dt>see</dt>
-									<dd><p>[[AlphaMapping]]</p>
+									<dd><p><a href="interfaces/alphamapping.html">alphaMapping</a></p>
 									</dd>
 									<dt>see</dt>
 									<dd><p>publication <br>
@@ -988,19 +633,10 @@
 						<span>Examples</span>
 					</li>
 					<li class=" pp-nav pp-page">
-						<a href="pages/Examples/ex1.html">Superposition</a>
+						<a href="pages/Examples/ex4.html">Inversion</a>
 					</li>
 					<li class=" pp-nav pp-page">
-						<a href="pages/Examples/ex2.html">cost functions</a>
-					</li>
-					<li class=" pp-nav pp-page">
-						<a href="pages/Examples/ex3.html">Flatten horizon cost function</a>
-					</li>
-					<li class=" pp-nav pp-page">
-						<a href="pages/Examples/ex4.html">Inversion 1</a>
-					</li>
-					<li class=" pp-nav pp-page">
-						<a href="pages/Examples/ex5.html">Inversion 2</a>
+						<a href="pages/Examples/ex6.html">Flatten horizon as GPS</a>
 					</li>
 					<li class="label pp-nav pp-group">
 						<span>API</span>
@@ -1012,6 +648,30 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/conjugatedata.html" class="tsd-kind-icon">Conjugate<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/data.html" class="tsd-kind-icon">Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/gpsdata.html" class="tsd-kind-icon">Gps<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/insardata.html" class="tsd-kind-icon">Insar<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/jointdata.html" class="tsd-kind-icon">Joint<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/striationdata.html" class="tsd-kind-icon">Striation<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/stylolitedata.html" class="tsd-kind-icon">Stylolite<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/verticalgpsdata.html" class="tsd-kind-icon">Vertical<wbr>Gps<wbr>Data</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/costfunction.html" class="tsd-kind-icon">Cost<wbr>Function</a>
 					</li>
@@ -1025,9 +685,6 @@
 						<a href="modules.html#alphaparameters" class="tsd-kind-icon">Alpha<wbr>Parameters</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#data" class="tsd-kind-icon">Data</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
 						<a href="modules.html#inversionmodel" class="tsd-kind-icon">Inversion<wbr>Model</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
@@ -1037,25 +694,7 @@
 						<a href="modules.html#cost" class="tsd-kind-icon">cost</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="modules.html#costconjugate" class="tsd-kind-icon">cost<wbr>Conjugate</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#costgps" class="tsd-kind-icon">cost<wbr>Gps</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#costinsar" class="tsd-kind-icon">cost<wbr>Insar</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#costjoint" class="tsd-kind-icon">cost<wbr>Joint</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#coststriation" class="tsd-kind-icon">cost<wbr>Striation</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#coststylolite" class="tsd-kind-icon">cost<wbr>Stylolite</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="modules.html#costverticalgps" class="tsd-kind-icon">cost<wbr>Vertical<wbr>Gps</a>
+						<a href="modules.html#createdata" class="tsd-kind-icon">create<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="modules.html#defaultmapping" class="tsd-kind-icon">default<wbr>Mapping</a>
@@ -1081,6 +720,20 @@
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
 		</div>
 	</div>
 </footer>

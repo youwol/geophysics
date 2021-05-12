@@ -1,5 +1,5 @@
 import { AlphaParameters } from "./mapping"
-import { Data } from "./types"
+import { Data } from "./data"
 
 /**
  * @brief Parameters for the inversion, which are the measured and the calculated
@@ -8,13 +8,13 @@ import { Data } from "./types"
  */
 export type InversionModel = {
     /**
-     * All the provided [[Data]] to perform the inversion
+     * All the provided [[Data]] to constrain the inversion
      */
     data: Data[]
     /**
      * The parameter space to use with the mapping if necessary
      */
-    alphaParameters: AlphaParameters
+    alpha: AlphaParameters
 }
 
 /**
@@ -25,12 +25,21 @@ export type InversionResult = {
      * The inverted [[Alpha]] parameters
      */
     alpha: number[],
+
     /**
-     * The corresponding inverted user parameters (inverse mapping)
+     * The corresponding inverted user parameters (inverse mapping).
+     * If the mapping was not provided, then `user` will be equal to `alpha`
      */
     user : number[],
+
     /**
-     * The best cost from inversion
+     * The best cost from inversion in [0, 1]. A value close to zero means a "good" inversion.
+     * A value close to one means the opposite.
      */
     cost : number
+
+    /**
+     * The best fit in %. The fit is related to cost by: `fit = 100(1-cost)`
+     */
+    fit : number
 }

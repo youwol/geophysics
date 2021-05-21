@@ -4,7 +4,7 @@
  */
 
 import { 
-    ASerie, DataFrame, apply
+    Serie, DataFrame, apply
 } from '@youwol/dataframe'
 
 import { 
@@ -60,7 +60,7 @@ export class StriationData extends Data {
         return mean( addNumber(negate(abs(div(dot(this.measure, compute), mult(no, nc)))), 1) ) as number
     }
 
-    generate(alpha: Alpha): ASerie {
+    generate(alpha: Alpha): Serie {
         throw new Error('TODO')
         //return undefined
     }
@@ -111,7 +111,7 @@ export class JointData extends Data {
         return mean( square(sub(abs(dot(ns, e)), 1)) ) as number // w*(1-d)**2
     }
 
-    generate(alpha: Alpha): ASerie {
+    generate(alpha: Alpha): Serie {
         return apply(eigenVector(weightedSum(this.compute, alpha)), v => [v[0], v[1], v[2]] )
     }
 }
@@ -147,7 +147,7 @@ export class StyloliteData extends Data {
         return mean( square(sub(abs(dot(ns, e)), 1)) ) as number // w*(1-d)**2
     }
 
-    generate(alpha: Alpha): ASerie {
+    generate(alpha: Alpha): Serie {
         return apply(eigenVector(weightedSum(this.compute, alpha)), v => [v[6], v[7], v[8]] )
     }
 }
@@ -213,7 +213,7 @@ export class ConjugateData extends Data {
         }) ) as number
     }
 
-    generate(alpha: Alpha): ASerie {
+    generate(alpha: Alpha): Serie {
         throw new Error('TODO')
         //return undefined
     }

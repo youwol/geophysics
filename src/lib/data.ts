@@ -1,4 +1,4 @@
-import { ASerie, DataFrame } from "@youwol/dataframe"
+import { Serie, DataFrame } from "@youwol/dataframe"
 import { Alpha } from "./types"
 
 /**
@@ -29,9 +29,9 @@ export abstract class Data {
         if (dataframe===undefined) throw new Error(`dataframe is undefined`)
 
         this.dataframe = dataframe
-        this.measure = this.dataframe.get(measure)
-        this.compute = compute.map( name => dataframe.get(name) )
-        this.weights = dataframe.get(weights)
+        this.measure = this.dataframe.series[measure]
+        this.compute = compute.map( name => dataframe.series[name] )
+        this.weights = dataframe.series[weights]
         if (weight !== undefined) this.weight = weight
 
         if (this.measure===undefined) throw new Error(`measure ${measure} is undefined`)
@@ -47,7 +47,7 @@ export abstract class Data {
      * can be compared to the real measure.
      * @param alpha 
      */
-    abstract generate(alpha: Alpha): ASerie 
+    abstract generate(alpha: Alpha): Serie 
 
     /**
      * The cost function of the data
@@ -61,18 +61,18 @@ export abstract class Data {
     /**
      * The name of the serie for the measures (must be in the dataframe)
      */
-    protected readonly measure: ASerie
+    protected readonly measure: Serie
 
     /**
      * The name of the serie for the measures weight. When used, each point should
      * have a weight (number). This parameter can be skipped
      */
-    protected readonly weights: ASerie = undefined
+    protected readonly weights: Serie = undefined
 
     /**
      * The names of the series to perform superposition (all must be in the dataframe)
      */
-    protected readonly compute: ASerie[]
+    protected readonly compute: Serie[]
 
     /**
      * The weight of this data. Default value is 1

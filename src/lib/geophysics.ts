@@ -8,7 +8,7 @@
 
 // import { Vector3, normalize } from '@youwol/math'
 import {
-    ASerie, DataFrame, apply
+    Serie, DataFrame, apply
 } from '@youwol/dataframe'
 
 import { 
@@ -65,7 +65,7 @@ export class GpsData extends Data {
         ]), 0.5) ) as number
     }
 
-    generate(alpha: Alpha): ASerie {
+    generate(alpha: Alpha): Serie {
         return weightedSum(this.compute, alpha)
     }
 }
@@ -128,7 +128,7 @@ export class VerticalGpsData extends Data {
         return mean( square(addNumber(negate(div(compute, this.measure)), 1)) ) as number
     }
 
-    generate(alpha: Alpha): ASerie {
+    generate(alpha: Alpha): Serie {
         return apply( weightedSum(this.compute, alpha), item => item[2] )
     }
 }
@@ -192,14 +192,14 @@ export class InsarData extends Data {
         return mean( square(addNumber(negate(abs(div(compute, this.measure))), 1)) ) as number
     }
 
-    generate(alpha: Alpha): ASerie {
+    generate(alpha: Alpha): Serie {
         return generateInsar(weightedSum(this.compute, alpha), this.los)
     }
 }
 
 // export function costInsar(
 //     {measure, compute, weights, ...others}:
-//     {measure: ASerie, compute: ASerie, weights?: ASerie}
+//     {measure: Serie, compute: Serie, weights?: Serie}
 // ): number {
 //     // w*(1 - Math.abs(calc/obs))**2
 //     return mean( square(addNumber(negate(abs(div(compute, measure))), 1)) ) as number
@@ -230,7 +230,7 @@ export class InsarData extends Data {
  * @see [[Data]]
  * @category Geophysics
  */
-export function generateInsar(displ: ASerie, satellite: vec.Vector3): ASerie {
+export function generateInsar(displ: Serie, satellite: vec.Vector3): Serie {
     // displ.map( u => u[0]*satellite[0] + u[1]*satellite[1] + u[2]*satellite[2] )
     return dot(displ, satellite)
 }

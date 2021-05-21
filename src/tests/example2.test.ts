@@ -1,6 +1,6 @@
 import * as math from '@youwol/math'
 //import { dot, weightedSum } from '@youwol/math'
-import { createSerie, DataFrame } from '@youwol/dataframe'
+import { DataFrame, Serie } from '@youwol/dataframe'
 import { monteCarlo, InsarData } from '../lib'
 
 test('test inverse', () => {
@@ -12,11 +12,13 @@ test('test inverse', () => {
     // Measurements
     const insarMeasurements = [-8.732, 45.8457, 22.518, -20.6505, -25.394]
 
-    let dataframe = new DataFrame({
-        'U1'   : createSerie({data: displField1, itemSize: 3}),
-        'U2'   : createSerie({data: displField2, itemSize: 3}),
-        'U3'   : createSerie({data: displField3, itemSize: 3}),
-        'insar': createSerie({data: insarMeasurements})
+    let dataframe = DataFrame.create({
+        series: {
+            'U1'   : Serie.create({array: displField1, itemSize: 3}),
+            'U2'   : Serie.create({array: displField2, itemSize: 3}),
+            'U3'   : Serie.create({array: displField3, itemSize: 3}),
+            'insar': Serie.create({array: insarMeasurements, itemSize:1})
+        }
     })
 
     const los = [0.01, -0.2, -0.95]
@@ -39,6 +41,6 @@ test('test inverse', () => {
     expect(result.cost).toBeCloseTo(0)
 
     console.log('inversion result:', result )
-    console.log('measured ', dataframe.get('insar').array )
+    console.log('measured ', dataframe.series['insar'].array )
     console.log('recovered', insar.generate(result.alpha).array)
 })

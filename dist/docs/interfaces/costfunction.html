@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CostFunction | @youwol/geophysics - v0.0.1</title>
-	<meta name="description" content="Documentation for @youwol/geophysics - v0.0.1">
+	<title>CostFunction | @youwol/geophysics - v0.0.2</title>
+	<meta name="description" content="Documentation for @youwol/geophysics - v0.0.2">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/pages.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">@youwol/geophysics - v0.0.1</a>
+					<a href="../index.html" class="title">@youwol/geophysics - v0.0.2</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -85,7 +85,7 @@
 			<section class="tsd-panel">
 				<h3 class="tsd-before-signature">Callable</h3>
 				<ul class="tsd-signatures tsd-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">Cost<wbr>Function<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>others<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>w<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					<li class="tsd-signature tsd-kind-icon">Cost<wbr>Function<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>others<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>w<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
@@ -99,13 +99,13 @@
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol">; </span>others<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>w<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span><span class="tsd-signature-symbol"> }</span></h5>
+								<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>others<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>w<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span></h5>
 								<ul class="tsd-parameters">
 									<li class="tsd-parameter">
-										<h5>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
+										<h5>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									</li>
 									<li class="tsd-parameter">
-										<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ASerie</span></h5>
+										<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									</li>
 									<li class="tsd-parameter">
 										<h5><span class="tsd-flag ts-flagOptional">Optional</span> others<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span></h5>
@@ -114,7 +114,7 @@
 										<h5><span class="tsd-flag ts-flagOptional">Optional</span> w<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
 									</li>
 									<li class="tsd-parameter">
-										<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ASerie</span></h5>
+										<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									</li>
 								</ul>
 							</li>

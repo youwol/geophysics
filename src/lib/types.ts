@@ -1,11 +1,11 @@
-import { ASerie, DataFrame } from "@youwol/dataframe"
+import { Serie, DataFrame } from "@youwol/dataframe"
 
 /**
  * Interface for any cost function
  */
 export interface CostFunction {
     ({measure, compute, w, weights, ...others}:
-     {measure: ASerie, compute: ASerie, w?: number, weights?: ASerie, others?: any}): number
+     {measure: Serie, compute: Serie, w?: number, weights?: Serie, others?: any}): number
 }
 
 /**

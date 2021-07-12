@@ -16,16 +16,6 @@ import {
 import { Data } from './data'
 import { Alpha } from './types'
 
-// export function costStriation(
-//     {measure, compute, weights}:
-//     {measure: ASerie, compute: ASerie, weights?: ASerie}
-// ): number {
-//     const d  = dot(measure, compute)
-//     const no = norm(measure)
-//     const nc = norm(compute)
-//     return mean( addNumber(negate(abs(div(dot(measure, compute), mult(no, nc)))), 1) ) as number
-//     // (1 - Math.abs( dot(obs, calc)/(no*nc) ))
-// }
 
 /**
  * Cost for a fault striation
@@ -51,32 +41,27 @@ export class StriationData extends Data {
     constructor(params: any) {
         super(params)
     }
-    cost(alpha: Alpha): number {
-        const compute = weightedSum(this.compute, alpha)
-        //return costStriation({measure: this.measure, compute, weights: this.weights})
-        const d  = dot(this.measure, compute)
+    costs(data: Serie | Alpha): Serie {
+        let d = this.generateData(data)
+        if (d.itemSize !== 3) throw new Error('provided Serie must have itemSize = 3 (aka, normal)')
+        
+        d  = dot(this.measure, d)
+
         const no = norm(this.measure)
-        const nc = norm(compute)
-        return mean( addNumber(negate(abs(div(dot(this.measure, compute), mult(no, nc)))), 1) ) as number
+        const nc = norm(d)
+
+        return addNumber(negate(abs(div(dot(this.measure, d), mult(no, nc)))), 1)
     }
 
     generate(alpha: Alpha): Serie {
-        throw new Error('TODO')
+        throw new Error('TODO (see joint)')
         //return undefined
     }
 }
 
-// export function costJoint(
-//     {measure, compute, weights}:
-//     {measure: ASerie, compute: ASerie, weights?: ASerie}
-// ): number {
-//     const e  = eigenVector(compute).map( v => [v[0], v[1], v[2]] )
-//     const ns = normalize(measure)
-//     return mean( square(sub(abs(dot(ns, e)), 1)) ) as number // w*(1-d)**2
-// }
-
 /**
- * Cost for joint fractures
+ * Cost for joint fractures. Recall that the stresses from simulations are in
+ * engineer convention.
  * 
  * <center><img style="width:40%; height:40%;" src="media://joint.png"></center>
  * <center><blockquote><i>
@@ -103,27 +88,18 @@ export class JointData extends Data {
         super(params)
     }
 
-    cost(alpha: Alpha): number {
-        const compute = weightedSum(this.compute, alpha)
-        //return costJoint({measure: this.measure, compute, weights: this.weights})
-        const e  = eigenVector(compute).map( v => [v[0], v[1], v[2]] )
+    costs(data: Serie | Alpha): Serie {
+        const d = this.generateData(data)
+        if (d.itemSize !== 3) throw new Error('generateData must have itemSize = 3 (aka, normal)')
+        const e  = normalize(d)
         const ns = normalize(this.measure)
-        return mean( square(sub(abs(dot(ns, e)), 1)) ) as number // w*(1-d)**2
+        return square(sub(abs(dot(ns, e)), 1)) // w*(1-d)**2
     }
 
     generate(alpha: Alpha): Serie {
         return apply(eigenVector(weightedSum(this.compute, alpha)), v => [v[0], v[1], v[2]] )
     }
 }
-
-// export function costStylolite(
-//     {measure, compute, weights}:
-//     {measure: ASerie, compute: ASerie, weights?: ASerie}
-// ): number {
-//     const e  = eigenVector(compute).map( v => [v[6], v[7], v[8]] )
-//     const ns = normalize(measure)
-//     return mean( square(sub(abs(dot(ns, e)), 1)) ) as number
-// }
 
 /**
  * Cost for stylolite fractures
@@ -139,12 +115,12 @@ export class StyloliteData extends Data {
     constructor(params: any) {
         super(params)
     }
-    cost(alpha: Alpha): number {
-        const compute = weightedSum(this.compute, alpha)
-        //return costStylolite({measure: this.measure, compute, weights: this.weights})
-        const e  = eigenVector(compute).map( v => [v[6], v[7], v[8]] )
+    costs(data: Serie | Alpha): Serie {
+        const d = this.generateData(data)
+        if (d.itemSize !== 3) throw new Error('provided Serie must have itemSize = 3 (aka, normal')
+        const e  = eigenVector(d).map( v => [v[6], v[7], v[8]] )
         const ns = normalize(this.measure)
-        return mean( square(sub(abs(dot(ns, e)), 1)) ) as number // w*(1-d)**2
+        return square(sub(abs(dot(ns, e)), 1)) // w*(1-d)**2
     }
 
     generate(alpha: Alpha): Serie {
@@ -192,25 +168,27 @@ export class ConjugateData extends Data {
         if (project!==undefined) this.project = project
     }
 
-    cost(alpha: Alpha): number {
-        const compute = weightedSum(this.compute, alpha)
+    costs(data: Serie | Alpha): Serie {
+        const d = this.generateData(data)
+
+        if (d.itemSize !== 6) throw new Error('provided Serie must have itemSize = 6 (aka, stress')
         
         if (this.project) {
-            return mean(this.measure.map( (n1: number[], i: number) => {
-                const d  = Math.sqrt(n1[0]**2 + n1[1]**2)
-                const nn = [n1[0]/d, n1[1]/d, 0]
-                const N  = this.fractureNormal(compute.itemAt(i) as vec.Vector6) // Sigma2, so very simple
+            return this.measure.map( (n1: number[], i: number) => {
+                const L  = Math.sqrt(n1[0]**2 + n1[1]**2)
+                const nn = [n1[0]/L, n1[1]/L, 0]
+                const N  = this.fractureNormal(d.itemAt(i) as vec.Vector6) // Sigma2, so very simple
                 return this.fractureCost(nn as vec.Vector3, N as vec.Vector3)
-            }) ) as number
+            })
         }
     
         //const theta  = Math.PI*(45.0 - fric/2.0)/180
-        return mean(normalize(this.measure).map( (normal, i) => {
-            const conjugate = this.conjugateNormals(compute.itemAt(i) as vec.Vector6)
+        return normalize(this.measure).map( (normal, i) => {
+            const conjugate = this.conjugateNormals(d.itemAt(i) as vec.Vector6)
             const c1        = this.fractureCost(normal, conjugate.n1 as vec.Vector3)
             const c2        = this.fractureCost(normal, conjugate.n2 as vec.Vector3)
             return Math.min(c1, c2)
-        }) ) as number
+        })
     }
 
     generate(alpha: Alpha): Serie {
@@ -248,6 +226,33 @@ export class ConjugateData extends Data {
     }
 }
 
+
+// export function costJoint(
+//     {measure, compute, weights}:
+//     {measure: ASerie, compute: ASerie, weights?: ASerie}
+// ): number {
+//     const e  = eigenVector(compute).map( v => [v[0], v[1], v[2]] )
+//     const ns = normalize(measure)
+//     return mean( square(sub(abs(dot(ns, e)), 1)) ) as number // w*(1-d)**2
+// }
+// export function costStylolite(
+//     {measure, compute, weights}:
+//     {measure: ASerie, compute: ASerie, weights?: ASerie}
+// ): number {
+//     const e  = eigenVector(compute).map( v => [v[6], v[7], v[8]] )
+//     const ns = normalize(measure)
+//     return mean( square(sub(abs(dot(ns, e)), 1)) ) as number
+// }
+// export function costStriation(
+//     {measure, compute, weights}:
+//     {measure: ASerie, compute: ASerie, weights?: ASerie}
+// ): number {
+//     const d  = dot(measure, compute)
+//     const no = norm(measure)
+//     const nc = norm(compute)
+//     return mean( addNumber(negate(abs(div(dot(measure, compute), mult(no, nc)))), 1) ) as number
+//     // (1 - Math.abs( dot(obs, calc)/(no*nc) ))
+// }
 // export function costConjugate(
 //     {measure, compute, weights, projected=false, fric=60, ...others}:
 //     {measure: ASerie, compute: ASerie, weights?: ASerie, projected?: boolean, fric?: number}

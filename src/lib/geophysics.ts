@@ -1,12 +1,7 @@
 /**
  * Cost functions (aka, mistfit functions) and utility functions for geophysics
  */
-// import {
-//     abs, add, addNumber, ASerie, div, dot, mult,
-//     negate, norm, square, mean, weightedSum, DataFrame, apply
-// } from '@youwol/dataframe'
 
-// import { Vector3, normalize } from '@youwol/math'
 import {
     Serie, DataFrame, apply
 } from '@youwol/dataframe'
@@ -52,44 +47,24 @@ export class GpsData extends Data {
         })
     }
 
-    cost(alpha: Alpha): number {
-        const compute = weightedSum(this.compute, alpha)
-        const d  = dot(this.measure, compute)
+    costs(data: Serie | Alpha): Serie {
+        const d = this.generateData(data)
+        if (d.itemSize !== 3) throw new Error('provided Serie must have itemSize = 3 (displ)')
+        const L  = dot(this.measure, d)
         const no = norm(this.measure)
-        const nc = norm(compute)
+        const nc = norm(d)
 
         // 0.5*w*( (1-d/(no*nc))**2 + (1-no/nc)**2 )
-        return mean(mult( add([
-            square(addNumber(negate( div(d, mult(no, nc)) ), 1)),
+        return mult( add([
+            square(addNumber(negate( div(L, mult(no, nc)) ), 1)),
             square(addNumber(negate(div(no, nc)), 1))
-        ]), 0.5) ) as number
+        ]), 0.5)
     }
 
     generate(alpha: Alpha): Serie {
         return weightedSum(this.compute, alpha)
     }
 }
-
-// export function costGps(
-//     {measure, compute, weights, ...others}:
-//     {measure: ASerie, compute: ASerie, weights?: ASerie}
-//     //obs: ASerie, calc: ASerie, w = 1
-// ): number {
-//     if (measure === undefined)  throw new Error('measure is undefined')
-//     if (compute === undefined)  throw new Error('compute is undefined')
-//     if (measure.itemSize !== 3) throw new Error('measure should have itemSize = 3')
-//     if (compute.itemSize !== 3) throw new Error('compute should have itemSize = 3')
-    
-//     const d  = dot(measure, compute)
-//     const no = norm(measure)
-//     const nc = norm(compute)
-
-//     // 0.5*w*( (1-d/(no*nc))**2 + (1-no/nc)**2 )
-//     return mean(mult( add([
-//         square(addNumber(negate( div(d, mult(no, nc)) ), 1)),
-//         square(addNumber(negate(div(no, nc)), 1))
-//     ]), 0.5) ) as number
-// }
 
 /**
  * Cost for a vertical Gps measure (at one point)
@@ -117,29 +92,22 @@ export class GpsData extends Data {
 export class VerticalGpsData extends Data {
     constructor(params: any) {
         super(params)
-        if (this.measure.itemSize !== 1) throw new Error('measure should have itemSize = 1')
+        if (this.measure.itemSize !== 1) throw new Error('measure should have itemSize = 1 (displ)')
         this.compute.forEach( c => {
             if (c.itemSize !== 3) throw new Error('compute should have itemSize = 3 (displacement)')
         })
     }
 
-    cost(alpha: Alpha): number {
-        const compute = weightedSum(this.compute, alpha)
-        return mean( square(addNumber(negate(div(compute, this.measure)), 1)) ) as number
+    costs(data: Serie | Alpha): Serie {
+        const d = this.generateData(data)
+        if (d.itemSize !== 1) throw new Error('provided Serie must have itemSize = 1')
+        return square(addNumber(negate(div(d, this.measure)), 1))
     }
 
     generate(alpha: Alpha): Serie {
         return apply( weightedSum(this.compute, alpha), item => item[2] )
     }
 }
-
-// export function costVerticalGps(
-//     {measure, compute, weights, ...others}:
-//     {measure: ASerie, compute: ASerie, weights?: ASerie}
-// ): number {
-//     // w*(1-calc/obs)**2
-//     return mean( square(addNumber(negate(div(compute, measure)), 1)) ) as number
-// }
 
 /**
  * Cost for an Insar measure (at one point)
@@ -187,24 +155,17 @@ export class InsarData extends Data {
         this.los = vec.normalize(los) as vec.Vector3
     }
 
-    cost(alpha: Alpha): number {
-        const compute = generateInsar(weightedSum(this.compute, alpha), this.los)
-        return mean( square(addNumber(negate(abs(div(compute, this.measure))), 1)) ) as number
+    costs(data: Serie | Alpha): Serie {
+        const d = this.generateData(data)
+        if (d.itemSize !== 1) throw new Error('provided Serie must have itemSize = 1 (displ along los)')
+        //const compute = generateInsar(d, this.los)
+        return square(addNumber(negate(abs(div(d, this.measure))), 1))
     }
 
     generate(alpha: Alpha): Serie {
         return generateInsar(weightedSum(this.compute, alpha), this.los)
     }
 }
-
-// export function costInsar(
-//     {measure, compute, weights, ...others}:
-//     {measure: Serie, compute: Serie, weights?: Serie}
-// ): number {
-//     // w*(1 - Math.abs(calc/obs))**2
-//     return mean( square(addNumber(negate(abs(div(compute, measure))), 1)) ) as number
-// }
-
 
 /**
  * Given a displacement field and a satellite line of sight, compute the 
@@ -231,6 +192,43 @@ export class InsarData extends Data {
  * @category Geophysics
  */
 export function generateInsar(displ: Serie, satellite: vec.Vector3): Serie {
-    // displ.map( u => u[0]*satellite[0] + u[1]*satellite[1] + u[2]*satellite[2] )
     return dot(displ, satellite)
 }
+
+
+
+// export function costGps(
+//     {measure, compute, weights, ...others}:
+//     {measure: ASerie, compute: ASerie, weights?: ASerie}
+//     //obs: ASerie, calc: ASerie, w = 1
+// ): number {
+//     if (measure === undefined)  throw new Error('measure is undefined')
+//     if (compute === undefined)  throw new Error('compute is undefined')
+//     if (measure.itemSize !== 3) throw new Error('measure should have itemSize = 3')
+//     if (compute.itemSize !== 3) throw new Error('compute should have itemSize = 3')
+    
+//     const d  = dot(measure, compute)
+//     const no = norm(measure)
+//     const nc = norm(compute)
+
+//     // 0.5*w*( (1-d/(no*nc))**2 + (1-no/nc)**2 )
+//     return mean(mult( add([
+//         square(addNumber(negate( div(d, mult(no, nc)) ), 1)),
+//         square(addNumber(negate(div(no, nc)), 1))
+//     ]), 0.5) ) as number
+// }
+
+// export function costInsar(
+//     {measure, compute, weights, ...others}:
+//     {measure: Serie, compute: Serie, weights?: Serie}
+// ): number {
+//     // w*(1 - Math.abs(calc/obs))**2
+//     return mean( square(addNumber(negate(abs(div(compute, measure))), 1)) ) as number
+// }
+// export function costVerticalGps(
+//     {measure, compute, weights, ...others}:
+//     {measure: ASerie, compute: ASerie, weights?: ASerie}
+// ): number {
+//     // w*(1-calc/obs)**2
+//     return mean( square(addNumber(negate(div(compute, measure)), 1)) ) as number
+// }

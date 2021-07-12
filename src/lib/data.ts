@@ -1,4 +1,5 @@
 import { Serie, DataFrame } from "@youwol/dataframe"
+import { mean, weightedSum } from "@youwol/math"
 import { Alpha } from "./types"
 
 /**
@@ -22,6 +23,7 @@ export const createData = (Type: any, param: any): Data => {
 }
 
 export abstract class Data {
+
     constructor(
         {dataframe, measure, compute, weights, weight}:
         {dataframe: DataFrame, measure: string, compute: string[], weights?: string, weight?: number}
@@ -30,47 +32,92 @@ export abstract class Data {
 
         this.dataframe = dataframe
         this.measure = this.dataframe.series[measure]
-        this.compute = compute.map( name => dataframe.series[name] )
         this.weights = dataframe.series[weights]
         if (weight !== undefined) this.weight = weight
 
-        if (this.measure===undefined) throw new Error(`measure ${measure} is undefined`)
+        if (this.measure === undefined) throw new Error(`measure ${measure} is undefined`)
 
-        this.compute.forEach( (c,i) => {
-            if (c === undefined) throw new Error(`compute ${compute[i]} is undefined`)
-        })
+        if (compute !== undefined) {
+            this.compute = compute.map( name => dataframe.series[name] )
+            this.compute.forEach( (c,i) => {
+                if (c === undefined) throw new Error(`compute ${compute[i]} at index ${i} is undefined`)
+            })
+        }
     }
+
+    /**
+     * The cost function of the data according to a provided Alpha or a Serie
+     */
+    cost(alpha: Serie | Alpha): number {
+        const c = this.costs(alpha)
+        if (c.itemSize !== 1 ) throw new Error('costs() should return a Serie with itemSize = 1')
+        return (mean(c) as number) * this.weight
+    }
+
+    /**
+     * Get the costs as a Serie (one cost per point data)
+     * @example
+     * ```ts
+     * costs(data: Serie | Alpha): Serie {
+     *   let d = this.generateData(data)
+     *   // your implementation here
+     *   const e  = normalize(d)
+     *   const ns = normalize(this.measure)
+     *   return square(sub(abs(dot(ns, e)), 1)) // w*(1-d)**2
+     * }
+     * ```
+     * @see [[JointData]]
+     */
+    abstract costs(data: Serie | Alpha): Serie
 
     /**
      * Generate data according to alpha. Simply stated, given alpha, return the
      * synthetic measure of the data (gps, insar, fracture orientation ...) that
      * can be compared to the real measure.
-     * @param alpha 
+     * @example
+     * ```ts
+     * class Insar extends Data {
+     *   constructor(private readonly sat: [number,number,number]) {
+     *   }
+     * 
+     *   costs(data: Serie | Alpha) {
+     *     const compute = this.generateData(data)
+     *     return square(addNumber(negate(abs(div(compute, this.measure))), 1))
+     *   }
+     * 
+     *   // --------------
+     * 
+     *   generate(alpha: Alpha): Serie {
+     *     const displ = weightedSum(this.compute, alpha)
+     *     return dot(displ, this.sat)
+     *   }
+     * }
+     * ```
      */
-    abstract generate(alpha: Alpha): Serie 
+    abstract generate(alpha: Alpha): Serie
 
-    /**
-     * The cost function of the data
-     */
-    abstract cost(alpha: Alpha): number
+    // ===================================================================
 
-    // --------------------------------------------------
+    protected generateData(data: Serie | Alpha): Serie {
+        if (data instanceof Serie) return data
+        return this.generate(data)
+    }
 
     protected readonly dataframe: DataFrame
 
     /**
-     * The name of the serie for the measures (must be in the dataframe)
+     * The name of the serie for the measures (must be in the dataframe if any)
      */
     protected readonly measure: Serie
 
     /**
-     * The name of the serie for the measures weight. When used, each point should
+     * Optional: The name of the serie for the measures weight. When used, each point should
      * have a weight (number). This parameter can be skipped
      */
     protected readonly weights: Serie = undefined
 
     /**
-     * The names of the series to perform superposition (all must be in the dataframe)
+     * Optional: The names of the series to perform superposition (must be in the dataframe)
      */
     protected readonly compute: Serie[]
 

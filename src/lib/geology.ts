@@ -86,14 +86,13 @@ export class StriationData extends Data {
 export class JointData extends Data {
     constructor(params: any) {
         super(params)
+        this.measure = normalize(this.measure)
     }
 
     costs(data: Serie | Alpha): Serie {
-        const d = this.generateData(data)
-        if (d.itemSize !== 3) throw new Error('generateData must have itemSize = 3 (aka, normal)')
-        const e  = normalize(d)
-        const ns = normalize(this.measure)
-        return square(sub(abs(dot(ns, e)), 1)) // w*(1-d)**2
+        const d = normalize( this.generateData(data) )
+        if (d.itemSize !== 3) throw new Error('generateData must have itemSize = 3 (a normal)')
+        return square(sub(abs(dot(this.measure, d)), 1)) // w*(1-d)**2
     }
 
     generate(alpha: Alpha): Serie {
@@ -114,13 +113,13 @@ export class JointData extends Data {
 export class StyloliteData extends Data {
     constructor(params: any) {
         super(params)
+        this.measure = normalize(this.measure)
     }
+
     costs(data: Serie | Alpha): Serie {
-        const d = this.generateData(data)
-        if (d.itemSize !== 3) throw new Error('provided Serie must have itemSize = 3 (aka, normal')
-        const e  = eigenVector(d).map( v => [v[6], v[7], v[8]] )
-        const ns = normalize(this.measure)
-        return square(sub(abs(dot(ns, e)), 1)) // w*(1-d)**2
+        const d = normalize( this.generateData(data) )
+        if (d.itemSize !== 3) throw new Error('generateData must have itemSize = 3 (a normal)')
+        return square(sub(abs(dot(this.measure, d)), 1)) // w*(1-d)**2
     }
 
     generate(alpha: Alpha): Serie {

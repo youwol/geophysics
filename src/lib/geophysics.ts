@@ -3,13 +3,14 @@
  */
 
 import {
-    Serie, DataFrame, apply
+    Serie, DataFrame, apply, map
 } from '@youwol/dataframe'
 
 import { 
     add, abs, dot, normalize, square,
     div, mult, norm, negate, addNumber, mean, weightedSum,
-    vec
+    vec,
+    minMax
 } from '@youwol/math'
 
 import { Data } from './data'
@@ -126,6 +127,7 @@ export class VerticalGpsData extends Data {
  * ```ts
  * const gps = new InsarData({
  *     los: [0,0,-1],
+ *     normalize: false,
  *     dataframe,
  *     measure: 'insar',
  *     compute: ['u1', 'u2', 'u3'],
@@ -141,25 +143,51 @@ export class VerticalGpsData extends Data {
  */
 export class InsarData extends Data {
     los: vec.Vector3 = [0,0,1]
+    measuredMinMax : number[]
+    normalize: boolean = false
 
     constructor(
-        {los, dataframe, measure, compute, weights, weight}:
-        {los: vec.Vector3, dataframe: DataFrame, measure: string, compute: string[], weights?: string, weight?: number} )
+        {los, dataframe, measure, compute, weights, weight, normalize}:
+        {los: vec.Vector3, dataframe: DataFrame, measure: string, compute: string[], weights?: string, weight?: number, normalize?: boolean} )
     {
         super({dataframe, measure, compute, weights, weight})
 
-        if (this.measure.itemSize !== 1) throw new Error('measure should have itemSize = 1')
+        if (normalize !== undefined) this.normalize = normalize
+
+        if (this.measure.itemSize !== 1) {
+            throw new Error('measure should have itemSize = 1')
+        }
+
+        if (los === undefined) {
+            throw new Error('missing line of sight (los) in InsarData')
+        }
+
+        if (this.normalize) {
+            this.measuredMinMax = minMax(this.measure)
+            this.measure = div(this.measure, Math.abs(this.measuredMinMax[1]))
+        }
+
         this.compute.forEach( c => {
             if (c.itemSize !== 3) throw new Error('compute should have itemSize = 3 (displacement)')
         })
+
         this.los = vec.normalize(los) as vec.Vector3
     }
 
     costs(data: Serie | Alpha): Serie {
-        const d = this.generateData(data)
+        let d = this.generateData(data)
         if (d.itemSize !== 1) throw new Error('provided Serie must have itemSize = 1 (displ along los)')
-        //const compute = generateInsar(d, this.los)
-        return square(addNumber(negate(abs(div(d, this.measure))), 1))
+
+        if (this.normalize) {
+            const computedMinMax = minMax(d)
+            d = div(d, Math.abs(computedMinMax[1]))
+        }
+        
+        const m = this.measure
+        const u = map([m, d], ([i1, i2]) => Math.abs(i1)>Math.abs(i2) ? (1-i2/i1)/2 : (1-i1/i2)/2 )
+        return square(u)
+        
+        //return square(addNumber(negate(div(d, this.measure)), 1))
     }
 
     generate(alpha: Alpha): Serie {
@@ -195,6 +223,19 @@ export function generateInsar(displ: Serie, satellite: vec.Vector3): Serie {
     return dot(displ, satellite)
 }
 
+/**
+ * Generate fringes given fringe spacing.
+ * @param serie The serie with itemSize of 1
+ * @param fringeSpacing The spacing of the fringes
+ * @returns A new [[Serie]]
+ */
+export function generateFringes(serie: Serie, fringeSpacing: number): Serie {
+    if (serie.itemSize !== 1) {
+        throw new Error('Serie must have itemSize = 1')
+    }
+    const frac = (val: number) => val - Math.floor(val)
+    return apply(serie, v => Math.abs(fringeSpacing*frac(v/fringeSpacing)) )
+}
 
 
 // export function costGps(

@@ -45,7 +45,7 @@ export const monteCarlo = ( params: InversionModel, n: number): InversionResult 
     })
 
     if (params.alpha.mapping === undefined) params.alpha.mapping = defaultMapping
-    // Check the generated alpha
+    // Check the generated alpha (will trigger an exception of something is going wrong)
     params.alpha.mapping( limits.map( l => genRandom(l.min, l.max) ) )
 
     // Set the data weight if necessary
@@ -58,17 +58,33 @@ export const monteCarlo = ( params: InversionModel, n: number): InversionResult 
         fit  : 0
     }
 
+    const mod = n/100*5 // 5%
+
     for (let i=0; i<n; ++i) {
         // generate the alpha
         const userParams = limits.map( l => genRandom(l.min, l.max) )
-        const alpha      = params.alpha.mapping( userParams )
+        const alpha = params.alpha.mapping( userParams )
 
         const c = cost(params.data, alpha)
+
         if (c < solution.cost) {
             solution.cost  = c
             solution.fit   = Math.round( (1-c)*10000 )/100 // 2 decimals max
             solution.alpha = alpha
             solution.user  = userParams
+            if (params.onMessage) {
+                params.onMessage(`
+fit     = ${((1-c)*100).toFixed(0)}%
+theta   = ${userParams[0].toFixed(0)}
+Kh      = ${userParams[1].toFixed(2)}
+KH      = ${userParams[2].toFixed(2)}
+density = ${userParams[4].toFixed(0)}
+shift   = ${userParams[5].toFixed(0)}
+`)
+            }
+        }
+        if (i%mod == 0 && params.onProgress) {
+            params.onProgress(i, i*100/n) ;
         }
     }
 

@@ -12,3 +12,6 @@ dist/geophysics
 dist/math
 dist/tests
 dist/dataframe
+examples/galapagos/fernandina/result-forward-dikes.xyz
+examples/galapagos/fernandina/result-forward-insar.ts
+examples/galapagos/fernandina/result-forward-insar.xyz

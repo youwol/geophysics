@@ -112,7 +112,7 @@ export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
     const KH    = alpha[2]
     const rock  = alpha[3]
     const magma = alpha[4]
-    const shifts = alpha.splice(5)
+    const shifts = [...alpha].splice(5)
 
     const cos   = Math.cos(theta)
     const sin   = Math.sin(theta)

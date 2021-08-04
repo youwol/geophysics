@@ -11,10 +11,21 @@ export type InversionModel = {
      * All the provided [[Data]] to constrain the inversion
      */
     data: Data[]
+
     /**
      * The parameter space to use with the mapping if necessary
      */
     alpha: AlphaParameters
+
+    /**
+     * The progression callback for the method of inversion (monte-carlo, mcmc, Bees, ...)
+     */
+    onProgress?: Function
+
+    /**
+     * The messages callback
+     */
+    onMessage?: Function
 }
 
 /**

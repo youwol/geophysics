@@ -1,5 +1,5 @@
 import { Serie, DataFrame } from "@youwol/dataframe"
-import { mean, weightedSum } from "@youwol/math"
+import { mean, minMax, weightedSum } from "@youwol/math"
 import { Alpha } from "./types"
 
 /**
@@ -72,7 +72,7 @@ export abstract class Data {
 
     /**
      * Generate data according to alpha. Simply stated, given alpha, return the
-     * synthetic measure of the data (gps, insar, fracture orientation ...) that
+     * synthetic data (gps, insar, fracture orientation ...) that
      * can be compared to the real measure.
      * @example
      * ```ts
@@ -108,7 +108,7 @@ export abstract class Data {
     /**
      * The name of the serie for the measures (must be in the dataframe if any)
      */
-    protected readonly measure: Serie
+    protected measure: Serie
 
     /**
      * Optional: The name of the serie for the measures weight. When used, each point should

@@ -91,6 +91,7 @@
 						<dt>example</dt>
 						<dd><pre><code class="language-ts"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">gps</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">InsarData</span><span style="color: #000000">({</span>
 <span style="color: #000000">    </span><span style="color: #001080">los:</span><span style="color: #000000"> [</span><span style="color: #098658">0</span><span style="color: #000000">,</span><span style="color: #098658">0</span><span style="color: #000000">,-</span><span style="color: #098658">1</span><span style="color: #000000">],</span>
+<span style="color: #000000">    </span><span style="color: #001080">normalize:</span><span style="color: #000000"> </span><span style="color: #0000FF">false</span><span style="color: #000000">,</span>
 <span style="color: #000000">    </span><span style="color: #001080">dataframe</span><span style="color: #000000">,</span>
 <span style="color: #000000">    </span><span style="color: #001080">measure:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;insar&#039;</span><span style="color: #000000">,</span>
 <span style="color: #000000">    </span><span style="color: #001080">compute:</span><span style="color: #000000"> [</span><span style="color: #A31515">&#039;u1&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;u2&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;u3&#039;</span><span style="color: #000000">],</span>
@@ -144,6 +145,8 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="insardata.html#dataframe" class="tsd-kind-icon">dataframe</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="insardata.html#los" class="tsd-kind-icon">los</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="insardata.html#measure" class="tsd-kind-icon">measure</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="insardata.html#measuredminmax" class="tsd-kind-icon">measured<wbr>Min<wbr>Max</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="insardata.html#normalize" class="tsd-kind-icon">normalize</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="insardata.html#weight" class="tsd-kind-icon">weight</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="insardata.html#weights" class="tsd-kind-icon">weights</a></li>
 							</ul>
@@ -166,7 +169,7 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Insar<wbr>Data<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>dataframe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DataFrame</span><span class="tsd-signature-symbol">; </span>los<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vector3</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>weight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="insardata.html" class="tsd-signature-type">InsarData</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Insar<wbr>Data<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>dataframe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DataFrame</span><span class="tsd-signature-symbol">; </span>los<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vector3</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>normalize<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>weight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="insardata.html" class="tsd-signature-type">InsarData</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -176,7 +179,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>dataframe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DataFrame</span><span class="tsd-signature-symbol">; </span>los<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vector3</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>weight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>dataframe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DataFrame</span><span class="tsd-signature-symbol">; </span>los<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vector3</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>normalize<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>weight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
 											<h5>compute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
@@ -189,6 +192,9 @@
 										</li>
 										<li class="tsd-parameter">
 											<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> normalize<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
 										</li>
 										<li class="tsd-parameter">
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> weight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
@@ -246,6 +252,20 @@
 							<p>The name of the serie for the measures (must be in the dataframe if any)</p>
 						</div>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="measuredminmax" class="tsd-anchor"></a>
+					<h3>measured<wbr>Min<wbr>Max</h3>
+					<div class="tsd-signature tsd-kind-icon">measured<wbr>Min<wbr>Max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="normalize" class="tsd-anchor"></a>
+					<h3>normalize</h3>
+					<div class="tsd-signature tsd-kind-icon">normalize<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+					<aside class="tsd-sources">
+					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="weight" class="tsd-anchor"></a>
@@ -431,6 +451,12 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="insardata.html#measure" class="tsd-kind-icon">measure</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="insardata.html#measuredminmax" class="tsd-kind-icon">measured<wbr>Min<wbr>Max</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="insardata.html#normalize" class="tsd-kind-icon">normalize</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="insardata.html#weight" class="tsd-kind-icon">weight</a>
 							</li>
@@ -491,6 +517,9 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../modules.html#defaultmapping" class="tsd-kind-icon">default<wbr>Mapping</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generatefringes" class="tsd-kind-icon">generate<wbr>Fringes</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../modules.html#generateinsar" class="tsd-kind-icon">generate<wbr>Insar</a>

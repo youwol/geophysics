@@ -228,6 +228,11 @@ export function generateInsar(displ: Serie, satellite: vec.Vector3): Serie {
  * @param serie The serie with itemSize of 1
  * @param fringeSpacing The spacing of the fringes
  * @returns A new [[Serie]]
+ * @example
+ * ```ts
+ * const displ   = dataframe.series['Displ']
+ * const fringes = generateFringes( generateInsar(displ, [0,0,-1]), 0.01)
+ * ```
  */
 export function generateFringes(serie: Serie, fringeSpacing: number): Serie {
     if (serie.itemSize !== 1) {

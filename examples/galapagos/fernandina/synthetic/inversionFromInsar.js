@@ -33,30 +33,29 @@ const insar = new geo.InsarData({
     compute: new Array(6).fill(0).map( (v,i) => `displ${i+1}` )
 })
 
-// See generate-insar.js for the real parameters
-const alpha = [
-    164.9,
-    0.135,
-    0.294,
-    2900,
-    2000,
-    0
-]
+// Only testing, no inversion...
+if (1) {
+    // See generate-insar.js for the real parameters
+    const alpha = [
+        164.9,
+        0.135,
+        0.294,
+        2900,
+        2000,
+        0
+    ]
 
-console.log( insar.cost(alpha) )
-dataframe2.series['cost'] = insar.costs(alpha)
-dataframe2.series['newInsar'] = insar.generate(alpha)
+    console.log( insar.cost(alpha) )
+    dataframe2.series['cost'] = insar.costs(alpha)
+    dataframe2.series['newInsar'] = insar.generate(alpha)
 
-const bufferOut = io.encodeGocadTS(dataframe2)
-fs.writeFile('result-insar.gcd', bufferOut, 'utf8', err => {})
+    const bufferOut = io.encodeGocadTS(dataframe2)
+    fs.writeFile('result-insar.gcd', bufferOut, 'utf8', err => {})
 
-return
-
-
-
+    return
+}
 
 
-// =======================================
 
 const result = geo.monteCarlo({
     data: [insar],
@@ -70,7 +69,7 @@ const result = geo.monteCarlo({
     },
     onProgress: (i,v) => printProgress(i+": "+v+"%"),
     onMessage: msg => console.log(msg)
-}, 100000)
+}, 1000)
 
 /*
 As an example, from https://physpet.ess.washington.edu/wp-content/uploads/sites/13/2016/02/Galapagoes-magma-chambers.pdf

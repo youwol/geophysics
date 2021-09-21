@@ -42,15 +42,21 @@ import { Alpha } from './types'
 export class GpsData extends Data {
     constructor(params: any) {
         super(params)
-        if (this.measure.itemSize !== 3) throw new Error('measure should have itemSize = 3')
+        if (this.measure.itemSize !== 3) {
+            throw new Error('measure should have itemSize = 3')
+        }
         this.compute.forEach( c => {
-            if (c.itemSize !== 3) throw new Error('compute should have itemSize = 3 (displacement)')
+            if (c.itemSize !== 3) {
+                throw new Error('compute should have itemSize = 3 (displacement)')
+            }
         })
     }
 
     costs(data: Serie | Alpha): Serie {
         const d = this.generateData(data)
-        if (d.itemSize !== 3) throw new Error('provided Serie must have itemSize = 3 (displ)')
+        if (d.itemSize !== 3) {
+            throw new Error('provided Serie must have itemSize = 3 (displ)')
+        }
         const L  = dot(this.measure, d)
         const no = norm(this.measure)
         const nc = norm(d)
@@ -164,7 +170,7 @@ export class InsarData extends Data {
 
         if (this.normalize) {
             this.measuredMinMax = minMax(this.measure)
-            this.measure = div(this.measure, Math.abs(this.measuredMinMax[1]))
+            this.measure = div(this.measure, Math.abs(this.measuredMinMax[1]-this.measuredMinMax[0]))
         }
 
         this.compute.forEach( c => {
@@ -174,20 +180,21 @@ export class InsarData extends Data {
         this.los = vec.normalize(los) as vec.Vector3
     }
 
-    costs(data: Serie | Alpha): Serie {
-        let d = this.generateData(data)
+    costs(alpha: Serie | Alpha): Serie {
+        let d = this.generateData(alpha)
         if (d.itemSize !== 1) throw new Error('provided Serie must have itemSize = 1 (displ along los)')
 
         if (this.normalize) {
             const computedMinMax = minMax(d)
-            d = div(d, Math.abs(computedMinMax[1]))
+            d = div(d, Math.abs(computedMinMax[1]-computedMinMax[0]))
         }
         
         const m = this.measure
-        const u = map([m, d], ([i1, i2]) => Math.abs(i1)>Math.abs(i2) ? (1-i2/i1)/2 : (1-i1/i2)/2 )
-        return square(u)
-        
-        //return square(addNumber(negate(div(d, this.measure)), 1))
+
+        //const u = map([m, d], ([i1, i2]) => Math.abs(i1)>Math.abs(i2) ? (1-i2/i1)/2 : (1-i1/i2)/2 )
+        //return square(u)
+
+        return square( map([m, d], ([i1, i2]) => i1-i2 ) )
     }
 
     generate(alpha: Alpha): Serie {

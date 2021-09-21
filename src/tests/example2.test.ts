@@ -24,6 +24,7 @@ test('test inverse', () => {
     const los = [0.01, -0.2, -0.95]
     const insar = new InsarData({
         dataframe,
+        normalize: true,
         los: los as math.vec.Vector3,
         measure: 'insar',
         compute: ['U1', 'U2', 'U3']

@@ -86,7 +86,18 @@ Module().then( arch => {
         chamber.setDisplFromTriangles(resetBurgers) // set init burgers to 0 (we never know)
         chamber.setBC("normal", "free", (x,y,z) => alpha[4]*9.81*Math.abs(z) + alpha[5] )
 
+        console.log(
+            chamber.displ(true, true).reduce((acc,v) => Math.min(acc,v), 0),
+            chamber.displ(true, true).reduce((acc,v) => Math.max(acc,v), 0)
+        )
+
         const solution = solver.run()
+
+        console.log(
+            chamber.displ(true, true).reduce((acc,v) => Math.min(acc,v), 0),
+            chamber.displ(true, true).reduce((acc,v) => Math.max(acc,v), 0)
+        )
+        
         solution.onMessage( c => console.log(c) )
         solution.onEnd( c => console.log('') )
         solution.onProgress( (i,p) => printProgress(`nb-pts so far: ${i}, realized: ${p.toFixed(0)}%`))
@@ -98,7 +109,7 @@ Module().then( arch => {
 
     for (let i=1; i<=nbSimulations; ++i) doSimulation(i)
 
-    console.log(dataframe)
+    //console.log(dataframe)
 
     // Save the line obs
     //if (TEST === false) {

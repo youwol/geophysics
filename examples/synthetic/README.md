@@ -11,9 +11,8 @@ to compute the 6 independent silulations, so that the superposition will be poss
 # Generate the synthic insar
 Generate the synthetic insar from the script
 ```sh
-node generate-insar.js
+node forard.js
 ```
-
 
 # Stress and pressure inversion using insar
 Run the script

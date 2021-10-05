@@ -2,19 +2,13 @@
  * Cost functions (aka, mistfit functions) and utility functions for geophysics
  */
 
-import {
-    Serie, DataFrame, apply, map
-} from '@youwol/dataframe'
-
-import { 
-    add, abs, dot, normalize, square,
-    div, mult, norm, negate, addNumber, mean, weightedSum,
-    vec,
-    minMax
-} from '@youwol/math'
-
+import { Serie, DataFrame, apply, map } from '@youwol/dataframe'
 import { Data } from './data'
 import { Alpha } from './types'
+import { 
+    add, dot, square, vec, minMax,
+    div, mult, norm, negate, addNumber, weightedSum
+} from '@youwol/math'
 
 /**
  * Cost for a Gps measure (at one point)

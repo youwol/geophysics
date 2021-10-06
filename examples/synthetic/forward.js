@@ -2,6 +2,7 @@
 const Module = require('@youwol/arch')
 const io     = require('@youwol/io')
 const df     = require('@youwol/dataframe')
+const math   = require('@youwol/math')
 const geop   = require('../../dist/@youwol/geophysics')
 const fs     = require('fs')
 
@@ -36,28 +37,23 @@ Module().then( arch => {
                 alpha[3]*Math.abs(z)
             ]
         }
-        return [0,0,0,0,0,0]
+
+        const alpha = [0,0,0,0,0,0]
+        console.log('alpha', alpha)
+        return alpha
     }
     model.addRemote( remote )
 
-    //console.log( model.tractions() )
-
     const solver = new arch.Solver(model, 'seidel', params.tol, params.maxIter)
-    solver.onMessage( c => console.log(c) )
-    solver.onEnd( c => console.log('') )
-    solver.onProgress( (i, c, context) => {
-        context === 1 ? printProgress("building system: " + (c+1).toFixed(0) + "%") : printProgress("iter " + i + ": residual " + c.toFixed(7))
-        
-    })
-
     const solution = solver.run()
-    solution.onMessage( c => console.log(c) )
-    solution.onEnd( c => console.log('') )
-    solution.onProgress( (i,p) => printProgress(`nb-pts so far: ${i}, realized: ${p.toFixed(0)}%`))
 
     const obs = grid.series['positions'].array
     //grid.series['stress']  = df.Serie.create({array: solution.stress(obs), itemSize: 6})
-    grid.series['displ']   = df.Serie.create({array: solution.displ (obs), itemSize: 3})
+    const displ = df.Serie.create({array: solution.displ (obs), itemSize: 3})
+    grid.series['displ'] = displ
+
+    const m = math.minMax(displ)
+    console.log('dx=',m[3]-m[0],' dy=', m[4]-m[1],' dz=', m[5]-m[2])
     
     const insar = geop.generateInsar(grid.series['displ'], params.LOS)
     grid.series['insar']   = insar

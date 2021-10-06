@@ -7,14 +7,14 @@ module.exports =  {
 
     // REMOTE
     remote:         true,
-    theta:          45,
-    Rh:             0.7,
-    RH:             0.894,
+    theta:          135,
+    Rh:             0.2,
+    RH:             0.3,
     rockDensity:    3,
 
     // CAVITY
     cavityDensity:  2,
-    shift:          -20,
+    shift:          -2000,
 
     // INSAR
     LOS:            [0.1, -0.5, -0.8],

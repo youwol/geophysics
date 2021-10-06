@@ -27,7 +27,7 @@ const insar = new geo.InsarData({
 })
 
 // Only testing, no inversion...
-if (0) {
+if (1) {
     // Generate alpha from user-defined space
     const alpha = geo.gradientPressureMapping([
         params.theta, 
@@ -45,17 +45,17 @@ if (0) {
     }
 
     console.log('alpha', alpha )
-    console.log('cost', insar.cost(alpha) )
+    console.log('cost' , insar.cost(alpha) )
 
     dataframe2.series['cost']   = insar.costs(alpha)
     //dataframe2.series['stress'] = geo.forward.attribute({simulations: dataframe, alpha, name: 'stress'})
 
-    const displ = geo.forward.attribute({simulations: dataframe, alpha, name: 'displ'})
-    dataframe2.series['displ']  = displ
+    //const displ = geo.forward.attribute({simulations: dataframe, alpha, name: 'displ'})
+    //dataframe2.series['displ']  = displ
 
-    const ins = geo.generateInsar( displ, params.LOS )
+    //const ins = geo.generateInsar( displ, params.LOS )
+    const ins = insar.generate( alpha )
     dataframe2.series['insar']  = ins
-
     dataframe2.series['fringes'] = geo.generateFringes(ins, params.fringe)
 
     // translate for the visu
@@ -64,7 +64,7 @@ if (0) {
     const bufferOut = io.encodeGocadTS(dataframe2)
     fs.writeFile('result-insar.gcd', bufferOut, 'utf8', err => {})
 
-    //return
+    return
 }
 
 

@@ -21,7 +21,7 @@ function printProgress(progress){
 
 // -----------------------------------------------------------------
 
-const buffer    = fs.readFileSync('./simulations.xyz', 'utf8')
+const buffer    = fs.readFileSync('/Users/fmaerten/test/models/arch/galapagos-all/model2/all_magma_chambers_600_georef.ts', 'utf8')
 const dataframe = io.decodeXYZ( buffer )[0]
 
 const dikes = new geo.StyloliteData({

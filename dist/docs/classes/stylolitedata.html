@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>StyloliteData | @youwol/geophysics - v0.0.4</title>
-	<meta name="description" content="Documentation for @youwol/geophysics - v0.0.4">
+	<title>StyloliteData | @youwol/geophysics - v0.0.5</title>
+	<meta name="description" content="Documentation for @youwol/geophysics - v0.0.5">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/pages.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">@youwol/geophysics - v0.0.4</a>
+					<a href="../index.html" class="title">@youwol/geophysics - v0.0.5</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -70,7 +70,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Cost for stylolite fractures</p>
+						<p>Cost for stylolite fractures. A stylolite is represented by its normal</p>
 					</div>
 					<center><img style="width:40%; height:40%;" src="../media/stylolite.png"></center>
 					<center><blockquote><i>
@@ -118,6 +118,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="stylolitedata.html#costs" class="tsd-kind-icon">costs</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="stylolitedata.html#generate" class="tsd-kind-icon">generate</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="stylolitedata.html#generatedata" class="tsd-kind-icon">generate<wbr>Data</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="stylolitedata.html#name" class="tsd-kind-icon">name</a></li>
 							</ul>
 						</section>
 					</div>
@@ -302,6 +303,21 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="data.html">Data</a>.<a href="data.html#name">name</a></p>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -342,6 +358,9 @@
 						<a href="data.html" class="tsd-kind-icon">Data</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="dikedata.html" class="tsd-kind-icon">Dike<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="domain2d.html" class="tsd-kind-icon">Domain2D</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -352,9 +371,6 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="jointdata.html" class="tsd-kind-icon">Joint<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="striationdata.html" class="tsd-kind-icon">Striation<wbr>Data</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -391,6 +407,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="stylolitedata.html#generatedata" class="tsd-kind-icon">generate<wbr>Data</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="stylolitedata.html#name" class="tsd-kind-icon">name</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -426,10 +445,22 @@
 						<a href="../modules.html#defaultmapping" class="tsd-kind-icon">default<wbr>Mapping</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="../modules.html#generateconjugates" class="tsd-kind-icon">generate<wbr>Conjugates</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generatedikes" class="tsd-kind-icon">generate<wbr>Dikes</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="../modules.html#generatefringes" class="tsd-kind-icon">generate<wbr>Fringes</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../modules.html#generateinsar" class="tsd-kind-icon">generate<wbr>Insar</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generatejoints" class="tsd-kind-icon">generate<wbr>Joints</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generatestylolites" class="tsd-kind-icon">generate<wbr>Stylolites</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../modules.html#gradientpressuremapping" class="tsd-kind-icon">gradient<wbr>Pressure<wbr>Mapping</a>
@@ -455,6 +486,7 @@
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
@@ -463,6 +495,7 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
 			</ul>
 		</div>

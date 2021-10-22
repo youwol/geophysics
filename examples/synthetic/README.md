@@ -6,7 +6,7 @@ Run the script
 ```sh
 node simulations.js
 ```
-to compute the 6 independent silulations, so that the superposition will be possible. The file `simulations.gcd` will be generated with the stress and displacement fields in it.
+to compute the 6 independent simulations, so that the superposition will be possible. The file `simulations.gcd` will be generated with the stress and displacement fields in it.
 <br><br>
 ___
 ___

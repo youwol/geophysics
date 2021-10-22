@@ -12,56 +12,60 @@ import {
     div, mult, sub, norm, negate, addNumber, mean, weightedSum,
     vec
 } from '@youwol/math'
+import { exit } from 'process'
 
 import { Data } from './data'
 import { Alpha } from './types'
 
 
-/**
- * Cost for a fault striation
- * @note Make sure that the coordinate system of the measure is the same as the 
- * computed slip vector.
- * @note You can use the class [[TriangleCS]].
- * @example
- * ```ts
- * const data = new StriationData({
- *     dataframe,
- *     measure: 'normals',
- *     compute: ['u1', 'u2', 'u3'],
- *     weight: 1,
- *     weights: 'ptsWeights'
- * })
- * ```
- * @see [[Data]]
- * @see [[monteCarlo]]
- * @see [[createData]]
- * @category Geology
- */
-export class StriationData extends Data {
-    constructor(params: any) {
-        super(params)
-    }
-    costs(data: Serie | Alpha): Serie {
-        let d = this.generateData(data)
-        if (d.itemSize !== 3) throw new Error('provided Serie must have itemSize = 3 (aka, normal)')
+// /**
+//  * Cost for a fault striation
+//  * @note Make sure that the coordinate system of the measure is the same as the 
+//  * computed slip vector.
+//  * @note You can use the class [[TriangleCS]].
+//  * @example
+//  * ```ts
+//  * const data = new StriationData({
+//  *     dataframe,
+//  *     measure: 'normals',
+//  *     compute: ['u1', 'u2', 'u3'],
+//  *     weight: 1,
+//  *     weights: 'ptsWeights'
+//  * })
+//  * ```
+//  * @see [[Data]]
+//  * @see [[monteCarlo]]
+//  * @see [[createData]]
+//  * @category Geology
+//  */
+// export class StriationData extends Data {
+//     constructor(params: any) {
+//         super(params)
+//     }
+//     costs(data: Serie | Alpha): Serie {
+//         let d = this.generateData(data)
+//         if (d.itemSize !== 3) throw new Error('provided Serie must have itemSize = 3 (aka, normal)')
         
-        d  = dot(this.measure, d)
+//         d  = dot(this.measure, d)
 
-        const no = norm(this.measure)
-        const nc = norm(d)
+//         const no = norm(this.measure)
+//         const nc = norm(d)
 
-        return addNumber(negate(abs(div(dot(this.measure, d), mult(no, nc)))), 1)
-    }
+//         return addNumber(negate(abs(div(dot(this.measure, d), mult(no, nc)))), 1)
+//     }
 
-    generate(alpha: Alpha): Serie {
-        throw new Error('TODO (see joint)')
-        //return undefined
-    }
-}
+//     generate(alpha: Alpha): Serie {
+//         throw new Error('TODO (see joint)')
+//         //return undefined
+//     }
+// }
 
 /**
  * Cost for joint fractures. Recall that the stresses from simulations are in
  * engineer convention.
+ * 
+ * If `useNormals` is set to true, then the normals to the joints are used.
+ * Otherwise, the orientation of teh joints are used.
  * 
  * <center><img style="width:40%; height:40%;" src="media://joint.png"></center>
  * <center><blockquote><i>
@@ -72,6 +76,7 @@ export class StriationData extends Data {
  * ```ts
  * const data = new JointData({
  *     dataframe,
+ *     useNormals: true,
  *     measure: 'normals',
  *     compute: ['u1', 'u2', 'u3'],
  *     weight: 1,
@@ -84,24 +89,85 @@ export class StriationData extends Data {
  * @category Geology
  */
 export class JointData extends Data {
-    constructor(params: any) {
-        super(params)
+    private useNormals = true
+    private projected  = false
+
+    constructor(
+        {dataframe, measure, compute, weights, weight, useNormals=true, projected=false}:
+        {dataframe: DataFrame, measure: string, compute?: string[], weights?: string, weight?: number, useNormals?: boolean, projected?: boolean})
+    {
+        super({dataframe,measure,compute,weights, weight})
         this.measure = normalize(this.measure)
+        this.useNormals = useNormals!==undefined ? useNormals : true
+        this.projected = projected!==undefined ? projected : false
     }
 
+    name() {return 'JointData'}
+
     costs(data: Serie | Alpha): Serie {
-        const d = normalize( this.generateData(data) )
-        if (d.itemSize !== 3) throw new Error('generateData must have itemSize = 3 (a normal)')
-        return square(sub(abs(dot(this.measure, d)), 1)) // w*(1-d)**2
+        const d = this.generateData(data)
+        if (d.itemSize !== 3) throw new Error('generateData must have itemSize = 3 (normals to the planes)')
+        if (this.useNormals) {
+            return square(sub(abs(dot(this.measure, d)), 1)) // w*(1-d)^2
+        }
+        else {
+            return square(dot(this.measure, d)) // w*(1-d)**2
+        }
     }
 
     generate(alpha: Alpha): Serie {
-        return apply(eigenVector(weightedSum(this.compute, alpha)), v => [v[0], v[1], v[2]] )
+        return generateJoints( {stress: weightedSum(this.compute, alpha), projected: this.projected} )
+        //return apply(eigenVector(weightedSum(this.compute, alpha)), v => [v[0], v[1], v[2]] )
     }
 }
 
+export class DikeData extends JointData {
+    name() {return 'DikeData'}
+}
+
 /**
- * Cost for stylolite fractures
+ * Generate joints from stress data. A joint is represented by its normal
+ * @example
+ * ```ts
+ * const joints = geop.generateJoints({
+ *      stress: computedStressSerie,
+ *      projected: true
+ * })
+ * ```
+ * @see [[JointData]]
+ * @category Geology
+ */
+export function generateJoints(
+    {stress, projected=false}:
+    {stress: Serie, projected?: boolean}): Serie
+{
+    const ns = eigenVector(stress).map( v => [v[0], v[1], v[2]] )
+    return projected===true ? apply(ns, n => [-n[1], n[0], 0]) : ns
+}
+
+/**
+ * Generate dikes from stress data. This is essentially the same as [[generateJoints]].
+ * A dike is represented by its normal
+ * @example
+ * ```ts
+ * const dikes = geop.generateDikes({
+ *      stress: computedStressSerie,
+ *      projected: false
+ * })
+ * ```
+ * @see [[generateJoints]]
+ * @see [[JointData]]
+ * @category Geology
+ */
+export function generateDikes(
+    {stress, projected=false}:
+    {stress: Serie, projected?: boolean}): Serie
+{
+    return generateJoints({stress, projected})
+}
+
+/**
+ * Cost for stylolite fractures. A stylolite is represented by its normal
  * 
  * <center><img style="width:40%; height:40%;" src="media://stylolite.png"></center>
  * <center><blockquote><i>
@@ -116,6 +182,8 @@ export class StyloliteData extends Data {
         this.measure = normalize(this.measure)
     }
 
+    name() {return 'StyloliteData'}
+
     costs(data: Serie | Alpha): Serie {
         const d = normalize( this.generateData(data) )
         if (d.itemSize !== 3) throw new Error('generateData must have itemSize = 3 (a normal)')
@@ -123,10 +191,30 @@ export class StyloliteData extends Data {
     }
 
     generate(alpha: Alpha): Serie {
-        return apply(eigenVector(weightedSum(this.compute, alpha)), v => [v[6], v[7], v[8]] )
+        return generateStylolites( {stress: weightedSum(this.compute, alpha), projected: false} )
+        //return apply(eigenVector(weightedSum(this.compute, alpha)), v => [v[6], v[7], v[8]] )
     }
 }
 
+/**
+ * Generate stylolites from stress data
+ * @example
+ * ```ts
+ * const stylolites = geop.generateStylolites({
+ *      stress: computedStressSerie,
+ *      projected: false
+ * })
+ * ```
+ * @see [[StylolitesData]]
+ * @category Geology
+ */
+export function generateStylolites(
+    {stress, projected=false}:
+    {stress: Serie, projected?: boolean}):Serie
+{
+    const ns = eigenVector(stress).map( v => [v[6], v[7], v[8]] )
+    return projected===true ? apply(ns, n => [-n[1], n[0], 0]) : ns
+}
 
 /**
  * Cost for conjugate planes
@@ -166,6 +254,8 @@ export class ConjugateData extends Data {
         if (friction!==undefined) this.theta  = Math.PI*(45 - friction/2)/180
         if (project!==undefined) this.project = project
     }
+
+    name() {return 'ConjugateData'}
 
     costs(data: Serie | Alpha): Serie {
         const d = this.generateData(data)
@@ -222,6 +312,71 @@ export class ConjugateData extends Data {
 
     private fractureCost = (n: vec.Vector3, N: vec.Vector3) => {
         return 1.0 - Math.abs(vec.dot(n,N))
+    }
+}
+
+/**
+ * Generate from stress data either 2 series representing the normals of the conjugate planes,
+ * or one serie if projected = true (direction of S2). For the former case, the friction angle
+ * is used. For the later, friction angle is irrelevant.
+ * @example
+ * ```ts
+ * const conjugates = geop.generateConjugates({ // {n1: Serie, n2: Serie}
+ *      stress: computedStressSerie,
+ *      friction: 30,
+ *      projected: false
+ * })
+ * console.log( conjugates.n1, conjugates.n2 )
+ * 
+ * const conjugate = geop.generateConjugates({ // Serie
+ *      stress: computedStressSerie,
+ *      friction: 30,
+ *      projected: true
+ * })
+ * console.log( conjugate )
+ * ```
+ * @see [[ConjugateData]]
+ * @category Geology
+ */
+export function generateConjugates(
+    {stress, friction, projected=false}:
+    {stress: Serie, friction: number, projected?: boolean}): {n1: Serie, n2: Serie} | Serie
+{
+    if (stress === undefined) {
+        throw new Error('provided stress Serie is undefined')
+    }
+    if (friction === undefined) {
+        throw new Error('provided friction is undefined')
+    }
+    if (projected === true) {
+        return stress.map( s => {
+            const e = eigen(s).vectors
+            const v2 = [e[3], e[4], e[5]]
+            if (projected === true) {
+                const d = Math.sqrt(v2[0]**2 + v2[1]**2)
+                v2[0] /= d
+                v2[1] /= d
+                v2[2]  = 0
+            }
+            return [v2[1], -v2[0], v2[2]]
+        })
+    }
+
+    const theta  = Math.PI*(45 - friction/2)/180
+
+    return {
+        n1: stress.map( s => {
+            const e = eigen(s).vectors
+            const v2  = [-e[3], -e[4], -e[5]] as vec.Vector3
+            const v3  = [-e[6], -e[7], -e[8]] as vec.Vector3
+            return rotateAxis(v2,  theta, v3)
+        }),
+        n2: stress.map( s => {
+            const e = eigen(s).vectors
+            const nS3 = [-e[0], -e[1], -e[2]] as vec.Vector3
+            const v2  = [-e[3], -e[4], -e[5]] as vec.Vector3
+            return rotateAxis(v2, -theta, nS3)
+        })
     }
 }
 

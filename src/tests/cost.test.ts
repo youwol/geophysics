@@ -17,7 +17,7 @@ test('test cost vertical gps', () => {
 
 test('test cost insar', () => {
     const U = Serie.create({array: new Array(4*3).fill(0).map(_=>Math.random()), itemSize: 3})
-    const compute = geo.generateInsar(U, [0.01, -0.1, 0.98])
+    const compute = geo.generateInsar({displ: U, LOS: [0.01, -0.1, 0.98]})
     const measure = df.duplicate(compute)
     //expect( geo.costVerticalGps({measure, compute}) ).toEqual(0)
 

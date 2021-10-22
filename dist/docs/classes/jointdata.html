@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>JointData | @youwol/geophysics - v0.0.4</title>
-	<meta name="description" content="Documentation for @youwol/geophysics - v0.0.4">
+	<title>JointData | @youwol/geophysics - v0.0.5</title>
+	<meta name="description" content="Documentation for @youwol/geophysics - v0.0.5">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/pages.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">@youwol/geophysics - v0.0.4</a>
+					<a href="../index.html" class="title">@youwol/geophysics - v0.0.5</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -73,6 +73,8 @@
 						<p>Cost for joint fractures. Recall that the stresses from simulations are in
 						engineer convention.</p>
 					</div>
+					<p>If <code>useNormals</code> is set to true, then the normals to the joints are used.
+					Otherwise, the orientation of teh joints are used.</p>
 					<center><img style="width:40%; height:40%;" src="../media/joint.png"></center>
 					<center><blockquote><i>
 								Relation between a joint and the three principales stresses
@@ -81,6 +83,7 @@
 						<dt>example</dt>
 						<dd><pre><code class="language-ts"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">data</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">JointData</span><span style="color: #000000">({</span>
 <span style="color: #000000">    </span><span style="color: #001080">dataframe</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">useNormals:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
 <span style="color: #000000">    </span><span style="color: #001080">measure:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;normals&#039;</span><span style="color: #000000">,</span>
 <span style="color: #000000">    </span><span style="color: #001080">compute:</span><span style="color: #000000"> [</span><span style="color: #A31515">&#039;u1&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;u2&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;u3&#039;</span><span style="color: #000000">],</span>
 <span style="color: #000000">    </span><span style="color: #001080">weight:</span><span style="color: #000000"> </span><span style="color: #098658">1</span><span style="color: #000000">,</span>
@@ -108,6 +111,11 @@
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">JointData</span>
+								<ul class="tsd-hierarchy">
+									<li>
+										<a href="dikedata.html" class="tsd-signature-type">DikeData</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
@@ -123,12 +131,14 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="jointdata.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="jointdata.html#compute" class="tsd-kind-icon">compute</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="jointdata.html#dataframe" class="tsd-kind-icon">dataframe</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="jointdata.html#measure" class="tsd-kind-icon">measure</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="jointdata.html#projected" class="tsd-kind-icon">projected</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="jointdata.html#usenormals" class="tsd-kind-icon">use<wbr>Normals</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="jointdata.html#weight" class="tsd-kind-icon">weight</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="jointdata.html#weights" class="tsd-kind-icon">weights</a></li>
 							</ul>
@@ -140,6 +150,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="jointdata.html#costs" class="tsd-kind-icon">costs</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="jointdata.html#generate" class="tsd-kind-icon">generate</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="jointdata.html#generatedata" class="tsd-kind-icon">generate<wbr>Data</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="jointdata.html#name" class="tsd-kind-icon">name</a></li>
 							</ul>
 						</section>
 					</div>
@@ -151,7 +162,7 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Joint<wbr>Data<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="jointdata.html" class="tsd-signature-type">JointData</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Joint<wbr>Data<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>dataframe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DataFrame</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>projected<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>useNormals<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>weight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="jointdata.html" class="tsd-signature-type">JointData</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -161,7 +172,30 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>params: <span class="tsd-signature-type">any</span></h5>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>compute<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>dataframe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DataFrame</span><span class="tsd-signature-symbol">; </span>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>projected<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>useNormals<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>weight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> compute<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>dataframe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DataFrame</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>measure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> projected<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> use<wbr>Normals<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> weight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> weights<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="jointdata.html" class="tsd-signature-type">JointData</a></h4>
@@ -169,7 +203,7 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="compute" class="tsd-anchor"></a>
@@ -204,6 +238,20 @@
 							<p>The name of the serie for the measures (must be in the dataframe if any)</p>
 						</div>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="projected" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> projected</h3>
+					<div class="tsd-signature tsd-kind-icon">projected<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="usenormals" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> use<wbr>Normals</h3>
+					<div class="tsd-signature tsd-kind-icon">use<wbr>Normals<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></div>
+					<aside class="tsd-sources">
+					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="weight" class="tsd-anchor"></a>
@@ -324,6 +372,21 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="data.html">Data</a>.<a href="data.html#name">name</a></p>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -364,6 +427,9 @@
 						<a href="data.html" class="tsd-kind-icon">Data</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="dikedata.html" class="tsd-kind-icon">Dike<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="domain2d.html" class="tsd-kind-icon">Domain2D</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -389,6 +455,12 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="jointdata.html#measure" class="tsd-kind-icon">measure</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="jointdata.html#projected" class="tsd-kind-icon">projected</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="jointdata.html#usenormals" class="tsd-kind-icon">use<wbr>Normals</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="jointdata.html#weight" class="tsd-kind-icon">weight</a>
 							</li>
@@ -407,13 +479,13 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="jointdata.html#generatedata" class="tsd-kind-icon">generate<wbr>Data</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="jointdata.html#name" class="tsd-kind-icon">name</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class">
-						<a href="striationdata.html" class="tsd-kind-icon">Striation<wbr>Data</a>
-					</li>
 					<li class=" tsd-kind-class">
 						<a href="stylolitedata.html" class="tsd-kind-icon">Stylolite<wbr>Data</a>
 					</li>
@@ -448,10 +520,22 @@
 						<a href="../modules.html#defaultmapping" class="tsd-kind-icon">default<wbr>Mapping</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="../modules.html#generateconjugates" class="tsd-kind-icon">generate<wbr>Conjugates</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generatedikes" class="tsd-kind-icon">generate<wbr>Dikes</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="../modules.html#generatefringes" class="tsd-kind-icon">generate<wbr>Fringes</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../modules.html#generateinsar" class="tsd-kind-icon">generate<wbr>Insar</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generatejoints" class="tsd-kind-icon">generate<wbr>Joints</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generatestylolites" class="tsd-kind-icon">generate<wbr>Stylolites</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../modules.html#gradientpressuremapping" class="tsd-kind-icon">gradient<wbr>Pressure<wbr>Mapping</a>
@@ -477,6 +561,7 @@
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
@@ -485,6 +570,7 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
 			</ul>
 		</div>

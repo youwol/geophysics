@@ -6,16 +6,19 @@ const math   = require('@youwol/math')
 const geop   = require('../../dist/@youwol/geophysics')
 const fs     = require('fs')
 
-let {positions, indices, grid, printProgress} = require('./utils')
+let {printProgress} = require('./utils')
 let params = require('./user-params')
 
+const mud = io.decodeGocadTS( fs.readFileSync('./Mud_Volcano_top_cut_remeshed_1315.gcd', 'utf8') )[0]
+const minMax = math.minMax( mud.series['positions'] )
+let grid = io.decodeGocadTS( fs.readFileSync('./grid.gcd', 'utf8') )[0]
 
 Module().then( arch => {
     const model = new arch.Model()
     model.setMaterial ( new arch.Material(params.nu, params.E, params.rockDensity) )
     model.setHalfSpace( false )
     
-    const chamber = new arch.Surface(positions.array, indices.array)
+    const chamber = new arch.Surface(mud.series['positions'].array, mud.series['indices'].array)
     chamber.setBC("dip",    "free", 0)
     chamber.setBC("strike", "free", 0)
     chamber.setBC("normal", "free", (x,y,z) => params.shift + params.cavityDensity*params.g*Math.abs(z) )
@@ -51,6 +54,7 @@ Module().then( arch => {
     const stress = df.Serie.create({array: solution.stress(obs), itemSize: 6})
 
     grid.series['gps']    = df.Serie.create({array: solution.displ (obs), itemSize: 3})
+    grid.series['displ']    = df.Serie.create({array: solution.displ (obs), itemSize: 3})
     grid.series['insar']  = geop.generateInsar({displ: grid.series['gps'], LOS: params.LOS})
     grid.series['dikes']  = geop.generateDikes({stress, projected: true})
     grid.series['shears'] = geop.generateConjugates({stress, friction: 30, projected: true})
@@ -58,17 +62,5 @@ Module().then( arch => {
     grid.series['shears1'] = shears.n1
     grid.series['shears2'] = shears.n2
     
-
     fs.writeFile('data.gcd', io.encodeGocadTS(grid), 'utf8', err => {})
-
-    // ----------------------------------------------------------------------
-
-    const surface = df.DataFrame.create({
-        series:{
-            positions,
-            indices
-        }
-    })
-    fs.writeFile('surface.gcd', io.encodeGocadTS(surface), 'utf8', err => {})
-    console.log('All done...')
 })

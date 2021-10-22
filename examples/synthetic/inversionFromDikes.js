@@ -15,19 +15,18 @@ const { exit } = require('process')
 
 const dataframe  = io.decodeGocadTS( fs.readFileSync('./simulations.gcd', 'utf8') )[0]
 const dataframe2 = io.decodeGocadTS( fs.readFileSync('./data.gcd', 'utf8') )[0]
-dataframe.series['insar'] = dataframe2.series['insar']
+dataframe.series['dikes'] = dataframe2.series['dikes']
+dataframe2.remove('dikes')
 
-const insar = new geo.InsarData({
+const dikes = new geo.DikeData({
     dataframe,
-    los: params.LOS,
-    normalize: true,
-    measure: 'insar',
-    //mapping: geo.gradientPressureMapping,
-    compute: new Array(6).fill(0).map( (v,i) => `displ${i+1}` )
+    measure: 'dikes',
+    useNormals: false,
+    compute: new Array(6).fill(0).map( (v,i) => `stress${i+1}` )
 })
 
 // Only testing, no inversion...
-if (1) {
+if (0) {
     // Generate alpha from user-defined space
     const alpha = geo.gradientPressureMapping([
         params.theta, 
@@ -45,24 +44,23 @@ if (1) {
     }
 
     console.log('alpha', alpha )
-    console.log('cost' , insar.cost(alpha) )
+    console.log('cost' , dikes.cost(alpha).toFixed(4) )
 
-    dataframe2.series['cost']   = insar.costs(alpha)
-    //dataframe2.series['stress'] = geo.forward.attribute({simulations: dataframe, alpha, name: 'stress'})
+    const stress = geo.forward.attribute({
+        simulations: dataframe,
+        name: 'stress',
+        alpha,
+        startIndex: 1
+    })
 
-    //const displ = geo.forward.attribute({simulations: dataframe, alpha, name: 'displ'})
-    //dataframe2.series['displ']  = displ
+    dataframe2.series['cost'] = dikes.costs(alpha)
+    dataframe2.series['dikes']  = geo.generateDikes({stress, projected: true})
 
-    //const ins = geo.generateInsar( displ, params.LOS )
-    const ins = insar.generate( alpha )
-    dataframe2.series['insar']  = ins
-    dataframe2.series['fringes'] = geo.generateFringes(ins, params.fringe)
-
-    // translate for the visu
+    // Translate for the visu
     dataframe2.series['positions'] = df.apply(dataframe2.series['positions'], item => [item[0]+2, item[1], item[2]] )
 
     const bufferOut = io.encodeGocadTS(dataframe2)
-    fs.writeFile('result-insar.gcd', bufferOut, 'utf8', err => {})
+    fs.writeFile('result-dikes.gcd', bufferOut, 'utf8', err => {})
 
     return
 }
@@ -71,7 +69,7 @@ if (1) {
 
 
 const result = geo.monteCarlo({
-    data: [insar],
+    data: [dikes],
     alpha: {
         // [theta, Rh, RH, rockDensity, cavityDensity, shift]
         mapping: geo.gradientPressureMapping,
@@ -91,25 +89,20 @@ we have an estimate of the Fernandina magma density, page 62: 2680 kg/m3
 
 
 console.log('inversion result:', result )
-//console.log('measured ', dataframe.series['insar'].array )
-//console.log('recovered', insar.generate(result.alpha).array)
-
 const alpha = result.alpha
 
-dataframe2.series['cost']   = insar.costs(alpha)
-//dataframe2.series['stress'] = geo.forward.attribute({simulations: dataframe, alpha, name: 'stress'})
+dataframe2.series['cost']   = dikes.costs(alpha)
 
-const displ = geo.forward.attribute({simulations: dataframe, alpha, name: 'displ'})
-dataframe2.series['displ']  = displ
+const stress = geo.forward.attribute({
+    simulations: dataframe,
+    name: 'stress',
+    alpha
+})
 
-const ins = geo.generateInsar( displ, params.LOS )
-dataframe2.series['insar']  = ins
+dataframe2.series['iDikes']  = geo.generateDikes({stress, projected: true})
 
-dataframe2.series['fringes'] = geo.generateFringes(ins, params.fringe)
-
-// translate for the visu
+// Translate for the visu
 dataframe2.series['positions'] = df.apply(dataframe2.series['positions'], item => [item[0]+2, item[1], item[2]] )
 
 const bufferOut = io.encodeGocadTS(dataframe2)
-//console.log(bufferOut)
-fs.writeFile('result-insar.gcd', bufferOut, 'utf8', err => {})
+fs.writeFile('result-dikes.gcd', bufferOut, 'utf8', err => {})

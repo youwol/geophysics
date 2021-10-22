@@ -26,7 +26,7 @@ export abstract class Data {
 
     constructor(
         {dataframe, measure, compute, weights, weight}:
-        {dataframe: DataFrame, measure: string, compute: string[], weights?: string, weight?: number}
+        {dataframe: DataFrame, measure: string, compute?: string[], weights?: string, weight?: number}
     ) {
         if (dataframe===undefined) throw new Error(`dataframe is undefined`)
 
@@ -44,6 +44,8 @@ export abstract class Data {
             })
         }
     }
+
+    abstract name(): string
 
     /**
      * The cost function of the data according to a provided Alpha or a Serie

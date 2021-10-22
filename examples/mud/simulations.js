@@ -8,15 +8,19 @@ const geop   = require('../../dist/@youwol/geophysics')
 const fs     = require('fs')
 const { exit } = require('process')
 
-let {positions, indices, grid, printProgress} = require('./utils')
+let {printProgress} = require('./utils')
 let params = require('./user-params')
+
+const mud = io.decodeGocadTS( fs.readFileSync('./Mud_Volcano_top_cut_remeshed_1315.gcd', 'utf8') )[0]
+const minMax = math.minMax( mud.series['positions'] )
+let grid = io.decodeGocadTS( fs.readFileSync('./grid.gcd', 'utf8') )[0]
 
 Module().then( arch => {
     const model = new arch.Model()
     model.setMaterial ( new arch.Material(params.nu, params.E, params.rockDensity) )
     model.setHalfSpace( false )
     
-    const chamber = new arch.Surface(positions.array, indices.array)
+    const chamber = new arch.Surface(mud.series['positions'].array, mud.series['indices'].array)
     chamber.setBC("dip",    "free", 0)
     chamber.setBC("strike", "free", 0)
     //chamber.setBC("normal", "free", 0)

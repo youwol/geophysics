@@ -1,12 +1,16 @@
-# Setting up the libraries
-- Put the latest `arch.js` library in `geophysics/node_modules/@youwol/`
-
-# Model setup
-Run the script
+# Intro
+Model simulations are computed directly from platform/arch-node/examples/superposition, by running directly in this directory:
 ```sh
-node simulations.js
+node superposition.js ./Galapagos-all.def
 ```
-to compute the 6 independent silulations, so that the superposition will be possible. The file `simulations.xyz` will be generated with the stress and displacement fields in it.
+
+The file `simulations-all_magma_chambers_600_georef.ts` will be generated in the directory where the original file belowgs to.
+
+If you want to merge all grids in one objects with many components, use:
+```sh
+node merge-objects.js /Users/fmaerten/test/models/arch/galapagos-all/model2/simulations-all_magma_chambers_600_georef.ts
+```
+The file `simulations-all_magma_chambers_600_georef.ts-merged.ts`will be generated in the same directory.
 
 # Stress and pressure inversion using dike orientations
 Run the script
@@ -23,10 +27,3 @@ Then, run the script
 node post-process-dikes.js
 ```
 to generate the synthetic dikes from the simulation
-
-# Synthetic test
-Stress and pressure inversion using **InSAR** data.
-
-To do that, we are going to generate a synthetic insar using a given far field stress and pressure shift.
-
-Then, the stress and pressure inversion is performed.

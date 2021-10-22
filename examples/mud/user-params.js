@@ -7,18 +7,18 @@ module.exports =  {
 
     // REMOTE
     remote:         true,
-    theta:          135,
+    theta:          90,
     Rh:             0.2,
-    RH:             0.3,
+    RH:             0.9,
     rockDensity:    3,
 
     // CAVITY
-    cavityDensity:  2,
-    shift:          -2,
+    cavityDensity:  0,
+    shift:          0,
 
     // INSAR
     LOS:            [0.1, -0.5, -0.8],
-    fringe:         0.2,
+    fringe:         3000,
     nx:             50,
     ny:             50,
 

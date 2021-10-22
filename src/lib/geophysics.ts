@@ -46,6 +46,8 @@ export class GpsData extends Data {
         })
     }
 
+    name() {return 'GpsData'}
+
     costs(data: Serie | Alpha): Serie {
         const d = this.generateData(data)
         if (d.itemSize !== 3) {
@@ -98,6 +100,8 @@ export class VerticalGpsData extends Data {
             if (c.itemSize !== 3) throw new Error('compute should have itemSize = 3 (displacement)')
         })
     }
+
+    name() {return 'VerticalGpsData'}
 
     costs(data: Serie | Alpha): Serie {
         const d = this.generateData(data)
@@ -174,6 +178,8 @@ export class InsarData extends Data {
         this.los = vec.normalize(los) as vec.Vector3
     }
 
+    name() {return 'InsarData'}
+
     costs(alpha: Serie | Alpha): Serie {
         let d = this.generateData(alpha)
         if (d.itemSize !== 1) throw new Error('provided Serie must have itemSize = 1 (displ along los)')
@@ -192,7 +198,7 @@ export class InsarData extends Data {
     }
 
     generate(alpha: Alpha): Serie {
-        return generateInsar(weightedSum(this.compute, alpha), this.los)
+        return generateInsar({displ: weightedSum(this.compute, alpha), LOS: this.los})
     }
 }
 
@@ -207,7 +213,7 @@ export class InsarData extends Data {
  * numerically, and the `measuredInsar` are the measures (observations).
  * The size of `displ` is three times the size of `insar`.
  * ```ts
- * const computedInsar = generateInsar(displ, [0.01, -0.1, -0.9856])
+ * const computedInsar = generateInsar({displ, LOS: [0.01, -0.1, -0.9856]})
  * const measuredInsar = [...]
  * 
  * // Let use a loop instead of the Array.redure method
@@ -220,8 +226,11 @@ export class InsarData extends Data {
  * @see [[Data]]
  * @category Geophysics
  */
-export function generateInsar(displ: Serie, satellite: vec.Vector3): Serie {
-    return dot(displ, satellite)
+export function generateInsar(
+    {displ, LOS}:
+    {displ: Serie, LOS: vec.Vector3}): Serie
+{
+    return dot(displ, LOS)
 }
 
 /**
@@ -232,7 +241,7 @@ export function generateInsar(displ: Serie, satellite: vec.Vector3): Serie {
  * @example
  * ```ts
  * const displ   = dataframe.series['Displ']
- * const fringes = generateFringes( generateInsar(displ, [0,0,-1]), 0.01)
+ * const fringes = generateFringes( generateInsar({displ, LOS: [0,0,-1]}), 0.01)
  * ```
  */
 export function generateFringes(serie: Serie, fringeSpacing: number): Serie {

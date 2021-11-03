@@ -44,7 +44,7 @@ if (0) {
     }
 
     console.log('alpha', alpha )
-    console.log('cost' , dikes.cost(alpha).toFixed(4) )
+    console.log('cost' , dikes.cost(alpha).toFixed(10) )
 
     const stress = geo.forward.attribute({
         simulations: dataframe,
@@ -54,7 +54,7 @@ if (0) {
     })
 
     dataframe2.series['cost'] = dikes.costs(alpha)
-    dataframe2.series['dikes']  = geo.generateDikes({stress, projected: true})
+    dataframe2.series['iDikes']  = geo.generateDikes({stress, projected: true})
 
     // Translate for the visu
     dataframe2.series['positions'] = df.apply(dataframe2.series['positions'], item => [item[0]+2, item[1], item[2]] )

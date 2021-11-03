@@ -14,7 +14,7 @@ let params = require('./user-params')
 Module().then( arch => {
     const model = new arch.Model()
     model.setMaterial ( new arch.Material(params.nu, params.E, params.rockDensity) )
-    model.setHalfSpace( false )
+    model.setHalfSpace( params.halspace )
     
     const chamber = new arch.Surface(positions.array, indices.array)
     chamber.setBC("dip",    "free", 0)

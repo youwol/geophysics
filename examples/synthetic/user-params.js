@@ -4,17 +4,18 @@ module.exports =  {
     g:              9.81,
     nu:             0.25,
     E:              20,
+    halspace:       true,
 
     // REMOTE
     remote:         true,
-    theta:          135,
-    Rh:             0.2,
-    RH:             0.3,
+    theta:          22,
+    Rh:             0.1,
+    RH:             1.3,
     rockDensity:    3,
 
     // CAVITY
     cavityDensity:  2,
-    shift:          -2,
+    shift:          5,
 
     // INSAR
     LOS:            [0.1, -0.5, -0.8],

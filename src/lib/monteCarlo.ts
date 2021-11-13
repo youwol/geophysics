@@ -55,7 +55,9 @@ export const monteCarlo = ( params: InversionModel, n: number): InversionResult 
         alpha: [],
         user : [],
         cost : 1e32,
-        fit  : 0
+        fit  : 0,
+        iteration: 0,
+        maxIteration: n
     }
 
     const mod = n/100*5 // 5%
@@ -72,6 +74,7 @@ export const monteCarlo = ( params: InversionModel, n: number): InversionResult 
             solution.fit   = Math.round( (1-c)*10000 )/100 // 2 decimals max
             solution.alpha = alpha
             solution.user  = userParams
+            solution.iteration = i
             if (params.onMessage) {
                 params.onMessage(`
 fit     = ${((1-c)*100).toFixed(0)}%
@@ -80,6 +83,7 @@ Kh      = ${userParams[1].toFixed(2)}
 KH      = ${userParams[2].toFixed(2)}
 density = ${userParams[4].toFixed(0)}
 shift   = ${userParams[5].toFixed(0)}
+iter    = ${solution.iteration}
 `)
             }
         }

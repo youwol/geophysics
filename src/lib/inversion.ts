@@ -41,16 +41,26 @@ export type InversionResult = {
      * The corresponding inverted user parameters (inverse mapping).
      * If the mapping was not provided, then `user` will be equal to `alpha`
      */
-    user : number[],
+    user: number[],
 
     /**
      * The best cost from inversion in [0, 1]. A value close to zero means a "good" inversion.
      * A value close to one means the opposite.
      */
-    cost : number
+    cost: number
 
     /**
      * The best fit in %. The fit is related to cost by: `fit = 100(1-cost)`
      */
-    fit : number
+    fit: number
+
+    /**
+     * The iteration where the min was detected
+     */
+    iteration: number
+
+    /**
+     * The max number of iterations
+     */
+    maxIteration: number
 }

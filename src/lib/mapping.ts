@@ -118,11 +118,12 @@ export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
     const sin   = Math.sin(theta)
     const cos2  = cos*cos
     const sin2  = sin*sin
-    const Sv    = rock * 9.81
+    const Sv    =  rock * 9.81
     const xx    = (Kh*cos2 + KH*sin2)*Sv
     const xy    =  -((Kh-KH)*cos*sin)*Sv
     const yy    = (Kh*sin2 + KH*cos2)*Sv
     const zz    = Sv
 
+    //console.log([xx, xy, yy, zz, magma, ...shifts])
     return [xx, xy, yy, zz, magma, ...shifts]
 }

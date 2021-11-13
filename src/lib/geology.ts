@@ -111,6 +111,10 @@ export class JointData extends Data {
             return square(sub(abs(dot(this.measure, d)), 1)) // w*(1-d)^2
         }
         else {
+
+            console.log('1 ----------------', this.measure )
+            console.log('2 --------------', d )
+
             return square(dot(this.measure, d)) // w*(1-d)**2
         }
     }

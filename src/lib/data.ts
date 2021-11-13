@@ -101,8 +101,11 @@ export abstract class Data {
     // ===================================================================
 
     protected generateData(data: Serie | Alpha): Serie {
-        if (data instanceof Serie) return data
-        return this.generate(data)
+        if (Serie.isSerie(data)) {
+            return data as Serie
+        }
+        
+        return this.generate(data as Alpha)
     }
 
     protected readonly dataframe: DataFrame

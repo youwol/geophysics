@@ -5,8 +5,9 @@
 const io     = require('@youwol/io')
 const df     = require('@youwol/dataframe')
 const math   = require('@youwol/math')
-const geo    = require('../../../dist/@youwol/geophysics')
+const geo    = require('../../../../dist/@youwol/geophysics')
 const fs     = require('fs')
+const { apply } = require('@youwol/dataframe')
 
 const Rmag   = 2680 // Sediment density (kg/m3)
 const Rsed   = 2900 // Sediment density (kg/m3)
@@ -21,14 +22,15 @@ function printProgress(progress){
 
 // -----------------------------------------------------------------
 
-const buffer    = fs.readFileSync('/Users/fmaerten/test/models/arch/galapagos-all/model2/all_magma_chambers_600_georef.ts', 'utf8')
-const dataframe = io.decodeXYZ( buffer )[0]
+const buffer    = fs.readFileSync('/Users/fmaerten/data/arch/galapagos-all/model2/simulations-dykes.xyz', 'utf8')
+const dataframe = io.decodeXYZ(buffer)[0]
 
 const dikes = new geo.StyloliteData({
     dataframe,
     measure: 'n',
-    compute: new Array(6).fill(0).map( (v,i) => `stress${i+1}` )
+    compute: new Array(6).fill(0).map( (v,i) => `S${i+1}` )
 })
+//console.log(dikes)
 
 const result = geo.monteCarlo({
     data: [dikes],
@@ -37,19 +39,26 @@ const result = geo.monteCarlo({
         mapping: geo.gradientPressureMapping,
         // min: [0,   0, 0, Rsed, 1500, -1e9],
         // max: [180, 5, 5, Rsed, 3000,  1e9]
-        min: [0,   0, 0, Rsed, Rmag, -1e9],
-        max: [180, 5, 5, Rsed, Rmag,  1e9]
+        min: [0,   0, 0, Rsed, Rmag, -1e8],
+        max: [180, 5, 5, Rsed, Rmag,  1e8]
     },
     onProgress: (i,v) => printProgress(i+": "+v+"%"),
     onMessage: msg => console.log(msg)
-}, 2000)
+}, 100000)
 
 /*
-As an example, from https://physpet.ess.washington.edu/wp-content/uploads/sites/13/2016/02/Galapagoes-magma-chambers.pdf
-we have an estimate of the Fernandina magma density, page 62: 2680 kg/m3
+    As an example, from https://physpet.ess.washington.edu/wp-content/uploads/sites/13/2016/02/Galapagoes-magma-chambers.pdf
+    we have an estimate of the Fernandina magma density, page 62: 2680 kg/m3
 */
-
+const alpha = result.alpha
+dataframe.series['newN'] = apply(dikes.generate(alpha), n => [-n[1], n[0], 0] )
+dataframe.series['n'] = apply(dataframe.series.n, n => [-n[1], n[0], 0] )
+dataframe.series['cost'] = dikes.costs(alpha)
 
 console.log('inversion result:', result )
-//console.log('measured ', dataframe.series['insar'].array )
-//console.log('recovered', insar.generate(result.alpha).array)
+
+const bufferOut = io.encodeXYZ(dataframe, {
+    delimiter: ' \t',
+    fixed: 8
+})
+fs.writeFile('/Users/fmaerten/data/arch/galapagos-all/model2/result-forward-dikes.xyz', bufferOut, 'utf8', err => {})

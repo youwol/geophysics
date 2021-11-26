@@ -1,0 +1,109 @@
+class LineParser {
+    constructor(line, key) {
+        this.line = line
+        this.key = key
+        this.toks = line.split(' ').map( s => s.trim() )
+    }
+
+    // return true if the line key is valid
+    valid() {return false}
+
+    // return undefined if not valid but the key is valid
+    value() {throw new Error('base class cannot be used')}
+    
+}
+
+// new FloatParser(line, 'nu')
+class FloatParser extends LineParser {
+    valid() {return this.toks.length===2 && this.toks[0] === this.key }
+    value() {return parseFloat(this.toks[1])}
+}
+
+// Order = [x, y, z]
+class Vector3Parser extends LineParser {
+    valid() {return this.toks.length===4 && this.toks[0] === this.key }
+    value() {
+        return [
+            parseFloat(this.toks[1]),
+            parseFloat(this.toks[2]),
+            parseFloat(this.toks[3])
+        ]
+    }
+}
+
+// array = [a, b, ...] of any dimension
+class FloatArrayParser extends LineParser {
+    valid() {return this.toks.length>2 && this.toks[0] === this.key }
+    value() {
+        return this.toks.shift().map( v => parseFloat(v) )
+    }
+}
+
+// Order = [xx, xy, xz, yy, yz, zz]
+class SymMatrix3Parser extends LineParser {
+    valid() {return this.toks.length===7 && this.toks[0] === this.key }
+    value() {
+        return [
+            parseFloat(this.toks[1]),
+            parseFloat(this.toks[2]),
+            parseFloat(this.toks[3]),
+            parseFloat(this.toks[4]),
+            parseFloat(this.toks[5]),
+            parseFloat(this.toks[6])
+        ]
+    }
+}
+
+class IntParser extends LineParser {
+    valid() {return this.toks.length===2 && this.toks[0] === this.key }
+    value() {return parseInt(this.toks[1])}
+}
+
+class BooleanParser extends LineParser {
+    valid() {return this.toks.length===2 && this.toks[0] === this.key }
+    value() {return parseInt(toks[1]) === 0 ? false : true}
+}
+
+class StringParser extends LineParser {
+    valid() {return this.toks.length===2 && this.toks[0] === this.key }
+    value() {return this.toks[1]}
+}
+
+class PathParser extends LineParser {
+    valid() {return this.toks.length===2 && this.toks[0] === this.key }
+    value() {
+        let path = this.toks[1]
+        if (path.endsWith('/')) path = pathCavity.substring(0, path.length-1)
+        return path
+    }
+}
+
+// Example: params { "measure": "n", "projected":true, "useNormals": true, "compute": ["S1","S2","S3","S4","S5","S6"] }
+class RemainingParser extends LineParser {
+    valid() {return this.toks[0] === this.key }
+    value() {
+        let l = ''
+        for (let i=0; i<this.toks.length; ++i) l += toks[i]+ ' '
+        return l
+    }
+}
+
+class ObjectParser extends RemainingParser {
+    value() { return JSON.parse(super.value()) }
+}
+
+class SolverParser extends LineParser {
+    valid() {
+        return this.toks.length===2 && this.toks[0] === this.key
+    }
+    value() {
+        const name = this.toks[0]
+        if (name==='seidel' || name==='parallel' || name==='jacobi' || name==='gmres' || name==='cgns') {
+            return name
+        } else {
+            MSG('Unknown solver name ' + name)
+            return undefined
+        }
+    }
+}
+

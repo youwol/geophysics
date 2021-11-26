@@ -66,6 +66,7 @@ export const monteCarlo = ( params: InversionModel, n: number): InversionResult 
         // generate the alpha
         const userParams = limits.map( l => genRandom(l.min, l.max) )
         const alpha = params.alpha.mapping( userParams )
+        //console.log(userParams, alpha)
 
         const c = cost(params.data, alpha)
 
@@ -76,15 +77,24 @@ export const monteCarlo = ( params: InversionModel, n: number): InversionResult 
             solution.user  = userParams
             solution.iteration = i
             if (params.onMessage) {
-                params.onMessage(`
-fit     = ${((1-c)*100).toFixed(0)}%
-theta   = ${userParams[0].toFixed(0)}
-Kh      = ${userParams[1].toFixed(2)}
-KH      = ${userParams[2].toFixed(2)}
-density = ${userParams[4].toFixed(0)}
-shift   = ${userParams[5].toFixed(0)}
-iter    = ${solution.iteration}
-`)
+//                 let msg = `fit     = ${((1-c)*100).toFixed(0)}%
+// theta   = ${userParams[0].toFixed(0)}
+// Kh      = ${userParams[1].toFixed(2)}
+// KH      = ${userParams[2].toFixed(2)}
+// density = ${userParams[4].toFixed(0)}
+// `
+
+// `shift   = ${userParams[5].toFixed(0)}
+// iter    = ${solution.iteration}
+
+                params.onMessage(`\niteration: ${solution.iteration}`)
+                params.onMessage(`cost     : ${solution.cost}`)
+                params.onMessage(`fit      : ${solution.fit}`)
+                params.onMessage('user-alpha:')
+                userParams.forEach(v => {
+                    params.onMessage(`  ${v.toFixed(2)}`)
+                })
+                
             }
         }
         if (i%mod == 0 && params.onProgress) {

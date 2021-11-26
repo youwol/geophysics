@@ -64,8 +64,12 @@ import { Alpha } from './types'
  * Cost for joint fractures. Recall that the stresses from simulations are in
  * engineer convention.
  * 
- * If `useNormals` is set to true, then the normals to the joints are used.
- * Otherwise, the orientation of teh joints are used.
+ * If `useNormals = true` (default), then it is assumed that the provided data orientation (measure) are
+ * the normal to the joints, not the joint orientation themself. Otherwise, the orientation
+ * of the joints are used.
+ * 
+ * If `projected = true`, then the measured and the computed joints are projected on the
+ * horizontal. Otherwise (default), data and computation are kept in 3D.
  * 
  * <center><img style="width:40%; height:40%;" src="media://joint.png"></center>
  * <center><blockquote><i>
@@ -77,10 +81,11 @@ import { Alpha } from './types'
  * const data = new JointData({
  *     dataframe,
  *     useNormals: true,
- *     measure: 'normals',
- *     compute: ['u1', 'u2', 'u3'],
- *     weight: 1,
- *     weights: 'ptsWeights'
+ *     projected : true,
+ *     measure   : 'normals',
+ *     compute   : ['S1', 'S2', 'S3', 'S4', 'S5', 'S6'],
+ *     weight    : 1,
+ *     weights   : 'ptsWeights'
  * })
  * ```
  * @see [[Data]]
@@ -96,10 +101,15 @@ export class JointData extends Data {
         {dataframe, measure, compute, weights, weight, useNormals=true, projected=false}:
         {dataframe: DataFrame, measure: string, compute?: string[], weights?: string, weight?: number, useNormals?: boolean, projected?: boolean})
     {
-        super({dataframe,measure,compute,weights, weight})
+        super({dataframe, measure, compute, weights, weight})
         this.measure = normalize(this.measure)
         this.useNormals = useNormals!==undefined ? useNormals : true
         this.projected = projected!==undefined ? projected : false
+
+        // Project measure if necessary
+        if (this.projected) {
+            this.measure = this.measure.map( v => [v[0], v[1], 0])
+        }
     }
 
     name() {return 'JointData'}
@@ -107,21 +117,14 @@ export class JointData extends Data {
     costs(data: Serie | Alpha): Serie {
         const d = this.generateData(data)
         if (d.itemSize !== 3) throw new Error('generateData must have itemSize = 3 (normals to the planes)')
-        if (this.useNormals) {
-            return square(sub(abs(dot(this.measure, d)), 1)) // w*(1-d)^2
-        }
-        else {
-
-            console.log('1 ----------------', this.measure )
-            console.log('2 --------------', d )
-
-            return square(dot(this.measure, d)) // w*(1-d)**2
-        }
+        return square(sub(abs(dot(this.measure, d)), 1)) // (1-|d|)^2
     }
 
     generate(alpha: Alpha): Serie {
-        return generateJoints( {stress: weightedSum(this.compute, alpha), projected: this.projected} )
-        //return apply(eigenVector(weightedSum(this.compute, alpha)), v => [v[0], v[1], v[2]] )
+        return generateJoints( {
+            stress: weightedSum(this.compute, alpha),
+            projected: this.projected
+        })
     }
 }
 
@@ -142,11 +145,17 @@ export class DikeData extends JointData {
  * @category Geology
  */
 export function generateJoints(
-    {stress, projected=false}:
+    {stress, projected = false}:
     {stress: Serie, projected?: boolean}): Serie
 {
-    const ns = eigenVector(stress).map( v => [v[0], v[1], v[2]] )
-    return projected===true ? apply(ns, n => [-n[1], n[0], 0]) : ns
+    const ns = eigenVector(stress).map( v => [v[0], v[1], v[2]] ) // SIGMA-1
+
+    //return projected===true ? apply(ns, n => [-n[1], n[0], 0]) : ns
+
+    if (projected) {
+        return apply(ns, n => [n[0], n[1], 0])
+    }
+    return ns
 }
 
 /**

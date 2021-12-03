@@ -6,8 +6,9 @@ const io     = require('@youwol/io')
 const df     = require('@youwol/dataframe')
 const math   = require('@youwol/math')
 const geo    = require('../../dist/@youwol/geophysics')
-const arch   = require('../../../../../platform/components/arch-node/build/Release/arch.node')
 const fs     = require('fs')
+const arch   = require('../../../../../platform/components/arch-node/build/Release/arch.node')
+const { exit } = require('process')
 
 const Rsed   = 2000 // Sediment density (kg/m3)
 
@@ -17,46 +18,57 @@ function printProgress(progress){
     process.stdout.write(progress);
 }
 
-const path  = '/Users/fmaerten/data/arch/galapagos-all/model2'
+const path     = '/Users/fmaerten/data/arch/galapagos-all/model2'
+const cavities = 'Sill_magma_chambers_500_georef_NEW.ts'
+
+let alpha
+let result
 
 // -----------------------------------------------------------------
 
-const buffer    = fs.readFileSync(path + '/dikes_georef/points.xyz/simulations-All_Galapagos_dikes.xyz', 'utf8')
-const dataframe = io.decodeXYZ(buffer)[0]
+if (0) {
+    const buffer    = fs.readFileSync(path + '/dikes_georef/points.xyz/simulations-All_Galapagos_dikes.xyz', 'utf8')
+    const dataframe = io.decodeXYZ(buffer)[0]
 
-const dikes = new geo.JointData({
-    dataframe,
-    measure: 'n',
-    projected: true,
-    useNormals: true,
-    compute: new Array(6).fill(0).map( (v,i) => `S${i+1}` )
-})
+    const dikes = new geo.JointData({
+        dataframe,
+        measure   : 'n',
+        projected : true,
+        useNormals: true,
+        useAngle  : true,
+        compute   : new Array(6).fill(0).map( (v,i) => `S${i+1}` )
+    })
 
-const result = geo.monteCarlo({
-    data: [dikes],
-    alpha: {
-        // [theta, Rh, RH, rockDensity, cavityDensity, shift]
-        mapping: geo.gradientPressureMapping,
-        min: [0,   0, 0, Rsed, 2600, 0],
-        max: [180, 1, 1, Rsed, 2600, 1e8]
-    },
-    onProgress: (i,v) => printProgress(i+": "+v+"%"),
-    onMessage: msg => console.log(msg)
-}, 15000)
+    result = geo.monteCarlo({
+        data: [dikes],
+        alpha: {
+            // [theta, Rh, RH, rockDensity, cavityDensity, shift]
+            mapping: geo.gradientPressureMapping,
+            min: [0,   0, 0, Rsed, 2600,   0],
+            max: [180, 1, 1, Rsed, 2600, 1e8]
+        },
+        onProgress: (i,v) => printProgress(i+": "+v+"%"),
+        onMessage: msg => console.log(msg)
+    }, 15000)
 
-const alpha = result.alpha
-dataframe.series['newN'] = df.apply(dikes.generate(alpha), n => [-n[1], n[0], 0] )
-dataframe.series['n']    = df.apply(dataframe.series.n,    n => [-n[1], n[0], 0] )
-dataframe.series['cost'] = dikes.costs(alpha)
+    alpha = result.alpha
+    dataframe.series['newN'] = df.apply(dikes.generate(alpha), n => [-n[1], n[0], 0] )
+    dataframe.series['n']    = df.apply(dataframe.series.n,    n => [-n[1], n[0], 0] )
+    dataframe.series['cost'] = dikes.costs(alpha)
 
-console.log('inversion result:', result )
+    console.log('inversion result:', result )
 
-const bufferOut = io.encodeXYZ(dataframe, {
-    userData: {
-        result: JSON.stringify(result)
-    }
-})
-fs.writeFile(path + '/result-forward-dikes.xyz', bufferOut, 'utf8', err => {})
+    const bufferOut = io.encodeXYZ(dataframe, {
+        userData: {
+            result: JSON.stringify(result)
+        }
+    })
+    fs.writeFileSync(path + '/result-forward-dikes.xyz', bufferOut, 'utf8', err => {})
+}
+else {
+    alpha  = [-6648.4340942945455,-31.50652278530933,-6674.268689862561,-19620,2600,4484435.5958690625]
+    result = alpha
+}
 
 
 // ----------------------------------------------------------------------------
@@ -67,7 +79,7 @@ fs.writeFile(path + '/result-forward-dikes.xyz', bufferOut, 'utf8', err => {})
     model.setHalfSpace( true )
 
     // Discontinuity (sphere)
-    const surfs = io.decodeGocadTS( fs.readFileSync(path + '/all_magma_chambers_600_georef.ts', 'utf8'), {repair: false} )
+    const surfs = io.decodeGocadTS( fs.readFileSync(path + '/' + cavities, 'utf8'), {repair: false} )
     const chambers = []
     surfs.forEach( surf => {
         const chamber = new arch.Surface(surf.series.positions.array, surf.series.indices.array)
@@ -98,13 +110,25 @@ fs.writeFile(path + '/result-forward-dikes.xyz', bufferOut, 'utf8', err => {})
     const solution = new arch.Solution(model)
     solution.setNbCores(10)
 
-    const grid = io.decodeGocadTS( fs.readFileSync(path+'/grid.ts', 'utf8') )[0]
-    const obs  = grid.series['positions'].array
-    grid.series['U']     = df.Serie.create({array: solution.displ(obs) , itemSize: 3})    
-    grid.series['S']     = df.Serie.create({array: solution.stress(obs), itemSize: 6})
-    grid.series['Joint'] = geo.generateJoints({stress: grid.series['S'], projected: false}).map( v => [v[1], -v[0], 0])
+    const gridFiles = [ /*'2D_grid_500_georef.ts', */'vert_2Dgrid_Fernandina_georef.ts']
 
-    fs.writeFileSync(path+'/forward-grid.ts', io.encodeGocadTS(grid, {
-        expandAttributes: true
+    let grids = []
+    gridFiles.forEach( gridFile => {
+        const gs = io.decodeGocadTS( fs.readFileSync(path+'/'+gridFile, 'utf8') )
+        grids = [...grids, ...gs]
+    })
+
+    grids.forEach( grid => {
+        const obs  = grid.series['positions'].array
+        grid.series['U']     = df.Serie.create({array: solution.displ(obs) , itemSize: 3})    
+        grid.series['S']     = df.Serie.create({array: solution.stress(obs), itemSize: 6})
+        grid.series['Joint'] = geo.generateJoints({stress: grid.series['S'], projected: false}).map( v => [v[1], -v[0], 0])
+    })
+
+    fs.writeFileSync(path+'/forward-grid.ts', io.encodeGocadTS(grids, {
+        expandAttributes: true,
+        userData: {
+            result: JSON.stringify(result)
+        }
     }), 'utf8')
 }

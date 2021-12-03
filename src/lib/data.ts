@@ -31,8 +31,17 @@ export abstract class Data {
         if (dataframe===undefined) throw new Error(`dataframe is undefined`)
 
         this.dataframe = dataframe
+
         this.measure = this.dataframe.series[measure]
-        this.weights = dataframe.series[weights]
+        console.log('Using nb points =', this.measure.count)
+
+        // this.weights_ = dataframe.series[weights]
+        // if (this.weights_ !== undefined) {
+        //     this.sumWeights = this.weights_.array.reduce( (acc, cur) => acc+1/cur, 0 )
+        //     console.log('Using weight at points. Sum =', this.sumWeights)
+        // }
+        this.setWeights(weights) // setter
+
         if (weight !== undefined) this.weight = weight
 
         if (this.measure === undefined) throw new Error(`measure ${measure} is undefined`)
@@ -43,6 +52,17 @@ export abstract class Data {
                 if (c === undefined) throw new Error(`compute ${compute[i]} at index ${i} is undefined`)
             })
         }
+    }
+
+    setWeights(w: string) {
+        this.weights_ = this.dataframe.series[w]
+        if (this.weights_ !== undefined) {
+            this.sumWeights = this.weights_.array.reduce( (acc, cur) => acc+1/cur, 0 )
+        }
+    }
+
+    get weights() {
+        return this.weights_
     }
 
     abstract name(): string
@@ -119,7 +139,7 @@ export abstract class Data {
      * Optional: The name of the serie for the measures weight. When used, each point should
      * have a weight (number). This parameter can be skipped
      */
-    protected readonly weights: Serie = undefined
+    protected weights_: Serie = undefined
 
     /**
      * Optional: The names of the series to perform superposition (must be in the dataframe)
@@ -130,4 +150,6 @@ export abstract class Data {
      * The weight of this data. Default value is 1
      */
     readonly weight: number = 1
+
+    protected sumWeights: number = 1.0
 }

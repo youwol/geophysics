@@ -107,7 +107,9 @@ export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
     //     throw new Error('Rh is greater than RH')
     // }
 
-    const theta = alpha[0]
+    let theta = alpha[0]
+    if (theta<0 || theta>180) throw new Error('Theta must be in [0°..180°]')
+    theta = theta*Math.PI/180
     const Kh    = alpha[1]
     const KH    = alpha[2]
     const rock  = alpha[3]

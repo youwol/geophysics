@@ -6,9 +6,17 @@ node simulations.js Galapagos.def
 ```
 - inversion is done here using
 ```sh
-node inverseion.js
+node inversion.js
 ```
-- Forward on a grid is done using (don't forget to **set** the `alpha` parameters)
-```sh
-node forward.js
+
+# Some results
+```js
+User-alpha = [
+    26.44,
+    0.69,
+    0.71,
+    2000,
+    2600,
+    810980
+]
 ```

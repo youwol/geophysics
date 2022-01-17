@@ -10,23 +10,26 @@ const fs     = require('fs')
 const arch   = require('../../../../../platform/components/arch-node/build/Release/arch.node')
 const { exit } = require('process')
 
-const Rsed   = 2000 // Sediment density (kg/m3)
-
 function printProgress(progress) {
     process.stdout.clearLine();
     process.stdout.cursorTo(0);
     process.stdout.write(progress);
 }
 
-const path     = '/Users/fmaerten/data/arch/spanish-peak'
-const cavities = 'volcano_tube.ts'
+const path         = '/Users/fmaerten/data/arch/spanish-peak/'
+const cavities     = 'tube_stock_NEW.ts'
+const dikeFilename = 'simulations-dykes.xyz'
+const gridFile     = '2D_grid_hole_NEW.ts'
+
+const HS = false
+const useGravity = true
 
 let alpha
 let result
 
 // -----------------------------------------------------------------
 
-const buffer    = fs.readFileSync(path + '/simulations-dykes.xyz', 'utf8')
+const buffer    = fs.readFileSync(path + dikeFilename, 'utf8')
 const dataframe = io.decodeXYZ(buffer)[0]
 
 const dikes = new geo.JointData({
@@ -39,18 +42,44 @@ const dikes = new geo.JointData({
     compute   : ['S1', 'S2', 'S3', 'S4', 'S5', 'S6']
 })
 
+let mapping = undefined
+if (useGravity) {
+    mapping = geo.gradientPressureMapping
+}
+else {
+    mapping = alphaMapping = (alpha) => {
+        let theta = alpha[0]
+        theta = theta*Math.PI/180
+        const Kh     = alpha[1]
+        const KH     = alpha[2]
+        const shift  = alpha[5]
+        const cos   = Math.cos(theta)
+        const sin   = Math.sin(theta)
+        const cos2  = cos*cos
+        const sin2  = sin*sin
+        const xx    = -(Kh*cos2 + KH*sin2)
+        const xy    =  ((Kh-KH)*cos*sin)
+        const yy    = -(Kh*sin2 + KH*cos2)
+        const zz    = 0
+    
+        return [xx, xy, yy, zz, 0, shift]
+    }
+}
+
 if (1) {
+    const start = new Date()
+
     result = geo.monteCarlo({
         data: [dikes],
         alpha: {
             // [theta, Rh, RH, rockDensity, cavityDensity, shift]
-            mapping: geo.gradientPressureMapping,
-            min: [0,   0, 0, 2900, 2000, -1e9],
-            max: [180, 1, 1, 2900, 3000,  1e9]
+            mapping: mapping,
+            min: useGravity ? [82, 0,   0.5, 2900, 2600,   0] : [0,  0,   0.5, 0, 0,   0],
+            max: useGravity ? [82, 0.5, 0.5, 2900, 2600, 1e10] : [90, 0.5, 0.5, 0, 0, 1e9]
         },
         onProgress: (i,v) => printProgress(i+": "+v+"%"),
         onMessage: msg => console.log(msg)
-    }, 10000)
+    }, 15000)
 
     alpha = result.alpha
 
@@ -70,35 +99,26 @@ if (1) {
 
     console.log('inversion result:', result )
 
+    const end = new Date() - start
+    console.info('Execution time for inversion: %dms', end)
+
     const bufferOut = io.encodeXYZ(dataframe, {
         userData: {
             result: JSON.stringify(result)
         }
     })
-    fs.writeFileSync(path + '/result-forward-dikes.xyz', bufferOut, 'utf8', err => {})
+    fs.writeFileSync(path + 'result-forward-dikes.xyz', bufferOut, 'utf8', err => {})
 }
 else {
-    alpha = [
-        -14556.199748377976,
-        -45.242992880092224,
-        -14298.355343428668,
-        -28449,
-        2689.8998023084237,
-        123873722.62997723
-    ]
-    user = [
-        80.33118460220669,
-        0.5023251136680618,
-        0.5119303994187476,
-        2900,
-        2689.8998023084237,
-        123873722.62997723
-    ]
-    extra = {
-      cost: 0.08051570851024792,
-      fit: 91.94842914897521
-    }
+    /*
+    theta = 82°
+    RH = 0.5
+    Rh = 0.38
+    P = 6e8 Pa
+    */
 
+    // alpha = geo.gradientPressureMapping([30, 0.2, 0.5, 2900, 2600, 6.558e8])
+    alpha = geo.gradientPressureMapping([82, 0.48, 0.5, 2900, 2600, 2e8])
     result = alpha
 }
 
@@ -107,15 +127,29 @@ else {
 {
 
     // Bad configuration to check the costs
-    //alpha = geo.gradientPressureMapping([0, 0.03, 0.05, 2900, 2240.3654047934, 1e7])
+    // alpha = geo.gradientPressureMapping([
+    //     30,
+    //     0.41,
+    //     0.52,
+    //     2900,
+    //     2690,
+    //     123873722
+    // ])
 
-    if (0) {
+    if (1) {
         dataframe.series['newN'] = df.apply(dikes.generate(alpha), n => [-n[1], n[0], 0] )
-        dataframe.series['n']    = df.apply(dataframe.series.n,    n => [-n[1], n[0], 0] )
+        // dataframe.series['n']    = df.apply(dataframe.series.n,    n => [-n[1], n[0], 0] )
+
+        // dataframe.series['newN'] = dikes.generate(alpha)
+        dataframe.series['n']    = dataframe.series.n
 
         // Removing the weight while computing the cost as attribute
         dikes.setWeights('')
         dataframe.series['cost'] = dikes.costs(alpha)
+
+        result.cost = dikes.cost(alpha)
+        result.fit  = (1-result.cost)*100
+        console.log(result)
 
         const compute = new Array(6).fill(0).map( (v,i) => `S${i+1}` )
         const stress = math.weightedSum( compute.map( name => dataframe.series[name] ), alpha )
@@ -126,31 +160,42 @@ else {
                 result: JSON.stringify(result)
             }
         })
-        fs.writeFileSync(path + '/result-forward-dikes.xyz', bufferOut, 'utf8', err => {})
+        fs.writeFileSync(path + 'result-forward-dikes.xyz', bufferOut, 'utf8', err => {})
     }
 
     const model = new arch.Model()
     model.setMaterial ( 0.25, 30e9, 2900 )
-    model.setHalfSpace( true )
+    model.setHalfSpace( HS )
 
-    // Discontinuity (sphere)
-    const surfs = io.decodeGocadTS( fs.readFileSync(path + '/' + cavities, 'utf8'), {repair: false} )
+    // Discontinuities
+    const surfs = io.decodeGocadTS( fs.readFileSync(path + cavities, 'utf8'), {repair: false} )
     const chambers = []
     surfs.forEach( surf => {
         const chamber = new arch.Surface(surf.series.positions.array, surf.series.indices.array)
         chamber.setBC("dip",    "free", 0)
         chamber.setBC("strike", "free", 0)
-        chamber.setBC("normal", "free", (x,y,z) => alpha[4]*9.81*Math.abs(z) + alpha[5] )
+        if (useGravity) {
+            chamber.setBC("normal", "free", (x,y,z) => alpha[4]*9.81*Math.abs(z) + alpha[5] )
+            // chamber.setBC("normal", "free", (x,y,z) => alpha[4]*Math.abs(z) + alpha[5] )
+        }
+        else {
+            chamber.setBC("normal", "free", () => alpha[5] )
+        }
         chambers.push(chamber)
         model.addSurface( chamber )
     })
 
     // Remote
     const remote = new arch.UserRemote()
-    remote.setFunction( (x,y,z) => {
-        const Z = Math.abs(z)
-        return [alpha[0]*Z, alpha[1]*Z, 0, alpha[2]*Z, 0, alpha[3]*Z]
-    })
+    if (useGravity) {
+        remote.setFunction( (x,y,z) => {
+            const Z = Math.abs(z)
+            return [alpha[0]*Z, alpha[1]*Z, 0, alpha[2]*Z, 0, alpha[3]*Z]
+        })
+    }
+    else {
+        remote.setFunction( () => [alpha[0], alpha[1], 0, alpha[2], 0, alpha[3]] )
+    }
     model.addRemote( remote )
 
     // Solver
@@ -165,13 +210,12 @@ else {
     const solution = new arch.Solution(model)
     solution.setNbCores(10)
 
-    const gridFile = '2D_grid.ts'
-    const grid = io.decodeGocadTS( fs.readFileSync(path+'/'+gridFile, 'utf8') )[0]
+    const grid = io.decodeGocadTS( fs.readFileSync(path + gridFile, 'utf8') )[0]
 
     // -----------------------------------------------
     // WARNING !!!!!!!!!!!!!
     // We have to translate the grid of z = -1000
-    grid.series.positions = grid.series.positions.map( p => [p[0], p[1], p[2]-1000])
+    //grid.series.positions = grid.series.positions.map( p => [p[0], p[1], p[2]-1000])
     // -----------------------------------------------
 
     const obs  = grid.series.positions.array
@@ -179,7 +223,7 @@ else {
     grid.series['S']     = df.Serie.create({array: solution.stress(obs), itemSize: 6})
     grid.series['Joint'] = geo.generateJoints({stress: grid.series['S'], projected: false}).map( v => [v[1], -v[0], v[2]])
 
-    fs.writeFileSync(path+'/forward-grid.ts', io.encodeGocadTS(grid, {
+    fs.writeFileSync(path + 'forward-grid.ts', io.encodeGocadTS(grid, {
         expandAttributes: true,
         userData: {
             result: JSON.stringify(result)

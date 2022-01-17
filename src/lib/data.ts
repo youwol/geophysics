@@ -33,7 +33,7 @@ export abstract class Data {
         this.dataframe = dataframe
 
         this.measure = this.dataframe.series[measure]
-        console.log('Using nb points =', this.measure.count)
+        //console.log('Using nb points =', this.measure.count)
 
         // this.weights_ = dataframe.series[weights]
         // if (this.weights_ !== undefined) {

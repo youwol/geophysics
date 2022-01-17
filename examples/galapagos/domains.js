@@ -1,3 +1,20 @@
+
+
+
+
+
+/*
+
+                    DEPRECATED
+                    Use domain2.js instead
+
+*/
+
+
+
+
+
+
 const io     = require('@youwol/io')
 const df     = require('@youwol/dataframe')
 const math   = require('@youwol/math')

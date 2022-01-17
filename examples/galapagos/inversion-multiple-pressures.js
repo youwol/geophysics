@@ -9,7 +9,7 @@ const geo    = require('../../dist/@youwol/geophysics')
 const arch   = require('../../../../../platform/components/arch-node/build/Release/arch.node')
 const fs     = require('fs')
 
-const Rsed   = 2000 // Sediment density (kg/m3)
+const Rsed   = 2900 // Sediment density (kg/m3)
 
 function printProgress(progress){
     process.stdout.clearLine();
@@ -21,7 +21,8 @@ function printProgress(progress){
 
 const path     = '/Users/fmaerten/data/arch/galapagos-all/model2'
 const cavities = 'Sill_magma_chambers_500_georef_NEW.ts'
-const gridFiles = [ '2D_grid_500_georef.ts' /*, 'vert_2Dgrid_Fernandina_georef.ts'*/]
+// const gridFiles = [ '2D_grid_500_georef.ts' /*, 'vert_2Dgrid_Fernandina_georef.ts'*/]
+const gridFiles = [ 'grid.ts' /*, 'vert_2Dgrid_Fernandina_georef.ts'*/]
 
 let alpha
 let result
@@ -41,17 +42,23 @@ if (1) {
 
     const minShift = 0
     const maxShift = 1e8
+
+    const start = new Date()
+
     result = geo.monteCarlo({
         data: [dikes],
         alpha: {
             // [theta, Rh, RH, rockDensity, cavityDensity, shift]
             mapping: geo.gradientPressureMapping,
-            min: [0,   0, 0, Rsed, 2600, minShift, minShift, minShift, minShift, minShift, minShift, minShift],
-            max: [180, 1, 1, Rsed, 2600, maxShift, maxShift, maxShift, maxShift, maxShift, maxShift, maxShift]
+            min: [  0, 0,   0.33, Rsed, 2600, minShift, minShift, minShift, minShift, minShift, minShift, minShift],
+            max: [180, 0.5, 0.33, Rsed, 2600, maxShift, maxShift, maxShift, maxShift, maxShift, maxShift, maxShift]
         },
         onProgress: (i,v) => printProgress(i+": "+v+"%"),
         onMessage: msg => console.log(msg)
-    }, 30000)
+    }, 10000)
+
+    const end = new Date() - start
+    console.info('Execution time for inversion: %dms', end)
 
     alpha = result.alpha
     dataframe.series['newN'] = df.apply(dikes.generate(alpha), n => [-n[1], n[0], 0] )
@@ -95,31 +102,74 @@ else {
 
     extra = {
         cost: 0.25247708136421654,
-        fit: 74.75,
-        iteration: 2285,
-        maxIteration: 30000
+        fit: 74.75
     }
 
     result = alpha
 
-    // alpha = [-568.1006299299843,
-    //     -68.26012591349003,
-    //     -202.93847652896355,
-    //     -19620,
-    //     2600,
-    //     16015617.868701182,
-    //     990311.5361030723,
-    //     17781877.88793366,
-    //     11283996.139452279,
-    //     62155111.80844082,
-    //     47042655.73881447,
-    //     40958613.88686193
-    // ]
+    /*
+    user: [
+        6.129442662679856,
+        0.4977795997431861,
+        0.5,
+        2900,
+        2600,
+        93188232.84127721,
+        54680038.1772979,
+        67374489.13307989,
+        94086657.06235252,
+        98882408.51097909,
+        93136976.82538013,
+        19879867.213942748
+    ],
+    cost: 0.19455394375102344,
+    fit: 80.54
+    */
+
+    /*
+    without g in computing teh 12 simulations
+    user: [
+        8.997670179189612, // donc 90-8.99767 car Kh > KH
+        0.3403868606592252,
+        0.33,
+        2900,
+        2600,
+        80818457.55571254,
+        71135218.43947347,
+        81953819.52455068,
+        97023458.76559415,
+        73015577.4987705,
+        95674630.55268781,
+        57626496.138994396
+    ],
+    cost: 0.1852253097944922,
+    fit: 81.48
+    */
+
+    /*
+    with g in computing teh 12 simulations
+    user: [
+        99.61315934038215,
+        0.33422023852674476,
+        0.33,
+        2900,
+        2600,
+        84441651.20940392,
+        29124248.511329997,
+        50069392.59042387,
+        50327709.80415493,
+        95693373.12171128,
+        77220746.1996048,
+        70557660.1420568
+    ],
+    cost: 0.16124353129111443,
+    fit: 83.88
+    */
 }
 
 {
     const model = new arch.Model()
-    model.setMaterial ( 0.25, 30e9, 2000 )
+    model.setMaterial ( 0.25, 30e9, Rsed )
     model.setHalfSpace( true )
 
     // Discontinuity (sphere)

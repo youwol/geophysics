@@ -18,27 +18,28 @@ function printProgress(progress){
     process.stdout.write(progress);
 }
 
-const path     = '/Users/fmaerten/data/arch/galapagos-all/model2'
-const cavities = 'Sill_magma_chambers_500_georef_NEW.ts'
+const path      = '/Users/fmaerten/data/arch/galapagos-all/model2'
+const cavities  = 'Sill_magma_chambers_500_georef_NEW.ts'
+const gridFiles = [ 'grid.ts', /*'2D_grid_500_georef.ts',/* /*'vert_2Dgrid_Fernandina_georef.ts'*/]
 
 let alpha
 let result
 
 // -----------------------------------------------------------------
 
+const buffer    = fs.readFileSync(path + '/dikes_georef/points.xyz/simulations-All_Galapagos_dikes.xyz', 'utf8')
+const dataframe = io.decodeXYZ(buffer)[0]
+
+const dikes = new geo.JointData({
+    dataframe,
+    measure   : 'n',
+    projected : true,
+    useNormals: true,
+    useAngle  : true,
+    compute   : new Array(6).fill(0).map( (v,i) => `S${i+1}` )
+})
+
 if (0) {
-    const buffer    = fs.readFileSync(path + '/dikes_georef/points.xyz/simulations-All_Galapagos_dikes.xyz', 'utf8')
-    const dataframe = io.decodeXYZ(buffer)[0]
-
-    const dikes = new geo.JointData({
-        dataframe,
-        measure   : 'n',
-        projected : true,
-        useNormals: true,
-        useAngle  : true,
-        compute   : new Array(6).fill(0).map( (v,i) => `S${i+1}` )
-    })
-
     result = geo.monteCarlo({
         data: [dikes],
         alpha: {
@@ -49,7 +50,7 @@ if (0) {
         },
         onProgress: (i,v) => printProgress(i+": "+v+"%"),
         onMessage: msg => console.log(msg)
-    }, 15000)
+    }, 6000)
 
     alpha = result.alpha
     dataframe.series['newN'] = df.apply(dikes.generate(alpha), n => [-n[1], n[0], 0] )
@@ -66,7 +67,26 @@ if (0) {
     fs.writeFileSync(path + '/result-forward-dikes.xyz', bufferOut, 'utf8', err => {})
 }
 else {
-    alpha  = [-6648.4340942945455,-31.50652278530933,-6674.268689862561,-19620,2600,4484435.5958690625]
+    alpha = [
+        -11285.335669480355,
+        -2.7684876115911,
+        -11295.567816718665,
+        -19620,
+        2600,
+        10476867.904533705
+    ]
+    user = [
+        14.209690500832991,
+        0.5751597673893147,
+        0.5757527446493713,
+        2000,
+        2600,
+        10476867.904533705
+    ]
+    info = {
+      cost: 0.16181701862595865,
+      fit: 83.82
+    }
     result = alpha
 }
 
@@ -74,9 +94,30 @@ else {
 // ----------------------------------------------------------------------------
 
 {
+    if (1) {
+        dataframe.series['newN'] = df.apply(dikes.generate(alpha), n => [-n[1], n[0], 0] )
+        dataframe.series['n']    = df.apply(dataframe.series.n,    n => [-n[1], n[0], 0] )
+
+        // Removing the weight while computing the cost as attribute
+        dataframe.series['cost'] = dikes.costs(alpha)
+
+        const compute = new Array(6).fill(0).map( (v,i) => `S${i+1}` )
+        const stress = math.weightedSum( compute.map( name => dataframe.series[name] ), alpha )
+        dataframe.series['S'] = stress
+
+        const bufferOut = io.encodeXYZ(dataframe, {
+            userData: {
+                result: JSON.stringify(result)
+            }
+        })
+        fs.writeFileSync(path + '/result-forward-dikes.xyz', bufferOut, 'utf8', err => {})
+    }
+
     const model = new arch.Model()
     model.setMaterial ( 0.25, 30e9, 2000 )
     model.setHalfSpace( true )
+
+    
 
     // Discontinuity (sphere)
     const surfs = io.decodeGocadTS( fs.readFileSync(path + '/' + cavities, 'utf8'), {repair: false} )
@@ -110,7 +151,7 @@ else {
     const solution = new arch.Solution(model)
     solution.setNbCores(10)
 
-    const gridFiles = [ /*'2D_grid_500_georef.ts', */'vert_2Dgrid_Fernandina_georef.ts']
+    //const gridFiles = [ '2D_grid_500_georef.ts' /*, 'vert_2Dgrid_Fernandina_georef.ts'*/]
 
     let grids = []
     gridFiles.forEach( gridFile => {

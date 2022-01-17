@@ -53,8 +53,10 @@ export function generateStylolites(
     {stress: Serie, projected?: boolean}): Serie
 {
     const ns = eigenVector(stress).map( v => [v[6], v[7], v[8]] ) // SIGMA-1 for engineers
+    
     if (projected) {
-        return apply(ns, n => [n[0], n[1], 0])
+        return normalize( apply(ns, n => [n[0], n[1], 0]) )
     }
+
     return ns
 }

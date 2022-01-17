@@ -102,30 +102,26 @@ export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
 export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
     if (alpha.length < 6) throw new Error(`argument alpha should be of size greater or equal to 6:
         alpha = [theta, Rh, RH, rockDensity, cavityDensity, shift1, shift2, ...]`) ;
-    
-    // if (alpha[1] > alpha[2]) {
-    //     throw new Error('Rh is greater than RH')
-    // }
 
     let theta = alpha[0]
-    if (theta<0 || theta>180) throw new Error('Theta must be in [0°..180°]')
+    //if (theta<0 || theta>180) throw new Error('Theta must be in [0°..180°]')
     theta = theta*Math.PI/180
+    
     const Kh    = alpha[1]
     const KH    = alpha[2]
     const rock  = alpha[3]
     const magma = alpha[4]
-    const shifts = [...alpha].splice(5)
-
     const cos   = Math.cos(theta)
     const sin   = Math.sin(theta)
     const cos2  = cos*cos
     const sin2  = sin*sin
-    const Sv    = -rock * 9.81
+    const Sv    = -rock * 9.81 // altrady computed: |z|
     const xx    = (Kh*cos2 + KH*sin2)*Sv
     const xy    =  -((Kh-KH)*cos*sin)*Sv
     const yy    = (Kh*sin2 + KH*cos2)*Sv
     const zz    = Sv
 
-    //console.log([xx, xy, yy, zz, magma, ...shifts])
+    const shifts = [...alpha].splice(5)
+
     return [xx, xy, yy, zz, magma, ...shifts]
 }

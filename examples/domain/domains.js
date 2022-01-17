@@ -1,3 +1,17 @@
+
+/*
+
+
+
+                TO BE CONTINUATED
+
+But we have a design problemsince the domain is circular:
+    - which axis is the radius and the other one the theta ?
+
+
+*/
+
+
 const io     = require('@youwol/io')
 const df     = require('@youwol/dataframe')
 const math   = require('@youwol/math')
@@ -6,9 +20,21 @@ const geom   = require('../../../geometry/dist/@youwol/geometry')
 const fs     = require('fs')
 const { exit } = require('process')
 
-const path     = '/Users/fmaerten/data/arch/spanish-peak'
 
-// -----------------------------------------------------------------
+if (process.argv.length < 3) {
+    printHelp()
+    exit(1)
+}
+
+function getData(name, parameters, dataframe, args) {
+    parameters['dataframe'] = dataframe
+    parameters['compute']   = new Array(args.inverse.dim).fill(0).map( (v,i) => `${parameters.compute}${i+1}` )
+
+    if (name==='joint' || name==='dyke' || name==='dike') return new geo.JointData(parameters)
+    if (name==='stylolite') return new geo.StyloliteData(parameters)
+
+    return undefined
+}
 
 class Axis {
     constructor(min, max) {
@@ -19,7 +45,7 @@ class Axis {
 
 class Theta extends Axis {
     constructor(min, max) {
-        super(min, max)
+        super(min, max, 0)
     }
     setUser(user, p) {
         user[0] = this.value(p)
@@ -39,21 +65,33 @@ class Rh extends Axis {
     }
     value(p) {
         const r = Math.sqrt(p[0]**2 + p[1]**2)
-        return this.min + (1-r) * (this.max - this.min)
+        return (1-r) * (this.max - this.min)
     }
 }
 
-class RHoverRh extends Axis {
+class Density extends Axis {
     constructor(min, max) {
         super(min, max)
     }
     setUser(user, p) {
-        user[1] = this.value(p)
-        user[2] = this.max
+        user[4] = this.value(p)
     }
     value(p) {
         const r = Math.sqrt(p[0]**2 + p[1]**2)
-        return this.min +(1-r) * (this.max-this.min)
+        return r * (this.max - this.min)
+    }
+}
+
+class Shift extends Axis {
+    constructor(min, max) {
+        super(min, max)
+    }
+    setUser(user, p) {
+        user[5] = this.value(p)
+    }
+    value(p) {
+        const r = Math.sqrt(p[0]**2 + p[1]**2)
+        return r * (this.max - this.min)
     }
 }
 
@@ -79,35 +117,21 @@ class Alpha {
 
 // ---------------------------------------------------------
 
-const buffer    = fs.readFileSync(path + '/simulations-dykes.xyz', 'utf8')
+const params = JSON.parse( fs.readFileSync(process.argv[2], 'utf8') )
+
+const buffer    = fs.readFileSync(params.path + params.data.path + params.path.filename, 'utf8')
 const dataframe = io.decodeXYZ(buffer)[0]
 
-const dikes = new geo.JointData({
-    dataframe,
-    measure: 'n',
-    //weights: 'w',
-    compute: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6'],
-    projected : true,
-    useNormals: true,
-    useAngle  : true
-})
+const data = getData(params.data.type, params.data.parameters, dataframe, params)
 
-let user = [
-    -1,
-    -1,
-    0.5,
-    2900,
-    2600,
-    //6.558e8
-    2e7
-]
+let user = params.solution.alpha
 
 const x     = new Theta(0, 180)
-const y     = new Rh   (0.4, user[2])
+const y     = new Rh   (0, user[2])
 const alpha = new Alpha(x, y, user)
 
-// Multiple domains
-if (0) {
+
+if (1) {
     const surface = geom.generateEllipse({a:1, b:1, nbRings:15, density:8, center:[0, 0, 0]})
     fs.writeFileSync(path + `/domain-empty.ts`, io.encodeGocadTS(surface), 'utf8', err => {})
     const positions = surface.series.positions.map( v => v) // duplicate
@@ -126,16 +150,13 @@ if (0) {
     }
 }
 
-// One domain
-if (1) {
+if (0) {
     // nbRings: 90
-    const surface = geom.generateEllipse({a:2, b:2, nbRings:20, density:8, center:[0, 0, 0]})
-    //fs.writeFileSync(path + `/domain-empty.ts`, io.encodeGocadTS(surface), 'utf8', err => {})
+    const surface = geom.generateEllipse({a:1, b:1, nbRings:15, density:8, center:[0, 0, 0]})
+    fs.writeFileSync(path + `/domain-empty.ts`, io.encodeGocadTS(surface), 'utf8', err => {})
     const positions = surface.series.positions.map( v => v) // duplicate
 
-    console.log(math.minMax(positions))
-
-    //y.max = user[2] // already done in the ctor
+    y.max = user[2]
     surface.series['cost'] = positions.map( p => {
         return dikes.cost( alpha.value(p) ) * 180 / Math.PI
     })

@@ -80,7 +80,10 @@ export class JointData extends Data {
             }
             else {
                 const W = 2/Math.PI
-                return dot(this.measure, d).map( (v,i) => Math.acos(Math.abs(v)) * W )
+                return dot(this.measure, d).map( (v,i) => {
+                    const a = Math.abs(v)
+                    return Math.acos(a>1?1:a) * W
+                })
             }
         }
         else {
@@ -91,6 +94,9 @@ export class JointData extends Data {
             else {
                 // (1-|d|)^2
                 return square(sub(abs(dot(this.measure, d)), 1))
+                
+                // DOES NOT WORK §yet?)
+                //this.measure.dot(d).abs().sub(1).square()
             }
         }
     }
@@ -124,5 +130,6 @@ export function generateJoints(
     if (projected) {
         return normalize( apply(ns, n => [n[0], n[1], 0]) )
     }
+    
     return ns
 }

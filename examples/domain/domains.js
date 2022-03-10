@@ -5,7 +5,7 @@
 
                 TO BE CONTINUATED
 
-But we have a design problemsince the domain is circular:
+But we have a design problem since the domain is circular:
     - which axis is the radius and the other one the theta ?
 
 

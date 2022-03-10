@@ -1,0 +1,393 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>mapping | @youwol/geophysics - v0.0.8</title>
+	<meta name="description" content="Documentation for @youwol/geophysics - v0.0.8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">@youwol/geophysics - v0.0.8</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">@youwol/geophysics - v0.0.8</a>
+				</li>
+				<li>
+					<a href="mapping.html">mapping</a>
+				</li>
+			</ul>
+			<h1>Module mapping</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Using the prinicipal of superposition to perform fast computations requires
+							a vector of weights (called alpha). Most of the time the user wants to use the
+							weights in his own space, and therefore the need to map from the user-defined to the
+						needed space.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Interfaces</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/mapping.alphamapping.html" class="tsd-kind-icon">alpha<wbr>Mapping</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Type aliases</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="mapping.html#alphaparameters" class="tsd-kind-icon">Alpha<wbr>Parameters</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="mapping.html#defaultmapping" class="tsd-kind-icon">default<wbr>Mapping</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="mapping.html#gradientpressuremapping" class="tsd-kind-icon">gradient<wbr>Pressure<wbr>Mapping</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="mapping.html#simpleandersonmapping" class="tsd-kind-icon">simple<wbr>Anderson<wbr>Mapping</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+					<a name="alphaparameters" class="tsd-anchor"></a>
+					<h3>Alpha<wbr>Parameters</h3>
+					<div class="tsd-signature tsd-kind-icon">Alpha<wbr>Parameters<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>mapping<span class="tsd-signature-symbol">?: </span><a href="../interfaces/mapping.alphamapping.html" class="tsd-signature-type" data-tsd-kind="Interface">alphaMapping</a><span class="tsd-signature-symbol">; </span>max<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>min<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>brief</dt>
+							<dd><p>Parameters for defining <a href="lib_types.html#alpha">Alpha</a>, i.e., the min/max of each value as well
+									as an optional <a href="../interfaces/mapping.alphamapping.html">alphaMapping</a> which allows to convert a user-defined parameter space to the
+								global one. For stochastic smulation, parameters will be sampled in these ranges.</p>
+							</dd>
+							<dt>example</dt>
+							<dd><pre><code class="language-ts"><span style="color: #008000">// First parameters is theta in [0°, 180°]</span>
+<span style="color: #008000">// Second parameter is stress ratio in [0, 3]</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">parameters</span><span style="color: #000000"> = { </span>
+<span style="color: #000000">    </span><span style="color: #001080">mapping:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">SimpleAndersonMapping</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">min:</span><span style="color: #000000"> [  </span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #098658">0</span><span style="color: #000000">],</span>
+<span style="color: #000000">    </span><span style="color: #001080">max:</span><span style="color: #000000"> [</span><span style="color: #098658">180</span><span style="color: #000000">, </span><span style="color: #098658">3</span><span style="color: #000000">]</span>
+<span style="color: #000000">}</span>
+</code></pre>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> mapping<span class="tsd-signature-symbol">?: </span><a href="../interfaces/mapping.alphamapping.html" class="tsd-signature-type" data-tsd-kind="Interface">alphaMapping</a></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>max<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>min<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="defaultmapping" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> default<wbr>Mapping</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">default<wbr>Mapping<span class="tsd-signature-symbol">(</span>alpha<span class="tsd-signature-symbol">: </span><a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A default mapping for any <a href="lib_types.html#alpha">Alpha</a>. Basically it return the same alpha.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="../interfaces/mapping.alphamapping.html">alphaMapping</a></p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>alpha: <a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="gradientpressuremapping" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> gradient<wbr>Pressure<wbr>Mapping</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">gradient<wbr>Pressure<wbr>Mapping<span class="tsd-signature-symbol">(</span>alpha<span class="tsd-signature-symbol">: </span><a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Transform the user-parameter-space <code>[theta, Rh, RH, rockDensity, cavityDensity, shift1, shift2...]</code>
+										to the global one <code>[Sxx, Sxy, Syy, Szz, density, shift1, shift2...]</code>, where theta is the orientation
+										of the maximum principal horizontal stress according to the north, clock-wize and in <code>[0..180]</code>,
+										Rh is the ratio of Sigma_h/Sigma_v, RH is the ratio of Sigma_H/Sigma_v, and the shifts are the pressure
+									shift of the cavity at <code>z=0</code>.</p>
+								</div>
+								<p>Note that this regional stress and the pressure use the gradient and that you can provide as many
+									shift pressures as necessary (as long as the number of linearly independent simulations are
+								computed)</p>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="../interfaces/mapping.alphamapping.html">alphaMapping</a></p>
+									</dd>
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #008000">// provide 2 pressure shifts</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">alpha</span><span style="color: #000000"> = </span><span style="color: #795E26">GradientPressureMapping</span><span style="color: #000000">([</span><span style="color: #098658">45</span><span style="color: #000000">, </span><span style="color: #098658">0.1</span><span style="color: #000000">, </span><span style="color: #098658">0.2</span><span style="color: #000000">, </span><span style="color: #098658">2300</span><span style="color: #000000">, </span><span style="color: #098658">2200</span><span style="color: #000000">, -</span><span style="color: #098658">1e6</span><span style="color: #000000">, -</span><span style="color: #098658">1e7</span><span style="color: #000000">])</span>
+</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>alpha: <a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The user-define parameter space</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a></h4>
+							<p><code>[Sxx, Sxy, Syy, Szz, cavityDensity, shift1, shift2...]</code></p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="simpleandersonmapping" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> simple<wbr>Anderson<wbr>Mapping</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">simple<wbr>Anderson<wbr>Mapping<span class="tsd-signature-symbol">(</span>alpha<span class="tsd-signature-symbol">: </span><a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>brief</dt>
+									<dd><p>Convert the regional Andersonian stress (theta, R) into the global CSys [xx, xy, yy].
+											Basically, this fonction convert a non-linear space into a linear one in order to be
+										used by the superposition. This regional stress is not defined with gradient.</p>
+									</dd>
+									<dt>see</dt>
+									<dd><p><a href="../interfaces/mapping.alphamapping.html">alphaMapping</a></p>
+									</dd>
+									<dt>see</dt>
+									<dd><p>publication <br>
+										<code>Maerten, F., Madden, E. H., Pollard, D. D., &amp; Maerten, L. (2016). Incorporating fault mechanics into inversions of aftershock data for the regional remote stress, with application to the 1992 Landers, California earthquake. Tectonophysics, 674, 52-64.</code></p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>alpha: <a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>In the form [theta, R], with theta the angle in degrees of the maximum principal horizontal
+											stress according to the north and clock wize and defined in the range [0..180], R the extended
+										stress ratio in [0..3].</p>
+										<p>For instance:</p>
+										<ul>
+											<li>if R ∈ [0..1], then it is a normal fault regime
+												<li>if R ∈ [1..2], then it is a strike slip fault regime
+													<li>if R ∈ [2..3], then it is a reverse fault regime
+										</ul>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="lib_types.html#alpha" class="tsd-signature-type" data-tsd-kind="Type alias">Alpha</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="index.html">index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib.html">lib</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_cost.html">lib/cost</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_data.html">lib/data</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_dataset.html">lib/dataset</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_dataset_dyke.html">lib/dataset/dyke</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_dataset_gps.html">lib/dataset/gps</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_dataset_insar.html">lib/dataset/insar</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_dataset_joint.html">lib/dataset/joint</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_dataset_stylolite.html">lib/dataset/stylolite</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_domain.html">lib/domain</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_forward.html">lib/forward</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_inversion.html">lib/inversion</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_montecarlo.html">lib/monte<wbr>Carlo</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="lib_types.html">lib/types</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="mapping.html">mapping</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="tests_alpha_test.html">tests/alpha.test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="tests_cost_test.html">tests/cost.test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="tests_example_test.html">tests/example.test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="tests_example2_test.html">tests/example2.test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="tests_fake_test.html">tests/fake.test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="tests_forward_test.html">tests/forward.test</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/mapping.alphamapping.html" class="tsd-kind-icon">alpha<wbr>Mapping</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="mapping.html#alphaparameters" class="tsd-kind-icon">Alpha<wbr>Parameters</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="mapping.html#defaultmapping" class="tsd-kind-icon">default<wbr>Mapping</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="mapping.html#gradientpressuremapping" class="tsd-kind-icon">gradient<wbr>Pressure<wbr>Mapping</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="mapping.html#simpleandersonmapping" class="tsd-kind-icon">simple<wbr>Anderson<wbr>Mapping</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

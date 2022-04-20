@@ -1,5 +1,5 @@
 /**
- * Inverst for the far field stress + 1 pressure in the Fernandina
+ * Invert for the far field stress + 1 pressure in the Fernandina
  * magma chamber
  */
 const io     = require('@youwol/io')
@@ -19,10 +19,9 @@ function printProgress(progress){
 
 // -----------------------------------------------------------------
 
-const path     = '/Users/fmaerten/data/arch/galapagos-all/model2'
-const cavities = 'Sill_magma_chambers_500_georef_NEW.ts'
-// const gridFiles = [ '2D_grid_500_georef.ts' /*, 'vert_2Dgrid_Fernandina_georef.ts'*/]
-const gridFiles = [ 'grid.ts' /*, 'vert_2Dgrid_Fernandina_georef.ts'*/]
+const path      = '/Users/fmaerten/data/arch/galapagos-all/model2'
+const cavities  = 'Sill_magma_chambers_500_georef_NEW.ts'
+const gridFiles = [ '2D_grid_13433pts_georef.ts']
 
 let alpha
 let result
@@ -41,7 +40,7 @@ if (1) {
     })
 
     const minShift = 0
-    const maxShift = 1e8
+    const maxShift = 1e9
 
     const start = new Date()
 
@@ -50,12 +49,12 @@ if (1) {
         alpha: {
             // [theta, Rh, RH, rockDensity, cavityDensity, shift]
             mapping: geo.gradientPressureMapping,
-            min: [  0, 0,   0.33, Rsed, 2600, minShift, minShift, minShift, minShift, minShift, minShift, minShift],
-            max: [180, 0.5, 0.33, Rsed, 2600, maxShift, maxShift, maxShift, maxShift, maxShift, maxShift, maxShift]
+            min: [86, 0.324, 0.33, Rsed, 2600, minShift, minShift, minShift, minShift, minShift, minShift, minShift],
+            max: [86, 0.324, 0.33, Rsed, 2600, maxShift, maxShift, maxShift, maxShift, maxShift, maxShift, maxShift]
         },
         onProgress: (i,v) => printProgress(i+": "+v+"%"),
         onMessage: msg => console.log(msg)
-    }, 10000)
+    }, 20000)
 
     const end = new Date() - start
     console.info('Execution time for inversion: %dms', end)
@@ -67,10 +66,15 @@ if (1) {
 
     console.log('inversion result:', result )
 
-    const bufferOut = io.encodeXYZ(dataframe)
+    let bufferOut = io.encodeXYZ(dataframe)
     fs.writeFileSync(path+'/result-forward-dikes.xyz', bufferOut, 'utf8', err => {})
+
+    bufferOut = ''
+    dataframe.series['cost'].forEach( v => bufferOut += v+'\n')
+    fs.writeFileSync('/Users/fmaerten/Desktop/dikes-misfit-angle-inversion.txt', bufferOut, 'utf8', err => {})
 }
 else {
+    /*
     alpha = [
         -116.13670653845944,
         -20.283697996451437,
@@ -99,6 +103,7 @@ else {
         60573883.84678599,
         85070700.98917384
     ]
+    */
 
     extra = {
         cost: 0.25247708136421654,
@@ -108,7 +113,7 @@ else {
     result = alpha
 
     /*
-    user: [
+    user = [
         6.129442662679856,
         0.4977795997431861,
         0.5,
@@ -121,14 +126,15 @@ else {
         98882408.51097909,
         93136976.82538013,
         19879867.213942748
-    ],
-    cost: 0.19455394375102344,
-    fit: 80.54
+    ]
+    extra = {
+        cost: 0.19455394375102344,
+        fit: 80.54
+    }
     */
-
-    /*
-    without g in computing teh 12 simulations
-    user: [
+    
+    // without g in computing teh 12 simulations
+    user = [
         8.997670179189612, // donc 90-8.99767 car Kh > KH
         0.3403868606592252,
         0.33,
@@ -141,10 +147,12 @@ else {
         73015577.4987705,
         95674630.55268781,
         57626496.138994396
-    ],
-    cost: 0.1852253097944922,
-    fit: 81.48
-    */
+    ]
+    extra = {
+        cost: 0.1852253097944922,
+        fit: 81.48
+    }
+    
 
     /*
     with g in computing teh 12 simulations
@@ -168,6 +176,11 @@ else {
 }
 
 {
+
+    // Convert user--> alpha
+    // const alpha = geo.gradientPressureMapping(user)
+    console.log(alpha)
+
     const model = new arch.Model()
     model.setMaterial ( 0.25, 30e9, Rsed )
     model.setHalfSpace( true )
@@ -193,7 +206,7 @@ else {
     model.addRemote( remote )
 
     // Solver
-    const solver = new arch.Solver(model)
+    const solver = new arch.Forward(model)
     solver.select("parallel")
     solver.setNbCores(10)
     solver.setMaxIter(1000)
@@ -220,7 +233,7 @@ else {
         grid.series['Joint'] = geo.generateJoints({stress: grid.series['S'], projected: false}).map( v => [v[1], -v[0], 0])
     })
 
-    fs.writeFileSync(path+'/forward-grid.ts', io.encodeGocadTS(grids, {
+    fs.writeFileSync(path+'/forward-grid-13500.ts', io.encodeGocadTS(grids, {
         expandAttributes: true,
         userData: {
             result: JSON.stringify(result)

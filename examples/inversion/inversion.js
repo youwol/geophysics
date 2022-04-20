@@ -141,7 +141,7 @@ if (params.forward !== undefined && params.forward.active) {
     model.addRemote( remote )
 
     // Solver
-    const solver = new arch.Solver(model)
+    const solver = new arch.Forward(model)
     solver.select    (params.forward.solver.name)
     solver.setNbCores(params.forward.solver.core)
     solver.setMaxIter(params.forward.solver.maxIter)

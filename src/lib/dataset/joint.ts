@@ -45,7 +45,7 @@ import { Alpha } from '../types'
  */
 export class JointData extends Data {
     protected useNormals = true
-    protected useAngle = false
+    protected useAngle   = true
     protected projected  = false
 
     constructor(
@@ -56,11 +56,17 @@ export class JointData extends Data {
         this.measure = normalize(this.measure)
         this.useNormals = useNormals!==undefined ? useNormals : true
         this.projected = projected!==undefined ? projected : false
-        this.useAngle = useAngle!==undefined ? useAngle: false
+        this.useAngle = useAngle!==undefined ? useAngle: true
 
         // Project measure if necessary
         if (this.projected) {
-            this.measure = this.measure.map( v => [v[0], v[1], 0])
+            // this.measure = this.measure.map( v => [v[0], v[1], 0])
+            this.measure = this.measure.map( v => {
+                const x = v[0]
+                const y = v[1]
+                const l = Math.sqrt(x**2 + y**2)
+                return [x/l, y/l, 0]
+            })
         }
     }
 
@@ -82,7 +88,7 @@ export class JointData extends Data {
                 const W = 2/Math.PI
                 return dot(this.measure, d).map( (v,i) => {
                     const a = Math.abs(v)
-                    return Math.acos(a>1?1:a) * W
+                    return Math.acos(a>1 ? 1 : a) * W
                 })
             }
         }
@@ -128,8 +134,13 @@ export function generateJoints(
     const ns = eigenVector(stress).map( v => [v[0], v[1], v[2]] ) // SIGMA-1 for engineers
 
     if (projected) {
-        return normalize( apply(ns, n => [n[0], n[1], 0]) )
+        return normalize( apply(ns, n => {
+            const x = n[0]
+            const y = n[1]
+            const l = Math.sqrt(x**2 + y**2)
+            return [x/l, y/l, 0]
+            // [n[0], n[1], 0]
+        }) )
     }
-    
     return ns
 }

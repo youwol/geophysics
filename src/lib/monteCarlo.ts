@@ -90,6 +90,7 @@ export const monteCarlo = ( params: InversionModel, n: number): InversionResult 
                 params.onMessage(`\niteration: ${solution.iteration}`)
                 params.onMessage(`cost     : ${solution.cost}`)
                 params.onMessage(`fit      : ${solution.fit}`)
+                params.onMessage(`mean misfit angle : ${solution.cost*90}`)
                 params.onMessage('user-alpha:')
                 userParams.forEach(v => {
                     params.onMessage(`  ${v.toFixed(2)}`)

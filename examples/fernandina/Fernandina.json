@@ -1,0 +1,165 @@
+{
+    "initialization": {
+        "model": {
+            "path": "/Users/fmaerten/data/arch/fernandina/",
+            "young": 30e9,
+            "poisson": 0.25,
+            "halfSpace": true,
+            "rockDensity": 2900,
+            "perCavity": true,
+            "check": false,
+            "gravity": true,
+            "saveEachStep": false
+        },
+        "cavity": {
+            "path": "",
+            "filename": [
+                "Fernandina_chamber_ellipsoid.ts"
+            ],
+            "translate": [
+                0,
+                0,
+                0
+            ],
+            "info": true,
+            "out": {
+                "path": "out/",
+                "filename": "simulations-cavity.ts",
+                "expandAttributes": false,
+                "burgers": {
+                    "name": "U",
+                    "active": "false"
+                }
+            }
+        },
+        "grid": {
+            "path": "",
+            "filename": [
+                "dikes.xyz"
+            ],
+            "translate": [
+                0,
+                0,
+                0
+            ],
+            "info": true,
+            "out": {
+                "path": "out/",
+                "filename": "simulations-dikes.xyz",
+                "expandAttributes": false,
+                "displ": {
+                    "active": false,
+                    "name": "U"
+                },
+                "strain": {
+                    "active": false,
+                    "name": "E"
+                },
+                "stress": {
+                    "active": true,
+                    "name": "S"
+                }
+            }
+        },
+        "solver": {
+            "name": "parallel",
+            "core": 10,
+            "maxIter": 1000,
+            "eps": 1e-9
+        }
+    },
+    "inversion": {
+        "_comment1_": "------------- General model parameters -------------",
+        "model": {
+            "path": "/Users/fmaerten/data/arch/fernandina/",
+            "young": 30e9,
+            "poisson": 0.25,
+            "halfSpace": true,
+            "rockDensity": 2000
+        },
+        "_comment2_": "------------- The inversion itself -------------",
+        "inverse": {
+            "active": true,
+            "dim": 6,
+            "data": {
+                "path": "out/",
+                "filename": "simulations-dikes.xyz",
+                "type": "joint",
+                "parameters": {
+                    "measure": "n",
+                    "compute": "S",
+                    "projected": true,
+                    "useNormals": true
+                }
+            },
+            "simulation": {
+                "algo": "MonteCarlo",
+                "iterations": 10000,
+                "alpha": {
+                    "mapping": "gradientPressureMapping",
+                    "min": [
+                        0,
+                        0.33,
+                        0.33,
+                        2900,
+                        2000,
+                        0
+                    ],
+                    "max": [
+                        0,
+                        0.33,
+                        0.33,
+                        2900,
+                        2000,
+                        1e9
+                    ]
+                }
+            },
+            "out": {
+                "path": "out/",
+                "filename": "result-forward-dikes.xyz"
+            }
+        },
+        "_comment3_": "------------- Finally, the forward modeling on grid -------------",
+        "forward": {
+            "active": true,
+            "__alpha": [
+                -7695,
+                -157,
+                -7586,
+                -28449,
+                2080,
+                52491849
+            ],
+            "cavity": {
+                "path": "",
+                "filename": "Fernandina_chamber_ellipsoid.ts",
+                "translate": [
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "grid": {
+                "path": "./",
+                "filename": "grid_fernandina_flat.ts",
+                "out": {
+                    "path": "out/",
+                    "filename": "result-grid.ts",
+                    "expandAttributes": false
+                },
+                "translate": [
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "solver": {
+                "name": "parallel",
+                "core": 10,
+                "maxIter": 1000,
+                "eps": 1e-9
+            }
+        }
+    }
+}

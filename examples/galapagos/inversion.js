@@ -20,7 +20,8 @@ function printProgress(progress){
 
 const path      = '/Users/fmaerten/data/arch/galapagos-all/model2'
 const cavities  = 'Sill_magma_chambers_500_georef_NEW.ts'
-const gridFiles = [ 'grid.ts', /*'2D_grid_500_georef.ts',/* /*'vert_2Dgrid_Fernandina_georef.ts'*/]
+// const gridFiles = [ 'grid.ts', /*'2D_grid_500_georef.ts',/* /*'vert_2Dgrid_Fernandina_georef.ts'*/]
+const gridFiles = ['2D_grid_25953pts_georef']
 
 let alpha
 let result

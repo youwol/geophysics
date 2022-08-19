@@ -28,8 +28,8 @@
             "iterations": 50000,
             "alpha"     : {
                 "mapping": "gradientPressureMapping",
-                "min"    : [0,   0, 0, 2900, 2000, -1e9],
-                "max"    : [180, 1, 1, 2900, 3000,  1e9]
+                "min"    : [0,   0, 0, 2900, 2000, 0],
+                "max"    : [180, 1, 1, 2900, 3000, 1e9]
             }
         },
         "out": {

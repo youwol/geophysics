@@ -1,7 +1,7 @@
 {
     "_comment1_": "------------- General model parameters -------------",
     "model": {
-        "path"       : "/Users/fmaerten/data/arch/galapagos-all/model2/",
+        "path"       : "/Users/fmaerten/data/arch/galapagos-all/2000/",
         "young"      : 30e9,
         "poisson"    : 0.25,
         "halfSpace"  : true,
@@ -10,11 +10,11 @@
 
     "_comment2_": "------------- The inversion itself -------------",
     "inverse": {
-        "active"    : true,
+        "active"    : false,
         "dim"       : 12,
         "data": {
-            "path"    : "dikes_georef/points.xyz/",
-            "filename": "simulations-All_Galapagos_dikes.xyz",
+            "path"    : "./",
+            "filename": "simulations-dikes.xyz",
             "type"    : "joint",
             "parameters": {
                 "measure"   : "n",
@@ -28,30 +28,43 @@
             "iterations": 10000,
             "alpha"     : {
                 "mapping": "gradientPressureMapping",
-                "min"    : [0,   0, 0, 2900, 2000, 0, 0, 0, 0, 0, 0, 0],
+                "min"    : [0,  0, 0, 2900, 2000, 0, 0, 0, 0, 0, 0, 0],
                 "max"    : [90, 1, 1, 2900, 2000, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8]
             }
         },
         "out": {
             "path"      : "./",
-            "filename"  : "result-forward-dikes2.xyz"
+            "filename"  : "result-forward-dikes.xyz"
         }
     },
 
     "_comment3_": "------------- Finally, the forward modeling on grid -------------",
     "forward": {
         "active": true,
-        "_alpha": [-9387, -11.88, -9218, -28449, 2600, 315775777, 22747483, 150286728, 735665157, 140434351, 821839130, 91244685],
+        "alpha": [
+            -5869.016755908383,
+    778.5656656762808,
+    -4452.2694817784895,
+    -28449,
+    2000,
+    42476254.28251922,
+    71852310.97973883,
+    45052273.6646235,
+    28027913.719415665,
+    14095787.238329649,
+    33251865.39441347,
+    36204192.36831367],
         "cavity": {
             "path"      : "./",
-            "filename"  : "Sill_magma_chambers_500_georef_NEW.ts"
+            "filename"  : "all-chambers.ts"
         },
         "grid": {
             "path"      : "./",
-            "filename"  : "2D_grid_13433pts_georef.ts",
+            "filename"  : "topo_6700.ts",
+            "translate" : [0, 0, 300],
             "out": {
                 "path"      : "./",
-                "filename"  : "forward-grid-13000.ts",
+                "filename"  : "forward-topo_6700.ts",
                 "expandAttributes": true
             }
         },

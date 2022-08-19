@@ -120,7 +120,7 @@ export abstract class Data {
 
     // ===================================================================
 
-    protected generateData(data: Serie | Alpha): Serie {
+    protected generateData(data: Serie | Alpha): Serie | any {
         if (Serie.isSerie(data)) {
             return data as Serie
         }

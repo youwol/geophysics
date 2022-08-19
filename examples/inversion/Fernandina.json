@@ -1,20 +1,20 @@
 {
     "_comment1_": "------------- General model parameters -------------",
     "model": {
-        "path"       : "/Users/fmaerten/data/arch/galapagos-all/model2/",
+        "path"       : "/Users/fmaerten/data/arch/fernandina/",
         "young"      : 30e9,
         "poisson"    : 0.25,
         "halfSpace"  : true,
-        "rockDensity": 2000
+        "rockDensity": 2900
     },
 
     "_comment2_": "------------- The inversion itself -------------",
     "inverse": {
         "active"    : true,
-        "dim"       : 12,
+        "dim"       : 6,
         "data": {
-            "path"    : "dikes_georef/points.xyz/",
-            "filename": "simulations-All_Galapagos_dikes.xyz",
+            "path"    : "",
+            "filename": "simulations-dikes.xyz",
             "type"    : "joint",
             "parameters": {
                 "measure"   : "n",
@@ -28,37 +28,45 @@
             "iterations": 10000,
             "alpha"     : {
                 "mapping": "gradientPressureMapping",
-                "min"    : [0,   0, 0, 2900, 2000, 0, 0, 0, 0, 0, 0, 0],
-                "max"    : [90, 1, 1, 2900, 2000, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8]
+                "min"    : [0,   0, 0, 2900, 2000, 0],
+                "max"    : [90, 1, 1, 2900, 2000, 1e8]
             }
         },
         "out": {
             "path"      : "./",
-            "filename"  : "result-forward-dikes2.xyz"
+            "filename"  : "result-forward-dikes.xyz"
         }
     },
 
     "_comment3_": "------------- Finally, the forward modeling on grid -------------",
     "forward": {
-        "active": true,
-        "_alpha": [-9387, -11.88, -9218, -28449, 2600, 315775777, 22747483, 150286728, 735665157, 140434351, 821839130, 91244685],
+        "active": false,
+        "alpha": [
+            -1085.3988153205878,
+    4.510199927891319,
+    -1287.6384266263183,
+    -28449,
+    19620,
+    26871826.453134418
+        ],
         "cavity": {
-            "path"      : "./",
-            "filename"  : "Sill_magma_chambers_500_georef_NEW.ts"
+            "path"      : "",
+            "filename"  : "fernandina_2000.ts"
         },
         "grid": {
-            "path"      : "./",
-            "filename"  : "2D_grid_13433pts_georef.ts",
+            "path"      : "",
+            "filename"  : "grid.ts",
+            "translate" : [0, 0, 0],
             "out": {
                 "path"      : "./",
-                "filename"  : "forward-grid-13000.ts",
+                "filename"  : "forward-grid.ts",
                 "expandAttributes": true
             }
         },
         "solver": {
-            "name"      : "parallel",
-            "core"      : 10,
-            "maxIter"   : 1000,
+            "name"      : "seidel",
+            "core"      : 1,
+            "maxIter"   : 2000,
             "eps"       : 1e-9
         }
     }

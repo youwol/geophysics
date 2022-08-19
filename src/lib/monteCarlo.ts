@@ -1,6 +1,7 @@
 import { defaultMapping } from "./mapping"
 import { InversionModel, InversionResult } from "./inversion"
 import { cost } from "./cost"
+import { randomMT } from '@youwol/math'
 
 /**
  * @brief A monte-carlo algorithm to perform an inversion.
@@ -35,7 +36,7 @@ import { cost } from "./cost"
  * @category Inversion
  */
 export const monteCarlo = ( params: InversionModel, n: number): InversionResult => {
-    const genRandom = (min: number, max: number) => min + Math.random()*(max-min)
+    const genRandom = (min: number, max: number) => min + randomMT(max-min)
 
     if (params.alpha === undefined) throw new Error('alpha is undefined')
 
@@ -66,7 +67,6 @@ export const monteCarlo = ( params: InversionModel, n: number): InversionResult 
         // generate the alpha
         const userParams = limits.map( l => genRandom(l.min, l.max) )
         const alpha = params.alpha.mapping( userParams )
-        //console.log(userParams, alpha)
 
         const c = cost(params.data, alpha)
 
@@ -77,16 +77,6 @@ export const monteCarlo = ( params: InversionModel, n: number): InversionResult 
             solution.user  = userParams
             solution.iteration = i
             if (params.onMessage) {
-//                 let msg = `fit     = ${((1-c)*100).toFixed(0)}%
-// theta   = ${userParams[0].toFixed(0)}
-// Kh      = ${userParams[1].toFixed(2)}
-// KH      = ${userParams[2].toFixed(2)}
-// density = ${userParams[4].toFixed(0)}
-// `
-
-// `shift   = ${userParams[5].toFixed(0)}
-// iter    = ${solution.iteration}
-
                 params.onMessage(`\niteration: ${solution.iteration}`)
                 params.onMessage(`cost     : ${solution.cost}`)
                 params.onMessage(`fit      : ${solution.fit}`)
@@ -105,3 +95,29 @@ export const monteCarlo = ( params: InversionModel, n: number): InversionResult 
 
     return solution
 }
+
+/**
+ * Use of MonteCarlo with dichotomy
+ */
+/*
+export const dichotomicMonteCarlo = (params: InversionModel, n: number, 
+    {nbDicho=3, percent=25}:{nbDicho?: number, percent?: number}={}
+): InversionResult =>
+{
+    let solution: InversionResult = {
+        alpha: [],
+        user : [],
+        cost : 1e32,
+        fit  : 0,
+        iteration: 0,
+        maxIteration: n
+    }
+
+    for (let i=0; i<nbDicho; ++i) {
+        // Call of monteCarlo() above
+        // TODO...
+    }
+
+    return solution
+}
+*/

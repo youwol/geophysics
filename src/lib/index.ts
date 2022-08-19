@@ -8,5 +8,7 @@ export * from './data'
 export * from './forward'
 
 export * from './dataset'
+export * from './utils'
+
 //export * from './geology'
 //export * from './geophysics'

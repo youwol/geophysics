@@ -110,12 +110,12 @@ export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
     const Kh    = alpha[1]
     const KH    = alpha[2]
     const rock  = alpha[3]
-    const magma = alpha[4]
+    const magma = alpha[4]*9.81
     const cos   = Math.cos(theta)
     const sin   = Math.sin(theta)
     const cos2  = cos*cos
     const sin2  = sin*sin
-    const Sv    = -rock * 9.81 // altrady computed: |z|
+    const Sv    = -rock * 9.81 // already incorporated: |z|
     const xx    = (Kh*cos2 + KH*sin2)*Sv
     const xy    =  -((Kh-KH)*cos*sin)*Sv
     const yy    = (Kh*sin2 + KH*cos2)*Sv

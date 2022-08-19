@@ -52,10 +52,12 @@ if (params.inverse && params.inverse.active) {
     const buffer    = fs.readFileSync(params.model.path + params.inverse.data.path + params.inverse.data.filename, 'utf8')
     const dataframe = io.decodeXYZ(buffer)[0]
 
+    console.log(params.inverse.data.parameters)
     const data = getData(params.inverse.data.type, params.inverse.data.parameters, dataframe, params)
     if (data === undefined) {
         console.error( 'cannot create data from', params.model.path + params.inverse.data.path + params.inverse.data.filename )
     }
+    console.log(data)
 
     const alphaDim = params.inverse.data.parameters.compute.length
 
@@ -153,6 +155,12 @@ if (params.forward !== undefined && params.forward.active) {
     solution.setNbCores(params.forward.solver.core)
 
     const grid = io.decodeGocadTS( fs.readFileSync(params.model.path + params.forward.grid.path + params.forward.grid.filename, 'utf8') )[0]
+    if (params.forward.grid.translate) {
+        const t = params.forward.grid.translate
+        console.log('translating the grid to', t)
+        grid.series['positions'] = grid.series['positions'].map( p => [p[0]+t[0], p[1]+t[1], p[2]+t[2]] )
+    }
+
     const obs  = grid.series['positions'].array
     grid.series['U'] = df.Serie.create({array: solution.displ(obs) , itemSize: 3})    
     grid.series['S'] = df.Serie.create({array: solution.stress(obs), itemSize: 6})

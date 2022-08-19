@@ -26,6 +26,7 @@ const gridFiles = [ '2D_grid_13433pts_georef.ts']
 let alpha
 let result
 
+
 if (1) {
     const buffer    = fs.readFileSync(path + '/dikes_georef/points.xyz/simulations-All_Galapagos_dikes.xyz', 'utf8')
     const dataframe = io.decodeXYZ(buffer)[0]
@@ -133,7 +134,7 @@ else {
     }
     */
     
-    // without g in computing teh 12 simulations
+    // without g in computing the 12 simulations
     user = [
         8.997670179189612, // donc 90-8.99767 car Kh > KH
         0.3403868606592252,

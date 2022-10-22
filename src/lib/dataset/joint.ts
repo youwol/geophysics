@@ -93,14 +93,15 @@ export class JointData extends Data {
             }
         }
         else {
+            // (1-|d|)^2
+            const s = square(sub(abs(dot(this.measure, d)), 1))
             if (this.weights) {
                 // sum(cost_i/w_i)/sum(1/w_i) = sum(cost_i/w_i)/sumWeights => 2 div
-                return div( div( square(sub(abs(dot(this.measure, d)), 1)), this.weights ), this.sumWeights )
+                return div( div( s, this.weights ), this.sumWeights )
             }
             else {
-                // (1-|d|)^2
-                return square(sub(abs(dot(this.measure, d)), 1))
-                
+                return s
+
                 // DOES NOT WORK §yet?)
                 //this.measure.dot(d).abs().sub(1).square()
             }

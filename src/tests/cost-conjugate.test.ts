@@ -1,16 +1,16 @@
 import * as geo from '../lib'
-import * as df from '@youwol/dataframe'
-import { Serie } from '@youwol/dataframe'
-import { equals } from '@youwol/math'
-
+import { Serie, DataFrame } from '@youwol/dataframe'
 
 test('test cost conjugate', () => {
-    const dataframe = df.DataFrame.create({
+    const dataframe = DataFrame.create({
         series: {
-            normal: Serie.create({array: [0, 0, 1], itemSize: 6})
+            normal: Serie.create({array: [0, 0, 1], itemSize: 3})
         }
     })
     
+    // ---------------------------------------------------------
+    // To be reactivated later on when the cost will be ready...
+    // ---------------------------------------------------------
     if (0) {
         const data = new geo.ConjugateData({
             dataframe,

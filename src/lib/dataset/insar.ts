@@ -116,7 +116,7 @@ import {
  * cost /= computedInsar.length
  * ```
  * @see [[Data]]
- * @category Geophysics
+ * @category Dataframe
  */
 export function generateInsar(
     {displ, LOS}:
@@ -135,6 +135,7 @@ export function generateInsar(
  * const displ   = dataframe.series['Displ']
  * const fringes = generateFringes( generateInsar({displ, LOS: [0,0,-1]}), 0.01)
  * ```
+ * @category Dataframe
  */
 export function generateFringes(serie: Serie, fringeSpacing: number): Serie {
     if (serie.itemSize !== 1) {

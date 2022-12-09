@@ -33,6 +33,7 @@
     "@youwol/math": "0.x",
     "eslint": "8.19.0",
     "jest": "28.1.2",
+    "jest-environment-jsdom": "28.1.2",
     "jest-junit": "14.0.0",
     "ts-jest": "28.0.5",
     "ts-loader": "9.3.1",

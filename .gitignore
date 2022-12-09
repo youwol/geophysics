@@ -27,3 +27,4 @@ examples/galapagos/fernandina/dikes/result-forward-dikes.xyz
 
 cdn.zip
 **/.DS_Store
+*.iml

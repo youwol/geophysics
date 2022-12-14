@@ -1,18 +1,14 @@
-const io     = require('@youwol/io')
-const df     = require('@youwol/dataframe')
-const geo    = require('../../../dist/@youwol/geophysics')
-const fs     = require('fs')
-const arch   = require('../../../../../../platform/components/arch-node/build/Release/arch.node')
+const io = require('@youwol/io')
+const df = require('@youwol/dataframe')
+const geo = require('../../../dist/@youwol/geophysics')
+const fs = require('fs')
+const arch = require('../../../../../../platform/components/arch-node/build/Release/arch.node')
 
-const path  = '/Users/fmaerten/data/arch/galapagos-all/model2'
+const path = '/Users/fmaerten/data/arch/galapagos-all/model2'
 
 const userAlpha = [
-    34.50256084887867,
-    0.2524466216086094,
-    0.2431850567279068,
-    2900,
-    2196.4765842190345,
-    73864335.79676998
+    34.50256084887867, 0.2524466216086094, 0.2431850567279068, 2900,
+    2196.4765842190345, 73864335.79676998,
 ]
 
 // const userAlpha = [
@@ -31,39 +27,52 @@ const userAlpha = [
 // ]
 
 const model = new arch.Model()
-model.setMaterial ( 0.25, 30e9, 2000 )
-model.setHalfSpace( false )
+model.setMaterial(0.25, 30e9, 2000)
+model.setHalfSpace(false)
 
-const alpha = geo.gradientPressureMapping( userAlpha )
+const alpha = geo.gradientPressureMapping(userAlpha)
 
 // Discontinuity (sphere)
-const surfs = io.decodeGocadTS( fs.readFileSync(path+'/all_magma_chambers_600_georef.ts', 'utf8'), {repair: false} )
+const surfs = io.decodeGocadTS(
+    fs.readFileSync(path + '/all_magma_chambers_600_georef.ts', 'utf8'),
+    { repair: false },
+)
 const chambers = []
-surfs.forEach( (surf, i) => {
-    const chamber = new arch.Surface(surf.series.positions.array, surf.series.indices.array)
-    chamber.setBC("dip",    "free", 0)
-    chamber.setBC("strike", "free", 0)
-    if (alpha.length>6) {
-        chamber.setBC("normal", "free", (x,y,z) => alpha[4]*9.81*Math.abs(z) + alpha[5+i] )
-    }
-    else {
-        chamber.setBC("normal", "free", (x,y,z) => alpha[4]*9.81*Math.abs(z) + alpha[5] )
+surfs.forEach((surf, i) => {
+    const chamber = new arch.Surface(
+        surf.series.positions.array,
+        surf.series.indices.array,
+    )
+    chamber.setBC('dip', 'free', 0)
+    chamber.setBC('strike', 'free', 0)
+    if (alpha.length > 6) {
+        chamber.setBC(
+            'normal',
+            'free',
+            (x, y, z) => alpha[4] * 9.81 * Math.abs(z) + alpha[5 + i],
+        )
+    } else {
+        chamber.setBC(
+            'normal',
+            'free',
+            (x, y, z) => alpha[4] * 9.81 * Math.abs(z) + alpha[5],
+        )
     }
     chambers.push(chamber)
-    model.addSurface( chamber )
+    model.addSurface(chamber)
 })
 
 // Remote
 const remote = new arch.UserRemote()
-remote.setFunction( (x,y,z) => {
+remote.setFunction((x, y, z) => {
     const Z = Math.abs(z)
-    return [alpha[0]*Z, alpha[1]*Z, 0, alpha[2]*Z, 0, alpha[3]*Z]
+    return [alpha[0] * Z, alpha[1] * Z, 0, alpha[2] * Z, 0, alpha[3] * Z]
 })
-model.addRemote( remote )
+model.addRemote(remote)
 
 // Solver
 const solver = new arch.Solver(model)
-solver.select("parallel")
+solver.select('parallel')
 solver.setNbCores(10)
 solver.setMaxIter(1000)
 solver.setEps(1e-9)
@@ -73,12 +82,18 @@ solver.run()
 const solution = new arch.Solution(model)
 solution.setNbCores(10)
 
-const grid = io.decodeGocadTS( fs.readFileSync(path+'/grid.ts', 'utf8') )[0]
-const obs  = grid.series['positions'].array
-grid.series['U']     = df.Serie.create({array: solution.displ(obs) , itemSize: 3})    
-grid.series['S']     = df.Serie.create({array: solution.stress(obs), itemSize: 6})
-grid.series['Joint'] = geo.generateJoints({stress: grid.series['S'], projected: false}).map( v => [v[1], -v[0], 0])
+const grid = io.decodeGocadTS(fs.readFileSync(path + '/grid.ts', 'utf8'))[0]
+const obs = grid.series['positions'].array
+grid.series['U'] = df.Serie.create({ array: solution.displ(obs), itemSize: 3 })
+grid.series['S'] = df.Serie.create({ array: solution.stress(obs), itemSize: 6 })
+grid.series['Joint'] = geo
+    .generateJoints({ stress: grid.series['S'], projected: false })
+    .map((v) => [v[1], -v[0], 0])
 
-fs.writeFileSync(path+'/forward-grid.ts', io.encodeGocadTS(grid, {
-    expandAttributes: true
-}), 'utf8')
+fs.writeFileSync(
+    path + '/forward-grid.ts',
+    io.encodeGocadTS(grid, {
+        expandAttributes: true,
+    }),
+    'utf8',
+)

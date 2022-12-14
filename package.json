@@ -28,11 +28,20 @@
   "devDependencies": {
     "@types/jest": "28.1.4",
     "@types/node": "18.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/parser": "^5.33.1",
     "@youwol/dataframe": "0.x",
+    "@youwol/eslint-config": "^0.0.4",
     "@youwol/io": "0.0.24",
     "@youwol/math": "0.x",
     "@youwol/prettier-config": "^0.0.2",
-    "eslint": "8.19.0",
+    "eslint": "8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.8.4",
+    "eslint-plugin-tsdoc": "^0.2.16",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "jest": "28.1.2",
     "jest-environment-jsdom": "28.1.2",
     "jest-junit": "14.0.0",
@@ -53,5 +62,18 @@
     },
     "cdnDependencies": {}
   },
-  "prettier": "@youwol/prettier-config"
+  "prettier": "@youwol/prettier-config",
+  "eslintConfig": {
+    "extends": "@youwol",
+    "overrides": [
+      {
+        "files": [
+          "examples/**/*.js"
+        ],
+        "env": {
+          "node": true
+        }
+      }
+    ]
+  }
 }

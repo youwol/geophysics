@@ -1,11 +1,22 @@
-import { Serie, DataFrame } from "@youwol/dataframe"
+import { Serie, DataFrame } from '@youwol/dataframe'
 
 /**
  * Interface for any cost function
  */
 export interface CostFunction {
-    ({measure, compute, w, weights, ...others}:
-     {measure: Serie, compute: Serie, w?: number, weights?: Serie, others?: any}): number
+    ({
+        measure,
+        compute,
+        w,
+        weights,
+        ...others
+    }: {
+        measure: Serie
+        compute: Serie
+        w?: number
+        weights?: Serie
+        others?: any
+    }): number
 }
 
 /**
@@ -16,14 +27,14 @@ export interface CostFunction {
  * ```ts
  * import { costInsar } from '@youwol/geophysics
  * import { DataFrame } from '@youwol/dataframe
- * 
+ *
  * const df = new DataFrame({
  *     d1: createSerie(...),
  *     d2: createSerie(...),
  *     d3: createSerie(...),
  *     insar: createSerie(...),
  * })
- * 
+ *
  * const insarData = {
  *     dataframe: df,
  *     measure  : 'insar',
@@ -70,4 +81,3 @@ export interface CostFunction {
  * in order to match [this publication](https://www.sciencedirect.com/science/article/abs/pii/S0040195116000731)
  */
 export type Alpha = number[]
-

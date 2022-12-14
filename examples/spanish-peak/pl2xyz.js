@@ -1,6 +1,6 @@
-const fs   = require('fs')
-const io   = require('@youwol/io')
-const df   = require('@youwol/dataframe')
+const fs = require('fs')
+const io = require('@youwol/io')
+const df = require('@youwol/dataframe')
 const math = require('@youwol/math')
 const { exit } = require('process')
 
@@ -35,27 +35,45 @@ if (process.argv.length > 5) {
 }
 console.log('using dip-angle', dipAngle)
 
-var dip = dipAngle * Math.PI/180
+var dip = (dipAngle * Math.PI) / 180
 var COS = Math.cos(dip)
 var SIN = Math.sin(dip)
 
-const dataframes = io.decodeGocadPL( fs.readFileSync(process.argv[2], 'utf8') )
+const dataframes = io.decodeGocadPL(fs.readFileSync(process.argv[2], 'utf8'))
 
 let bufferOut = '# x y z nx ny nz w\n'
 
-dataframes.forEach( dataframe => {
+dataframes.forEach((dataframe) => {
     const positions = dataframe.series.positions
-    dataframe.series.indices.forEach( seg => {
+    dataframe.series.indices.forEach((seg) => {
         const p1 = positions.itemAt(seg[0])
         const p2 = positions.itemAt(seg[1])
-        const p = [0,0,0]
-        for (var i=0; i<3; ++i) {
-            p[i] = (p1[i] + p2[i])/2.
+        const p = [0, 0, 0]
+        for (var i = 0; i < 3; ++i) {
+            p[i] = (p1[i] + p2[i]) / 2
         }
 
-        let n = math.vec.normalize( [ (p2[1] - p1[1])*SIN, -(p2[0] - p1[0])*SIN, p[2]*COS ] )
-        
-        bufferOut += p[0] + ' ' + p[1] + ' ' + p[2] + ' ' + n[0] + ' ' + n[1] + ' ' + n[2] + ' ' + weight + '\n'
+        let n = math.vec.normalize([
+            (p2[1] - p1[1]) * SIN,
+            -(p2[0] - p1[0]) * SIN,
+            p[2] * COS,
+        ])
+
+        bufferOut +=
+            p[0] +
+            ' ' +
+            p[1] +
+            ' ' +
+            p[2] +
+            ' ' +
+            n[0] +
+            ' ' +
+            n[1] +
+            ' ' +
+            n[2] +
+            ' ' +
+            weight +
+            '\n'
     })
 })
 

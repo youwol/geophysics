@@ -6,7 +6,7 @@
  * @module mapping
  */
 
-import { Alpha } from "./types"
+import { Alpha } from './types'
 
 export interface alphaMapping {
     /**
@@ -26,7 +26,7 @@ export interface alphaMapping {
  * ```ts
  * // First parameters is theta in [0°, 180°]
  * // Second parameter is stress ratio in [0, 3]
- * const parameters = { 
+ * const parameters = {
  *     mapping: new SimpleAndersonMapping,
  *     min: [  0, 0],
  *     max: [180, 3]
@@ -34,8 +34,8 @@ export interface alphaMapping {
  * ```
  */
 export type AlphaParameters = {
-    min: number[],
-    max: number[],
+    min: number[]
+    max: number[]
     mapping?: alphaMapping
 }
 
@@ -52,7 +52,7 @@ export const defaultMapping: alphaMapping = (params: Alpha) => params
  * @param alpha In the form [theta, R], with theta the angle in degrees of the maximum principal horizontal
  * stress according to the north and clock wize and defined in the range [0..180], R the extended
  * stress ratio in [0..3].
- * 
+ *
  * For instance:
  * <ul>
  *   <li>if R ∈ [0..1], then it is a normal fault regime
@@ -65,19 +65,19 @@ export const defaultMapping: alphaMapping = (params: Alpha) => params
  */
 export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
     const theta = alpha[0]
-    const R     = alpha[1]
+    const R = alpha[1]
 
-    if (theta<0 || theta>180) throw new Error('Theta must be in [0°..180°]')
-    if (R<0 || R>3) throw new Error('R must be in [0..3]')
+    if (theta < 0 || theta > 180) throw new Error('Theta must be in [0°..180°]')
+    if (R < 0 || R > 3) throw new Error('R must be in [0..3]')
 
-    const c   = Math.cos(theta*Math.PI/180)
-    const s   = Math.sin(theta*Math.PI/180)
-    const c2  = c**2
-    const s2  = s**2
+    const c = Math.cos((theta * Math.PI) / 180)
+    const s = Math.sin((theta * Math.PI) / 180)
+    const c2 = c ** 2
+    const s2 = s ** 2
 
-    if (R <= 1) return [-c2+(R-1)*s2, R*c*s, -s2+(R-1)*c2]
-    if (R <= 2) return [-R*c2+(1-R)*s2, c*s, -R*s2+(1-R)*c2]
-    return [R*c2+s2, (1-R)*c*s, R*s2+c2]
+    if (R <= 1) return [-c2 + (R - 1) * s2, R * c * s, -s2 + (R - 1) * c2]
+    if (R <= 2) return [-R * c2 + (1 - R) * s2, c * s, -R * s2 + (1 - R) * c2]
+    return [R * c2 + s2, (1 - R) * c * s, R * s2 + c2]
 }
 
 /**
@@ -86,7 +86,7 @@ export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
  * of the maximum principal horizontal stress according to the north, clock-wize and in `[0..180]`,
  * Rh is the ratio of Sigma_h/Sigma_v, RH is the ratio of Sigma_H/Sigma_v, and the shifts are the pressure
  * shift of the cavity at `z=0`.
- * 
+ *
  * Note that this regional stress and the pressure use the gradient and that you can provide as many
  * shift pressures as necessary (as long as the number of linearly independent simulations are
  * computed)
@@ -100,26 +100,27 @@ export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
  * ```
  */
 export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
-    if (alpha.length < 6) throw new Error(`argument alpha should be of size greater or equal to 6:
-        alpha = [theta, Rh, RH, rockDensity, cavityDensity, shift1, shift2, ...]`) ;
+    if (alpha.length < 6)
+        throw new Error(`argument alpha should be of size greater or equal to 6:
+        alpha = [theta, Rh, RH, rockDensity, cavityDensity, shift1, shift2, ...]`)
 
     let theta = alpha[0]
     //if (theta<0 || theta>180) throw new Error('Theta must be in [0°..180°]')
-    theta = theta*Math.PI/180
-    
-    const Kh    = alpha[1]
-    const KH    = alpha[2]
-    const rock  = alpha[3]
-    const magma = alpha[4]*9.81
-    const cos   = Math.cos(theta)
-    const sin   = Math.sin(theta)
-    const cos2  = cos*cos
-    const sin2  = sin*sin
-    const Sv    = -rock * 9.81 // already incorporated: |z|
-    const xx    = (Kh*cos2 + KH*sin2)*Sv
-    const xy    =  -((Kh-KH)*cos*sin)*Sv
-    const yy    = (Kh*sin2 + KH*cos2)*Sv
-    const zz    = Sv
+    theta = (theta * Math.PI) / 180
+
+    const Kh = alpha[1]
+    const KH = alpha[2]
+    const rock = alpha[3]
+    const magma = alpha[4] * 9.81
+    const cos = Math.cos(theta)
+    const sin = Math.sin(theta)
+    const cos2 = cos * cos
+    const sin2 = sin * sin
+    const Sv = -rock * 9.81 // already incorporated: |z|
+    const xx = (Kh * cos2 + KH * sin2) * Sv
+    const xy = -((Kh - KH) * cos * sin) * Sv
+    const yy = (Kh * sin2 + KH * cos2) * Sv
+    const zz = Sv
 
     const shifts = [...alpha].splice(5)
 

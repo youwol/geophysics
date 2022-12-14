@@ -1,10 +1,14 @@
-import { 
-    Serie, DataFrame, apply
-} from '@youwol/dataframe'
+import { Serie, DataFrame, apply } from '@youwol/dataframe'
 
-import { 
-    eigenVector, abs, dot, normalize, square,
-    div, sub, weightedSum
+import {
+    eigenVector,
+    abs,
+    dot,
+    normalize,
+    square,
+    div,
+    sub,
+    weightedSum,
 } from '@youwol/math'
 import { JointData } from '.'
 
@@ -17,21 +21,23 @@ import { Alpha } from '../types'
  * @see [[JointData]]
  * @see [[monteCarlo]]
  * @see [[createData]]
- * 
+ *
  * <center><img style="width:40%; height:40%;" src="media://stylolite.png"></center>
  * <center><blockquote><i>
  * Relation between a stylolite and the three principales stresses
  * </i></blockquote></center>
- * 
+ *
  * @category Geology
  */
 export class StyloliteData extends JointData {
-    name() {return 'StyloliteData'}
+    name() {
+        return 'StyloliteData'
+    }
 
     generate(alpha: Alpha): Serie {
-        return generateStylolites( {
+        return generateStylolites({
             stress: weightedSum(this.compute, alpha),
-            projected: this.projected
+            projected: this.projected,
         })
     }
 }
@@ -48,14 +54,17 @@ export class StyloliteData extends JointData {
  * @see [[generateJoints]]
  * @category Geology
  */
-export function generateStylolites(
-    {stress, projected = false}:
-    {stress: Serie, projected?: boolean}): Serie
-{
-    const ns = eigenVector(stress).map( v => [v[6], v[7], v[8]] ) // SIGMA-1 for engineers
-    
+export function generateStylolites({
+    stress,
+    projected = false,
+}: {
+    stress: Serie
+    projected?: boolean
+}): Serie {
+    const ns = eigenVector(stress).map((v) => [v[6], v[7], v[8]]) // SIGMA-1 for engineers
+
     if (projected) {
-        return normalize( apply(ns, n => [n[0], n[1], 0]) )
+        return normalize(apply(ns, (n) => [n[0], n[1], 0]))
     }
 
     return ns

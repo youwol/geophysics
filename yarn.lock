@@ -924,6 +924,11 @@
   resolved "https://registry.yarnpkg.com/@youwol/math/-/math-0.0.20.tgz#8ef086836722d66e7d2d42f2e43d5d199b4e0c17"
   integrity sha512-wbFC5Wuj7x5GLC42HnNilnVs9661zhFHZzGbVANVCCrAvCJNmdVEvigHZiMlX7NyRx3P8q1LjckXxIcPqKTtTw==
 
+"@youwol/prettier-config@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@youwol/prettier-config/-/prettier-config-0.0.2.tgz#4b7badc7e234193d38383940011df4246960960e"
+  integrity sha512-6SWLHnoom4Zv9Vu79ztjfnsU69RLcnzrhXFBDvC/KEnrbkqfjRqVeAooVUqote1pMckN9DFaTOt2+CtCXvCxnQ==
+
 abab@^2.0.5, abab@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
@@ -1394,6 +1399,11 @@ domexception@^4.0.0:
   integrity sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==
   dependencies:
     webidl-conversions "^7.0.0"
+
+dot-properties@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/dot-properties/-/dot-properties-1.0.1.tgz#f0b8f7bf378de3ee119ff9a2d47495ca7d19553c"
+  integrity sha512-cjIHHKlf2dPINJ5Io3lPocWvWmthXn3ztqyHVzUfufRiCiPECb0oiEqEGbEGaunFZtcMvwgUcxP9CTpLG4KCsA==
 
 electron-to-chromium@^1.4.202:
   version "1.4.225"
@@ -2778,6 +2788,18 @@ prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha512-ESF23V4SKG6lVSGZgYNpbsiaAkdab6ZgOxe52p7+Kid3W3u3bxR4Vfd/o21dmN7jSt0IwgZ4v5MUd26FEtXE9w==
+
+prettier-plugin-properties@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-properties/-/prettier-plugin-properties-0.2.0.tgz#ad025de49ea55ce2c20ee498d1ed713f6ee99311"
+  integrity sha512-Mt+z2nPkG+apJJLxfv8/Z/knhF/pTFUyxTeaRCuvQhs33rzQEkquGXSyKyvcWfijOTlOvB6KnmSJXpmblLNYrQ==
+  dependencies:
+    dot-properties "^1.0.0"
+
+prettier@^2.7.1:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.1.tgz#4e1fd11c34e2421bc1da9aea9bd8127cd0a35efc"
+  integrity sha512-lqGoSJBQNJidqCHE80vqZJHWHRFoNYsSpP9AjFhlhi9ODCJA541svILes/+/1GM3VaL/abZi7cpFzOpdR9UPKg==
 
 pretty-format@^28.0.0, pretty-format@^28.1.3:
   version "28.1.3"

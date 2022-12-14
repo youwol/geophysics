@@ -1,7 +1,7 @@
 import * as geo from '../lib'
 import { Serie, DataFrame } from '@youwol/dataframe'
 
-test('test cost conjugate', () => {
+test('cost conjugate', () => {
     const dataframe = DataFrame.create({
         series: {
             normal: Serie.create({ array: [0, 0, 1], itemSize: 3 }),

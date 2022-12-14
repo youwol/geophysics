@@ -1,10 +1,5 @@
-import { Serie, DataFrame, apply, Manager } from '@youwol/dataframe'
-import {
-    weightedSum,
-    PositionDecomposer,
-    minMax,
-    normalize,
-} from '@youwol/math'
+import { Serie, DataFrame, Manager } from '@youwol/dataframe'
+import { weightedSum, PositionDecomposer, normalize } from '@youwol/math'
 import { Data } from '../data'
 import { Alpha } from '../types'
 
@@ -23,7 +18,7 @@ import { Alpha } from '../types'
  */
 export class GenericScalarFieldData extends Data {
     private positions: Serie = undefined
-    private coordIndex: number = 0
+    private coordIndex = 0
     private xScale = 1
     private yScale = 1
     private useDerivative = false
@@ -108,8 +103,9 @@ export class GenericScalarFieldData extends Data {
 
     costs(data: Serie | Alpha): Serie {
         const compute = this.generateData(data)
-        if (compute.itemSize !== 1)
+        if (compute.itemSize !== 1) {
             throw new Error('generateData must have itemSize = 1')
+        }
 
         // console.log(this.measure, '\n', compute, '\n----------------------\n')
 

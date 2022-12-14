@@ -105,13 +105,15 @@ export class GpsData extends Data {
 export class VerticalGpsData extends Data {
     constructor(params: any) {
         super(params)
-        if (this.measure.itemSize !== 1)
+        if (this.measure.itemSize !== 1) {
             throw new Error('measure should have itemSize = 1 (displ)')
+        }
         this.compute.forEach((c) => {
-            if (c.itemSize !== 3)
+            if (c.itemSize !== 3) {
                 throw new Error(
                     'compute should have itemSize = 3 (displacement)',
                 )
+            }
         })
     }
 
@@ -121,8 +123,9 @@ export class VerticalGpsData extends Data {
 
     costs(data: Serie | Alpha): Serie {
         const d = this.generateData(data)
-        if (d.itemSize !== 1)
+        if (d.itemSize !== 1) {
             throw new Error('provided Serie must have itemSize = 1')
+        }
         return square(addNumber(negate(div(d, this.measure)), 1))
     }
 

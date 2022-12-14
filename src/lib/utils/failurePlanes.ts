@@ -10,7 +10,7 @@ export function failurePlanes({
     stress: Serie
     friction?: number
 }) {
-    let fricAngle = (friction * Math.PI) / 180
+    const fricAngle = (friction * Math.PI) / 180
     const { n1, n2 } = createPrimitive(fricAngle)
 
     // const matrix = new Matrix4()

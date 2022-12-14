@@ -1,8 +1,8 @@
-import { Serie, DataFrame, append } from '@youwol/dataframe'
+import { Serie, DataFrame } from '@youwol/dataframe'
 import { forward } from '../lib'
 
-test('test inverse', () => {
-    let df = DataFrame.create({
+test('inverse', () => {
+    const df = DataFrame.create({
         series: {
             u1: Serie.create({
                 array: [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5],
@@ -29,5 +29,5 @@ test('test inverse', () => {
         startIndex: 1,
     })
     expect(a.array).toEqual(r)
-    expect(a.itemSize).toEqual(3)
+    expect(a.itemSize).toBe(3)
 })

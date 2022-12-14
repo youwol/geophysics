@@ -21,9 +21,15 @@ export function segments2PointsWithNormals(
     dipAngle = 90,
     normalsName = 'n',
 ): DataFrame {
-    if (df.series.positions === undefined) return undefined
-    if (df.series.indices === undefined) return undefined
-    if (df.series.indices.itemSize !== 2) return undefined
+    if (df.series.positions === undefined) {
+        return undefined
+    }
+    if (df.series.indices === undefined) {
+        return undefined
+    }
+    if (df.series.indices.itemSize !== 2) {
+        return undefined
+    }
 
     const dip = (dipAngle * Math.PI) / 180
     const COS = Math.cos(dip)
@@ -36,7 +42,7 @@ export function segments2PointsWithNormals(
         const v1 = df.series.positions.itemAt(P[0])
         const v2 = df.series.positions.itemAt(P[1])
 
-        for (var i = 0; i < 3; ++i) {
+        for (let i = 0; i < 3; ++i) {
             positions.push((v1[i] + v2[i]) / 2)
         }
 

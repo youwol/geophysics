@@ -1,5 +1,5 @@
 import { Serie, DataFrame } from '@youwol/dataframe'
-import { mean, minMax, weightedSum } from '@youwol/math'
+import { mean } from '@youwol/math'
 import { Alpha } from './types'
 
 /**
@@ -36,7 +36,9 @@ export abstract class Data {
         weights?: string
         weight?: number
     }) {
-        if (dataframe === undefined) throw new Error(`dataframe is undefined`)
+        if (dataframe === undefined) {
+            throw new Error(`dataframe is undefined`)
+        }
 
         this.dataframe = dataframe
 
@@ -50,18 +52,22 @@ export abstract class Data {
         // }
         this.setWeights(weights) // setter
 
-        if (weight !== undefined) this.weight = weight
+        if (weight !== undefined) {
+            this.weight = weight
+        }
 
-        if (this.measure === undefined)
+        if (this.measure === undefined) {
             throw new Error(`measure ${measure} is undefined`)
+        }
 
         if (compute !== undefined) {
             this.compute = compute.map((name) => dataframe.series[name])
             this.compute.forEach((c, i) => {
-                if (c === undefined)
+                if (c === undefined) {
                     throw new Error(
                         `compute ${compute[i]} at index ${i} is undefined`,
                     )
+                }
             })
         }
     }
@@ -87,8 +93,9 @@ export abstract class Data {
      */
     cost(alpha: Serie | Alpha): number {
         const c = this.costs(alpha)
-        if (c.itemSize !== 1)
+        if (c.itemSize !== 1) {
             throw new Error('costs() should return a Serie with itemSize = 1')
+        }
         return (mean(c) as number) * this.weight
     }
 
@@ -167,5 +174,5 @@ export abstract class Data {
      */
     readonly weight: number = 1
 
-    protected sumWeights: number = 1.0
+    protected sumWeights = 1.0
 }

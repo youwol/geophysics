@@ -5,7 +5,7 @@ import { GpsData, InsarData } from '../lib'
 import { createData } from '../lib/data'
 import { Serie, DataFrame, append } from '@youwol/dataframe'
 
-test('test inverse', () => {
+test('inverse', () => {
     // From computation
 
     let dfInsar = DataFrame.create({

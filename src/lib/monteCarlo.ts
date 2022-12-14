@@ -41,22 +41,25 @@ export const monteCarlo = (
 ): InversionResult => {
     const genRandom = (min: number, max: number) => min + randomMT(max - min)
 
-    if (params.alpha === undefined) throw new Error('alpha is undefined')
+    if (params.alpha === undefined) {
+        throw new Error('alpha is undefined')
+    }
 
     const limits: { min: number; max: number }[] = []
     params.alpha.min.forEach((m: number, i: number) => {
         limits.push({ min: m, max: params.alpha.max[i] })
     })
 
-    if (params.alpha.mapping === undefined)
+    if (params.alpha.mapping === undefined) {
         params.alpha.mapping = defaultMapping
+    }
     // Check the generated alpha (will trigger an exception of something is going wrong)
     params.alpha.mapping(limits.map((l) => genRandom(l.min, l.max)))
 
     // Set the data weight if necessary
     // params.data.forEach( d => d.weight===undefined ? d.weight=1 : 1)
 
-    let solution: InversionResult = {
+    const solution: InversionResult = {
         alpha: [],
         user: [],
         cost: 1e32,

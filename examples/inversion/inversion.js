@@ -17,9 +17,12 @@ function getData(name, parameters, dataframe, args) {
         .fill(0)
         .map((v, i) => `${parameters.compute}${i + 1}`)
 
-    if (name === 'joint' || name === 'dyke' || name === 'dike')
+    if (name === 'joint' || name === 'dyke' || name === 'dike') {
         return new geo.JointData(parameters)
-    if (name === 'stylolite') return new geo.StyloliteData(parameters)
+    }
+    if (name === 'stylolite') {
+        return new geo.StyloliteData(parameters)
+    }
 
     return undefined
 }

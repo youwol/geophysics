@@ -1,16 +1,5 @@
 import { DataFrame, Serie } from '@youwol/dataframe'
-import {
-    abs,
-    div,
-    dot,
-    eigen,
-    normalize,
-    rotateAxis,
-    square,
-    sub,
-    vec,
-    weightedSum,
-} from '@youwol/math'
+import { eigen, normalize, rotateAxis, vec, weightedSum } from '@youwol/math'
 import { Data } from '../data'
 import { Alpha } from '../types'
 
@@ -90,10 +79,11 @@ export class ConjugateData extends Data {
         const d = this.generateData(alpha)
 
         if (this.projected) {
-            if (d.itemSize !== 3)
+            if (d.itemSize !== 3) {
                 throw new Error(
                     'generateData must have itemSize = 3 (i.e., normal)',
                 )
+            }
             return this.measure.map((n1: number[], i: number) => {
                 const L = Math.sqrt(n1[0] ** 2 + n1[1] ** 2)
                 const nn = [n1[0] / L, n1[1] / L, 0] as vec.Vector3

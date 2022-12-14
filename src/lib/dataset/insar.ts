@@ -37,7 +37,7 @@ import { dot, square, div, weightedSum, vec, minMax } from '@youwol/math'
 export class InsarData extends Data {
     los: vec.Vector3 = [0, 0, 1]
     measuredMinMax: number[]
-    normalize: boolean = false
+    normalize = false
 
     constructor({
         los,
@@ -58,7 +58,9 @@ export class InsarData extends Data {
     }) {
         super({ dataframe, measure, compute, weights, weight })
 
-        if (normalize !== undefined) this.normalize = normalize
+        if (normalize !== undefined) {
+            this.normalize = normalize
+        }
 
         if (this.measure.itemSize !== 1) {
             throw new Error('measure should have itemSize = 1')
@@ -77,10 +79,11 @@ export class InsarData extends Data {
         }
 
         this.compute.forEach((c) => {
-            if (c.itemSize !== 3)
+            if (c.itemSize !== 3) {
                 throw new Error(
                     'compute should have itemSize = 3 (displacement)',
                 )
+            }
         })
 
         this.los = vec.normalize(los) as vec.Vector3
@@ -92,10 +95,11 @@ export class InsarData extends Data {
 
     costs(alpha: Serie | Alpha): Serie {
         let d = this.generateData(alpha)
-        if (d.itemSize !== 1)
+        if (d.itemSize !== 1) {
             throw new Error(
                 'provided Serie must have itemSize = 1 (displ along los)',
             )
+        }
 
         if (this.normalize) {
             const computedMinMax = minMax(d)

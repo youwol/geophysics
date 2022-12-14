@@ -3,7 +3,7 @@ import * as math from '@youwol/math'
 import { DataFrame, Serie } from '@youwol/dataframe'
 import { monteCarlo, InsarData } from '../lib'
 
-test('test inverse', () => {
+test('inverse', () => {
     // From computation
     const displField1 = [1, 2, 3, 4, 5, 8, 5, 6, 3, 9, 9, 1, 3, 2, 4]
     const displField2 = [7, 7, 8, 11, 9, 4, 10, 6, 11, 13, 27, 7, 9, 7, 5]
@@ -11,7 +11,7 @@ test('test inverse', () => {
     // Measurements
     const insarMeasurements = [-8.732, 45.8457, 22.518, -20.6505, -25.394]
 
-    let dataframe = DataFrame.create({
+    const dataframe = DataFrame.create({
         series: {
             U1: Serie.create({ array: displField1, itemSize: 3 }),
             U2: Serie.create({ array: displField2, itemSize: 3 }),

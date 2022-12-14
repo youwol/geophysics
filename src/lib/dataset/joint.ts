@@ -95,10 +95,11 @@ export class JointData extends Data {
 
     costs(data: Serie | Alpha): Serie {
         const d = this.generateData(data)
-        if (d.itemSize !== 3)
+        if (d.itemSize !== 3) {
             throw new Error(
                 'generateData must have itemSize = 3 (normals to the planes)',
             )
+        }
         if (this.useAngle) {
             if (this.weights) {
                 const W = 2 / Math.PI / this.sumWeights

@@ -1,4 +1,4 @@
-import { Serie, DataFrame } from '@youwol/dataframe'
+import { Serie } from '@youwol/dataframe'
 
 /**
  * Interface for any cost function

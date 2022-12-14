@@ -67,16 +67,24 @@ export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
     const theta = alpha[0]
     const R = alpha[1]
 
-    if (theta < 0 || theta > 180) throw new Error('Theta must be in [0°..180°]')
-    if (R < 0 || R > 3) throw new Error('R must be in [0..3]')
+    if (theta < 0 || theta > 180) {
+        throw new Error('Theta must be in [0°..180°]')
+    }
+    if (R < 0 || R > 3) {
+        throw new Error('R must be in [0..3]')
+    }
 
     const c = Math.cos((theta * Math.PI) / 180)
     const s = Math.sin((theta * Math.PI) / 180)
     const c2 = c ** 2
     const s2 = s ** 2
 
-    if (R <= 1) return [-c2 + (R - 1) * s2, R * c * s, -s2 + (R - 1) * c2]
-    if (R <= 2) return [-R * c2 + (1 - R) * s2, c * s, -R * s2 + (1 - R) * c2]
+    if (R <= 1) {
+        return [-c2 + (R - 1) * s2, R * c * s, -s2 + (R - 1) * c2]
+    }
+    if (R <= 2) {
+        return [-R * c2 + (1 - R) * s2, c * s, -R * s2 + (1 - R) * c2]
+    }
     return [R * c2 + s2, (1 - R) * c * s, R * s2 + c2]
 }
 
@@ -100,9 +108,10 @@ export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
  * ```
  */
 export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
-    if (alpha.length < 6)
+    if (alpha.length < 6) {
         throw new Error(`argument alpha should be of size greater or equal to 6:
         alpha = [theta, Rh, RH, rockDensity, cavityDensity, shift1, shift2, ...]`)
+    }
 
     let theta = alpha[0]
     //if (theta<0 || theta>180) throw new Error('Theta must be in [0°..180°]')

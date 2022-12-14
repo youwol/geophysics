@@ -1,9 +1,8 @@
 import * as geo from '../lib'
 import * as df from '@youwol/dataframe'
 import { Serie } from '@youwol/dataframe'
-import { equals } from '@youwol/math'
 
-test('test cost gps', () => {
+test('cost gps', () => {
     const measure = Serie.create({
         array: [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5],
         itemSize: 3,
@@ -15,13 +14,13 @@ test('test cost gps', () => {
     //expect( geo.costGps({measure, compute}) ).toBeCloseTo(0)
 })
 
-test('test cost vertical gps', () => {
+test('cost vertical gps', () => {
     const measure = Serie.create({ array: [1, 2, 3, 4], itemSize: 1 })
     const compute = Serie.create({ array: [1, 2, 3, 4], itemSize: 1 })
     //expect( geo.costVerticalGps({measure, compute}) ).toEqual(0)
 })
 
-test('test cost insar', () => {
+test('cost insar', () => {
     const U = Serie.create({
         array: new Array(4 * 3).fill(0).map((_) => Math.random()),
         itemSize: 3,
@@ -34,7 +33,7 @@ test('test cost insar', () => {
     //expect( geo.costVerticalGps({measure, compute}) ).not.toBe(0)
 })
 
-test('test cost joint', () => {
+test('cost joint', () => {
     const dataframe = df.DataFrame.create({
         series: {
             normal: Serie.create({ array: [0, 0, 1], itemSize: 3 }),

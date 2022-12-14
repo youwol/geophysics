@@ -70,8 +70,9 @@ export class Domain2D {
         this.model = model
         this.nx = nX
         this.ny = nY
-        if (this.model.alpha.mapping === undefined)
+        if (this.model.alpha.mapping === undefined) {
             this.model.alpha.mapping = defaultMapping
+        }
     }
 
     /**

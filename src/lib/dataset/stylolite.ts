@@ -1,18 +1,8 @@
-import { Serie, DataFrame, apply } from '@youwol/dataframe'
+import { Serie, apply } from '@youwol/dataframe'
 
-import {
-    eigenVector,
-    abs,
-    dot,
-    normalize,
-    square,
-    div,
-    sub,
-    weightedSum,
-} from '@youwol/math'
+import { eigenVector, normalize, weightedSum } from '@youwol/math'
 import { JointData } from '.'
 
-import { Data } from '../data'
 import { Alpha } from '../types'
 
 /**

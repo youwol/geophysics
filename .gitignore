@@ -4,15 +4,10 @@ coverage/
 junit.xml
 src/auto_generated.ts
 
-dist/lib
-dist/@youwol
-dist/index.d.ts
-dist/src
-dist/geophysics
-dist/math
-dist/tests
-dist/examples
-dist/dataframe
+/dist/*
+!/dist/docs/
+!/dist/docs/*
+!/dist/docs/**/*
 
 examples/synthetic/*.gcd
 
@@ -27,3 +22,4 @@ examples/galapagos/fernandina/dikes/result-forward-dikes.xyz
 
 cdn.zip
 **/.DS_Store
+*.iml

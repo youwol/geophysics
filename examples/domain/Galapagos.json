@@ -1,43 +1,34 @@
 {
-    "path"       : "/Users/fmaerten/data/arch/galapagod-all/model2/",
+    "path": "/Users/fmaerten/data/arch/galapagod-all/model2/",
     "data": {
-        "path"    : "dikes_georef/points.xyz/",
+        "path": "dikes_georef/points.xyz/",
         "filename": "simulations-All_Galapagos_dikes.xyz",
-        "type"    : "joint",
+        "type": "joint",
         "parameters": {
-            "measure"   : "n",
-            "compute"   : "S",
-            "weights"   : "",
-            "projected" : true,
+            "measure": "n",
+            "compute": "S",
+            "weights": "",
+            "projected": true,
             "useNormals": true,
-            "useAngle"  : true
+            "useAngle": true
         }
     },
     "solution": {
-        "alpha": [17,
-            0.006,
-            0.022,
-            2000,
-            2600,
-            79094446,
-             3478222,
-            13552986,
-            19703592,
-            57414657,
-            72484578,
-            15611804
-        ]    
+        "alpha": [
+            17, 0.006, 0.022, 2000, 2600, 79094446, 3478222, 13552986, 19703592,
+            57414657, 72484578, 15611804
+        ]
     },
     "domain": {
-        "x"      : "density",
-        "y"      : "sjift",
+        "x": "density",
+        "y": "sjift",
         "surface": {
-            "rings"   : 15,
-            "density" : 8
+            "rings": 15,
+            "density": 8
         }
     },
     "out": {
-        "path"      : "./",
-        "filename"  : "domain.ts"
+        "path": "./",
+        "filename": "domain.ts"
     }
 }

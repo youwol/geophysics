@@ -1,31 +1,37 @@
 /**
  * Invert for the far field stress + 1 pressure ina cavity
  */
-const io     = require('@youwol/io')
-const geo    = require('../../dist/@youwol/geophysics')
-const fs     = require('fs')
+const io = require('@youwol/io')
+const geo = require('../../dist/@youwol/geophysics')
+const fs = require('fs')
 
-const dataframe  = io.decodeGocadTS( fs.readFileSync('/Users/fmaerten/data/arch/figure-superposition/simulations.ts', 'utf8') )[0]
+const dataframe = io.decodeGocadTS(
+    fs.readFileSync(
+        '/Users/fmaerten/data/arch/figure-superposition/simulations.ts',
+        'utf8',
+    ),
+)[0]
 
 console.log(dataframe.series.positions.count)
 
 //             xx   xy   xz   yy    yz   zz   rho pe
-const alpha = [72,  2,   11,  110,  100, 1,   5,  3 ]
-console.log('alpha', alpha )
+const alpha = [72, 2, 11, 110, 100, 1, 5, 3]
+console.log('alpha', alpha)
 
 dataframe.series['U'] = geo.forward.attribute({
     simulations: dataframe,
     name: 'U',
     alpha,
-    startIndex: 1
+    startIndex: 1,
 })
 
 const bufferOut = io.encodeGocadTS(dataframe)
-fs.writeFile('/Users/fmaerten/data/arch/figure-superposition/superposition.ts', bufferOut, 'utf8', err => {})
-
-
-
-
+fs.writeFile(
+    '/Users/fmaerten/data/arch/figure-superposition/superposition.ts',
+    bufferOut,
+    'utf8',
+    (err) => {},
+)
 
 // const result = geo.monteCarlo({
 //     data: [dikes],
@@ -45,7 +51,6 @@ fs.writeFile('/Users/fmaerten/data/arch/figure-superposition/superposition.ts', 
 // As an example, from https://physpet.ess.washington.edu/wp-content/uploads/sites/13/2016/02/Galapagoes-magma-chambers.pdf
 // we have an estimate of the Fernandina magma density, page 62: 2680 kg/m3
 // */
-
 
 // console.log('inversion result:', result )
 // const alpha = result.alpha

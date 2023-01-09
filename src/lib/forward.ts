@@ -3,7 +3,6 @@ import { weightedSum } from '@youwol/math'
 import { Alpha } from './types'
 
 export namespace forward {
-
     /**
      * Compute an attribute by superposition given some predefined simulations
      * @param simulations The dataframe containing al the necessary simulations
@@ -16,7 +15,7 @@ export namespace forward {
      * ```ts
      * import { DataFrame, Serie } from '@youwol/dataframe'
      * import { simpleAndersonMapping, forward } from '@youwol/geophysics'
-     * 
+     *
      * let df = DataFrame.create({
      *      series: {
      *          'toto2': Serie.create({array: ..., itemSize: 3}),
@@ -24,7 +23,7 @@ export namespace forward {
      *          'toto4': Serie.create({array: ..., itemSize: 3})
      *      }
      * })
-     * 
+     *
      * const a = forward.attribute({
      *      simulations: df,
      *      alpha      : simpleAndersonMapping([45, 1.2]),
@@ -33,20 +32,28 @@ export namespace forward {
      * })
      * ```
      */
-    export function attribute(
-        {simulations, alpha, name, startIndex=1}:
-        {simulations: DataFrame, alpha: Alpha, name: string, startIndex?: number}): Serie
-    {
+    export function attribute({
+        simulations,
+        alpha,
+        name,
+        startIndex = 1,
+    }: {
+        simulations: DataFrame
+        alpha: Alpha
+        name: string
+        startIndex?: number
+    }): Serie {
         const n = alpha.length
         const series: Serie[] = []
-        for (let i=startIndex; i<startIndex+n; ++i) {
+        for (let i = startIndex; i < startIndex + n; ++i) {
             const serie = simulations.series[`${name}${i}`]
             if (serie === undefined) {
-                throw new Error(`Serie named ${name}${i} is missing in the dataframe`)
+                throw new Error(
+                    `Serie named ${name}${i} is missing in the dataframe`,
+                )
             }
             series.push(serie)
         }
         return weightedSum(series, alpha)
     }
-
 }

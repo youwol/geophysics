@@ -13,14 +13,8 @@
         },
         "cavity": {
             "path": "",
-            "filename": [
-                "Fernandina_chamber_ellipsoid.ts"
-            ],
-            "translate": [
-                0,
-                0,
-                0
-            ],
+            "filename": ["Fernandina_chamber_ellipsoid.ts"],
+            "translate": [0, 0, 0],
             "info": true,
             "out": {
                 "path": "out/",
@@ -34,14 +28,8 @@
         },
         "grid": {
             "path": "",
-            "filename": [
-                "dikes.xyz"
-            ],
-            "translate": [
-                0,
-                0,
-                0
-            ],
+            "filename": ["dikes.xyz"],
+            "translate": [0, 0, 0],
             "info": true,
             "out": {
                 "path": "out/",
@@ -97,22 +85,8 @@
                 "iterations": 10000,
                 "alpha": {
                     "mapping": "gradientPressureMapping",
-                    "min": [
-                        0,
-                        0.33,
-                        0.33,
-                        2900,
-                        2000,
-                        0
-                    ],
-                    "max": [
-                        0,
-                        0.33,
-                        0.33,
-                        2900,
-                        2000,
-                        1e9
-                    ]
+                    "min": [0, 0.33, 0.33, 2900, 2000, 0],
+                    "max": [0, 0.33, 0.33, 2900, 2000, 1e9]
                 }
             },
             "out": {
@@ -123,22 +97,11 @@
         "_comment3_": "------------- Finally, the forward modeling on grid -------------",
         "forward": {
             "active": true,
-            "__alpha": [
-                -7695,
-                -157,
-                -7586,
-                -28449,
-                2080,
-                52491849
-            ],
+            "__alpha": [-7695, -157, -7586, -28449, 2080, 52491849],
             "cavity": {
                 "path": "",
                 "filename": "Fernandina_chamber_ellipsoid.ts",
-                "translate": [
-                    0,
-                    0,
-                    0
-                ]
+                "translate": [0, 0, 0]
             },
             "grid": {
                 "path": "./",
@@ -148,11 +111,7 @@
                     "filename": "result-grid.ts",
                     "expandAttributes": false
                 },
-                "translate": [
-                    0,
-                    0,
-                    0
-                ]
+                "translate": [0, 0, 0]
             },
             "solver": {
                 "name": "parallel",

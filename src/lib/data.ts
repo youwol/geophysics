@@ -1,6 +1,6 @@
-import { Serie, DataFrame } from "@youwol/dataframe"
-import { mean, minMax, weightedSum } from "@youwol/math"
-import { Alpha } from "./types"
+import { Serie, DataFrame } from '@youwol/dataframe'
+import { mean } from '@youwol/math'
+import { Alpha } from './types'
 
 /**
  * Convenient  function to create a specific [[Data]] with its
@@ -23,12 +23,22 @@ export const createData = (Type: any, param: any): Data => {
 }
 
 export abstract class Data {
-
-    constructor(
-        {dataframe, measure, compute, weights, weight}:
-        {dataframe: DataFrame, measure: string, compute?: string[], weights?: string, weight?: number}
-    ) {
-        if (dataframe===undefined) throw new Error(`dataframe is undefined`)
+    constructor({
+        dataframe,
+        measure,
+        compute,
+        weights,
+        weight,
+    }: {
+        dataframe: DataFrame
+        measure: string
+        compute?: string[]
+        weights?: string
+        weight?: number
+    }) {
+        if (dataframe === undefined) {
+            throw new Error(`dataframe is undefined`)
+        }
 
         this.dataframe = dataframe
 
@@ -42,14 +52,22 @@ export abstract class Data {
         // }
         this.setWeights(weights) // setter
 
-        if (weight !== undefined) this.weight = weight
+        if (weight !== undefined) {
+            this.weight = weight
+        }
 
-        if (this.measure === undefined) throw new Error(`measure ${measure} is undefined`)
+        if (this.measure === undefined) {
+            throw new Error(`measure ${measure} is undefined`)
+        }
 
         if (compute !== undefined) {
-            this.compute = compute.map( name => dataframe.series[name] )
-            this.compute.forEach( (c,i) => {
-                if (c === undefined) throw new Error(`compute ${compute[i]} at index ${i} is undefined`)
+            this.compute = compute.map((name) => dataframe.series[name])
+            this.compute.forEach((c, i) => {
+                if (c === undefined) {
+                    throw new Error(
+                        `compute ${compute[i]} at index ${i} is undefined`,
+                    )
+                }
             })
         }
     }
@@ -57,7 +75,10 @@ export abstract class Data {
     setWeights(w: string) {
         this.weights_ = this.dataframe.series[w]
         if (this.weights_ !== undefined) {
-            this.sumWeights = this.weights_.array.reduce( (acc, cur) => acc+1/cur, 0 )
+            this.sumWeights = this.weights_.array.reduce(
+                (acc, cur) => acc + 1 / cur,
+                0,
+            )
         }
     }
 
@@ -72,7 +93,9 @@ export abstract class Data {
      */
     cost(alpha: Serie | Alpha): number {
         const c = this.costs(alpha)
-        if (c.itemSize !== 1 ) throw new Error('costs() should return a Serie with itemSize = 1')
+        if (c.itemSize !== 1) {
+            throw new Error('costs() should return a Serie with itemSize = 1')
+        }
         return (mean(c) as number) * this.weight
     }
 
@@ -101,14 +124,14 @@ export abstract class Data {
      * class Insar extends Data {
      *   constructor(private readonly sat: [number,number,number]) {
      *   }
-     * 
+     *
      *   costs(data: Serie | Alpha) {
      *     const compute = this.generateData(data)
      *     return square(addNumber(negate(abs(div(compute, this.measure))), 1))
      *   }
-     * 
+     *
      *   // --------------
-     * 
+     *
      *   generate(alpha: Alpha): Serie {
      *     const displ = weightedSum(this.compute, alpha)
      *     return dot(displ, this.sat)
@@ -124,7 +147,7 @@ export abstract class Data {
         if (Serie.isSerie(data)) {
             return data as Serie
         }
-        
+
         return this.generate(data as Alpha)
     }
 
@@ -151,5 +174,5 @@ export abstract class Data {
      */
     readonly weight: number = 1
 
-    protected sumWeights: number = 1.0
+    protected sumWeights = 1.0
 }

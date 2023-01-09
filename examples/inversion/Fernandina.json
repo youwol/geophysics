@@ -1,40 +1,40 @@
 {
     "_comment1_": "------------- General model parameters -------------",
     "model": {
-        "path"       : "/Users/fmaerten/data/arch/fernandina/",
-        "young"      : 30e9,
-        "poisson"    : 0.25,
-        "halfSpace"  : true,
+        "path": "/Users/fmaerten/data/arch/fernandina/",
+        "young": 30e9,
+        "poisson": 0.25,
+        "halfSpace": true,
         "rockDensity": 2900
     },
 
     "_comment2_": "------------- The inversion itself -------------",
     "inverse": {
-        "active"    : true,
-        "dim"       : 6,
+        "active": true,
+        "dim": 6,
         "data": {
-            "path"    : "",
+            "path": "",
             "filename": "simulations-dikes.xyz",
-            "type"    : "joint",
+            "type": "joint",
             "parameters": {
-                "measure"   : "n",
-                "compute"   : "S",
-                "projected" : true,
+                "measure": "n",
+                "compute": "S",
+                "projected": true,
                 "useNormals": true
             }
         },
         "simulation": {
-            "algo"      : "MonteCarlo",
+            "algo": "MonteCarlo",
             "iterations": 10000,
-            "alpha"     : {
+            "alpha": {
                 "mapping": "gradientPressureMapping",
-                "min"    : [0,   0, 0, 2900, 2000, 0],
-                "max"    : [90, 1, 1, 2900, 2000, 1e8]
+                "min": [0, 0, 0, 2900, 2000, 0],
+                "max": [90, 1, 1, 2900, 2000, 1e8]
             }
         },
         "out": {
-            "path"      : "./",
-            "filename"  : "result-forward-dikes.xyz"
+            "path": "./",
+            "filename": "result-forward-dikes.xyz"
         }
     },
 
@@ -42,32 +42,28 @@
     "forward": {
         "active": false,
         "alpha": [
-            -1085.3988153205878,
-    4.510199927891319,
-    -1287.6384266263183,
-    -28449,
-    19620,
-    26871826.453134418
+            -1085.3988153205878, 4.510199927891319, -1287.6384266263183, -28449,
+            19620, 26871826.453134418
         ],
         "cavity": {
-            "path"      : "",
-            "filename"  : "fernandina_2000.ts"
+            "path": "",
+            "filename": "fernandina_2000.ts"
         },
         "grid": {
-            "path"      : "",
-            "filename"  : "grid.ts",
-            "translate" : [0, 0, 0],
+            "path": "",
+            "filename": "grid.ts",
+            "translate": [0, 0, 0],
             "out": {
-                "path"      : "./",
-                "filename"  : "forward-grid.ts",
+                "path": "./",
+                "filename": "forward-grid.ts",
                 "expandAttributes": true
             }
         },
         "solver": {
-            "name"      : "seidel",
-            "core"      : 1,
-            "maxIter"   : 2000,
-            "eps"       : 1e-9
+            "name": "seidel",
+            "core": 1,
+            "maxIter": 2000,
+            "eps": 1e-9
         }
     }
 }

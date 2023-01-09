@@ -1,10 +1,13 @@
 Name of the Galapagos are [here](https://news.stanford.edu/news/2000/january12/galapagos-112.html)
 
-- 6 ou 12 simulations are done in `platform/components/arch-node/examples/superposition` by launching
+-   6 ou 12 simulations are done in `platform/components/arch-node/examples/superposition` by launching
+
 ```sh
 node simulations.js Galapagos.def
 ```
-- inversion is done here using
+
+-   inversion is done here using
+
 ```sh
 node inversion.js
 ```
@@ -12,22 +15,17 @@ node inversion.js
 # Some results
 
 ## One pressure
+
 ```js
 result = {
-    "user" : [
-        50, 
-        0.4836,
-        0.4844, 
-        2000, 
-        2600, 
-        1.5e7
-    ],
-    "cost" : 0.16,
-    "fit"  : 84
+    user: [50, 0.4836, 0.4844, 2000, 2600, 1.5e7],
+    cost: 0.16,
+    fit: 84,
 }
 ```
 
 ## Multiple pressure
+
 ```js
 result = {
     17,

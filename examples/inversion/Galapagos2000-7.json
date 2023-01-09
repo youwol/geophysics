@@ -1,40 +1,40 @@
 {
     "_comment1_": "------------- General model parameters -------------",
     "model": {
-        "path"       : "/Users/fmaerten/data/arch/galapagos-all/2000/",
-        "young"      : 30e9,
-        "poisson"    : 0.25,
-        "halfSpace"  : true,
+        "path": "/Users/fmaerten/data/arch/galapagos-all/2000/",
+        "young": 30e9,
+        "poisson": 0.25,
+        "halfSpace": true,
         "rockDensity": 2000
     },
 
     "_comment2_": "------------- The inversion itself -------------",
     "inverse": {
-        "active"    : false,
-        "dim"       : 12,
+        "active": false,
+        "dim": 12,
         "data": {
-            "path"    : "./",
+            "path": "./",
             "filename": "simulations-dikes.xyz",
-            "type"    : "joint",
+            "type": "joint",
             "parameters": {
-                "measure"   : "n",
-                "compute"   : "S",
-                "projected" : true,
+                "measure": "n",
+                "compute": "S",
+                "projected": true,
                 "useNormals": true
             }
         },
         "simulation": {
-            "algo"      : "MonteCarlo",
+            "algo": "MonteCarlo",
             "iterations": 10000,
-            "alpha"     : {
+            "alpha": {
                 "mapping": "gradientPressureMapping",
-                "min"    : [0,  0, 0, 2900, 2000, 0, 0, 0, 0, 0, 0, 0],
-                "max"    : [90, 1, 1, 2900, 2000, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8]
+                "min": [0, 0, 0, 2900, 2000, 0, 0, 0, 0, 0, 0, 0],
+                "max": [90, 1, 1, 2900, 2000, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8]
             }
         },
         "out": {
-            "path"      : "./",
-            "filename"  : "result-forward-dikes.xyz"
+            "path": "./",
+            "filename": "result-forward-dikes.xyz"
         }
     },
 
@@ -42,37 +42,30 @@
     "forward": {
         "active": true,
         "alpha": [
-            -5869.016755908383,
-    778.5656656762808,
-    -4452.2694817784895,
-    -28449,
-    2000,
-    42476254.28251922,
-    71852310.97973883,
-    45052273.6646235,
-    28027913.719415665,
-    14095787.238329649,
-    33251865.39441347,
-    36204192.36831367],
+            -5869.016755908383, 778.5656656762808, -4452.2694817784895, -28449,
+            2000, 42476254.28251922, 71852310.97973883, 45052273.6646235,
+            28027913.719415665, 14095787.238329649, 33251865.39441347,
+            36204192.36831367
+        ],
         "cavity": {
-            "path"      : "./",
-            "filename"  : "all-chambers.ts"
+            "path": "./",
+            "filename": "all-chambers.ts"
         },
         "grid": {
-            "path"      : "./",
-            "filename"  : "topo_6700.ts",
-            "translate" : [0, 0, 300],
+            "path": "./",
+            "filename": "topo_6700.ts",
+            "translate": [0, 0, 300],
             "out": {
-                "path"      : "./",
-                "filename"  : "forward-topo_6700.ts",
+                "path": "./",
+                "filename": "forward-topo_6700.ts",
                 "expandAttributes": true
             }
         },
         "solver": {
-            "name"      : "parallel",
-            "core"      : 10,
-            "maxIter"   : 1000,
-            "eps"       : 1e-9
+            "name": "parallel",
+            "core": 10,
+            "maxIter": 1000,
+            "eps": 1e-9
         }
     }
 }

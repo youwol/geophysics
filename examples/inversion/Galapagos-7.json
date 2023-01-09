@@ -1,65 +1,68 @@
 {
     "_comment1_": "------------- General model parameters -------------",
     "model": {
-        "path"       : "/Users/fmaerten/data/arch/galapagos-all/model2/",
-        "young"      : 30e9,
-        "poisson"    : 0.25,
-        "halfSpace"  : true,
+        "path": "/Users/fmaerten/data/arch/galapagos-all/model2/",
+        "young": 30e9,
+        "poisson": 0.25,
+        "halfSpace": true,
         "rockDensity": 2000
     },
 
     "_comment2_": "------------- The inversion itself -------------",
     "inverse": {
-        "active"    : true,
-        "dim"       : 12,
+        "active": true,
+        "dim": 12,
         "data": {
-            "path"    : "dikes_georef/points.xyz/",
+            "path": "dikes_georef/points.xyz/",
             "filename": "simulations-All_Galapagos_dikes.xyz",
-            "type"    : "joint",
+            "type": "joint",
             "parameters": {
-                "measure"   : "n",
-                "compute"   : "S",
-                "projected" : true,
+                "measure": "n",
+                "compute": "S",
+                "projected": true,
                 "useNormals": true
             }
         },
         "simulation": {
-            "algo"      : "MonteCarlo",
+            "algo": "MonteCarlo",
             "iterations": 10000,
-            "alpha"     : {
+            "alpha": {
                 "mapping": "gradientPressureMapping",
-                "min"    : [0,   0, 0, 2900, 2000, 0, 0, 0, 0, 0, 0, 0],
-                "max"    : [90, 1, 1, 2900, 2000, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8]
+                "min": [0, 0, 0, 2900, 2000, 0, 0, 0, 0, 0, 0, 0],
+                "max": [90, 1, 1, 2900, 2000, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8, 1e8]
             }
         },
         "out": {
-            "path"      : "./",
-            "filename"  : "result-forward-dikes2.xyz"
+            "path": "./",
+            "filename": "result-forward-dikes2.xyz"
         }
     },
 
     "_comment3_": "------------- Finally, the forward modeling on grid -------------",
     "forward": {
         "active": true,
-        "_alpha": [-9387, -11.88, -9218, -28449, 2600, 315775777, 22747483, 150286728, 735665157, 140434351, 821839130, 91244685],
+        "_alpha": [
+            -9387, -11.88, -9218, -28449, 2600, 315775777, 22747483, 150286728,
+            735665157, 140434351, 821839130, 91244685
+        ],
         "cavity": {
-            "path"      : "./",
-            "filename"  : "Sill_magma_chambers_500_georef_NEW.ts"
+            "path": "./",
+            "filename": "Sill_magma_chambers_500_georef_NEW.ts"
         },
         "grid": {
-            "path"      : "./",
-            "filename"  : "2D_grid_13433pts_georef.ts",
+            "path": "./",
+            "filename": "2D_grid_13433pts_georef.ts",
             "out": {
-                "path"      : "./",
-                "filename"  : "forward-grid-13000.ts",
+                "path": "./",
+                "filename": "forward-grid-13000.ts",
                 "expandAttributes": true
             }
         },
         "solver": {
-            "name"      : "parallel",
-            "core"      : 10,
-            "maxIter"   : 1000,
-            "eps"       : 1e-9
+            "name": "parallel",
+            "core": 10,
+            "maxIter": 1000,
+            "eps": 1e-9
         }
     }
 }

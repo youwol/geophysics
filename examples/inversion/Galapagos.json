@@ -1,65 +1,65 @@
 {
     "_comment1_": "------------- General model parameters -------------",
     "model": {
-        "path"       : "/Users/fmaerten/data/arch/galapagod-all/model2/",
-        "young"      : 30e9,
-        "poisson"    : 0.25,
-        "halfSpace"  : true,
+        "path": "/Users/fmaerten/data/arch/galapagod-all/model2/",
+        "young": 30e9,
+        "poisson": 0.25,
+        "halfSpace": true,
         "rockDensity": 2000
     },
 
     "_comment2_": "------------- The inversion itself -------------",
     "inverse": {
-        "active"    : true,
-        "dim"       : 6,
+        "active": true,
+        "dim": 6,
         "data": {
-            "path"    : "dikes_georef/points.xyz/",
+            "path": "dikes_georef/points.xyz/",
             "filename": "simulations-All_Galapagos_dikes.xyz",
-            "type"    : "joint",
+            "type": "joint",
             "parameters": {
-                "measure"   : "n",
-                "compute"   : "S",
-                "projected" : true,
+                "measure": "n",
+                "compute": "S",
+                "projected": true,
                 "useNormals": true
             }
         },
         "simulation": {
-            "algo"      : "MonteCarlo",
+            "algo": "MonteCarlo",
             "iterations": 50000,
-            "alpha"     : {
+            "alpha": {
                 "mapping": "gradientPressureMapping",
-                "min"    : [0,   0, 0, 2900, 2000, -1e9],
-                "max"    : [180, 1, 1, 2900, 2000,  1e9]
+                "min": [0, 0, 0, 2900, 2000, -1e9],
+                "max": [180, 1, 1, 2900, 2000, 1e9]
             }
         },
         "out": {
-            "path"      : "./",
-            "filename"  : "result-forward-dikes.xyz"
+            "path": "./",
+            "filename": "result-forward-dikes.xyz"
         }
     },
 
     "_comment3_": "------------- Finally, the forward modeling on grid -------------",
     "forward": {
         "active": true,
-        "_alpha": [ -7695, -157, -7586, -28449, 2080, 52491849],
+        "_alpha": [-7695, -157, -7586, -28449, 2080, 52491849],
         "cavity": {
-            "path"      : "./",
-            "filename"  : "simulations-volcano.ts"
+            "path": "./",
+            "filename": "simulations-volcano.ts"
         },
         "grid": {
-            "path"      : "./",
-            "filename"  : "2D_grid.ts",
+            "path": "./",
+            "filename": "2D_grid.ts",
             "out": {
-                "path"      : "./",
-                "filename"  : "forward-grid.ts",
+                "path": "./",
+                "filename": "forward-grid.ts",
                 "expandAttributes": true
             }
         },
         "solver": {
-            "name"      : "parallel",
-            "core"      : 10,
-            "maxIter"   : 1000,
-            "eps"       : 1e-9
+            "name": "parallel",
+            "core": 10,
+            "maxIter": 1000,
+            "eps": 1e-9
         }
     }
 }

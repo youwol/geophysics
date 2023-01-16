@@ -53,6 +53,7 @@ export const monteCarlo = (
     if (params.alpha.mapping === undefined) {
         params.alpha.mapping = defaultMapping
     }
+
     // Check the generated alpha (will trigger an exception of something is going wrong)
     params.alpha.mapping(limits.map((l) => genRandom(l.min, l.max)))
 

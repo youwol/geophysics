@@ -94,7 +94,7 @@ export class InsarData extends Data {
     }
 
     costs(alpha: Serie | Alpha): Serie {
-        let d = this.generateData(alpha)
+        let d = this.generateData(alpha) as Serie
         if (d.itemSize !== 1) {
             throw new Error(
                 'provided Serie must have itemSize = 1 (displ along los)',

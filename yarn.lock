@@ -1046,6 +1046,11 @@
   resolved "https://registry.yarnpkg.com/@youwol/eslint-config/-/eslint-config-0.0.4.tgz#f5ca190a60173d67dd01306587c0ac0dc1d184e0"
   integrity sha512-TdsslNgIeh/zOw/h20FNK7I8TW67YrIc0doNzodVyM0agUsHQbxvUKZt590DqVJ03UTDsGR3xSEu3ivkDmZzEw==
 
+"@youwol/geometry@^0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@youwol/geometry/-/geometry-0.0.22.tgz#a8681cecaa7a9b45683c79789cc6ebc6dd2e3475"
+  integrity sha512-1cPprYO0CHpvUUFO1y6qaOFROmIz6XTmjtogq/OSVx8G2nYHD/hXI7kFSV0kSpcdVC3LyTDMl5mRjVX3Yeo/1Q==
+
 "@youwol/io@0.0.20":
   version "0.0.20"
   resolved "https://registry.yarnpkg.com/@youwol/io/-/io-0.0.20.tgz#1101293674f39f3e2a9fe28124c9f0856442d8f8"

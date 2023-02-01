@@ -1,12 +1,14 @@
 import { Serie } from '@youwol/dataframe'
-import { eigenVector, mat, Quaternion } from '@youwol/math'
+import { eigenVector, mat, Quaternion, vec } from '@youwol/math'
+import { deg2rad } from './angleUtils'
 
+/**
+ * Not sue we are using it (yet?)!
+ */
 export function failurePlanes({
-    positions,
     stress,
     friction = 30,
 }: {
-    positions: Serie
     stress: Serie
     friction?: number
 }) {
@@ -17,7 +19,7 @@ export function failurePlanes({
 
     const eigv = eigenVector(stress)
     const quat = new Quaternion()
-    return eigv.map((vectors, i) => {
+    return eigv.map((vectors: vec.Vector9) => {
         const m = mat.unpack([
             vectors[0],
             vectors[3],
@@ -44,17 +46,13 @@ export function failurePlanes({
 function createPrimitive(fric: number) {
     const ang = deg2rad(45.0 - fric / 2.0)
     return {
-        n1: mat.multVec(makeRotationY(ang), [0, 0, 1]),
+        n1: mat.multVec(makeRotationY(+ang), [0, 0, 1]),
         n2: mat.multVec(makeRotationY(-ang), [0, 0, 1]),
     }
 }
 
-function deg2rad(a: number) {
-    return (a * Math.PI) / 180
-}
-
 function makeRotationY(theta: number) {
-    const c = Math.cos((theta * Math.PI) / 180),
-        s = Math.sin((theta * Math.PI) / 180)
+    const c = Math.cos((theta * Math.PI) / 180)
+    const s = Math.sin((theta * Math.PI) / 180)
     return mat.unpack([c, 0, s, 0, 1, 0, -s, 0, c])
 }

@@ -1,2 +1,5 @@
+// export * from './failurePlanes'
 export * from './segments2PointsWithNormals'
-export * from './failurePlanes'
+export * from './angleUtils'
+export * from './fromDipDipAzimToNormal'
+export * from './stressUtils'

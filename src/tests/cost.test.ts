@@ -3,21 +3,25 @@ import * as df from '@youwol/dataframe'
 import { Serie } from '@youwol/dataframe'
 
 test('cost gps', () => {
-    const measure = Serie.create({
-        array: [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5],
-        itemSize: 3,
-    })
-    const compute = Serie.create({
-        array: [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5],
-        itemSize: 3,
-    })
+    // const measure = Serie.create({
+    //     array: [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5],
+    //     itemSize: 3,
+    // })
+    // const compute = Serie.create({
+    //     array: [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5],
+    //     itemSize: 3,
+    // })
     //expect( geo.costGps({measure, compute}) ).toBeCloseTo(0)
+    expect(true).toBeTruthy()
+    console.warn('TO BE DONE')
 })
 
 test('cost vertical gps', () => {
-    const measure = Serie.create({ array: [1, 2, 3, 4], itemSize: 1 })
-    const compute = Serie.create({ array: [1, 2, 3, 4], itemSize: 1 })
+    // const measure = Serie.create({ array: [1, 2, 3, 4], itemSize: 1 })
+    // const compute = Serie.create({ array: [1, 2, 3, 4], itemSize: 1 })
     //expect( geo.costVerticalGps({measure, compute}) ).toEqual(0)
+    expect(true).toBeTruthy()
+    console.warn('TO BE DONE')
 })
 
 test('cost insar', () => {
@@ -31,6 +35,8 @@ test('cost insar', () => {
 
     measure.array[0] += 0.5 // blur
     //expect( geo.costVerticalGps({measure, compute}) ).not.toBe(0)
+    expect(true).toBeTruthy()
+    console.warn('TO BE DONE')
 })
 
 test('cost joint', () => {

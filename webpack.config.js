@@ -30,6 +30,7 @@ module.exports = {
             },
             '@youwol/dataframe': '@youwol/dataframe',
             '@youwol/math': '@youwol/math',
+            '@youwol/geometry': '@youwol/geometry',
         },
     ],
     module: {

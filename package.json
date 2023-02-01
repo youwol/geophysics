@@ -20,9 +20,9 @@
         "__doc": "typedoc src/ --excludePrivate --disableSources --media ./images --out dist/docs --includeVersion --hideGenerator",
         "doc": "typedoc src/ --excludePrivate --disableSources -name 'Geophysics js library API' --media ./media --out dist/docs --includeVersion --hideGenerator"
     },
-    "dependencies": {},
     "peerDependencies": {
         "@youwol/dataframe": "0.x",
+        "@youwol/geometry": "^0.x",
         "@youwol/math": "0.x"
     },
     "devDependencies": {
@@ -32,6 +32,7 @@
         "@typescript-eslint/parser": "^5.33.1",
         "@youwol/dataframe": "0.x",
         "@youwol/eslint-config": "^0.0.4",
+        "@youwol/geometry": "^0.0.22",
         "@youwol/io": "0.0.24",
         "@youwol/math": "0.x",
         "@youwol/prettier-config": "^0.0.2",

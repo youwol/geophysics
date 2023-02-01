@@ -102,7 +102,7 @@ export class GenericScalarFieldData extends Data {
     }
 
     costs(data: Serie | Alpha): Serie {
-        const compute = this.generateData(data)
+        const compute = this.generateData(data) as Serie
         if (compute.itemSize !== 1) {
             throw new Error('generateData must have itemSize = 1')
         }

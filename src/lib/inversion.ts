@@ -1,6 +1,9 @@
 import { AlphaParameters } from './mapping'
 import { Data } from './data'
 
+export type MessageCB = (msg: string) => void
+export type ProgressCB = (iter: number, percent: number) => void
+
 /**
  * @brief Parameters for the inversion, which are the measured and the calculated
  * data along with their associated cost function and weight. The [[AlphaParameters]]
@@ -20,12 +23,12 @@ export type InversionModel = {
     /**
      * The progression callback for the method of inversion (monte-carlo, mcmc, Bees, ...)
      */
-    onProgress?: Function
+    onProgress?: ProgressCB
 
     /**
      * The messages callback
      */
-    onMessage?: Function
+    onMessage?: MessageCB
 }
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Using the prinicipal of superposition to perform fast computations requires
+ * Using the principal of superposition to perform fast computations requires
  * a vector of weights (called alpha). Most of the time the user wants to use the
  * weights in his own space, and therefore the need to map from the user-defined to the
  * needed space.
@@ -8,6 +8,9 @@
 
 import { Alpha } from './types'
 
+/**
+ * @category mapping
+ */
 export interface alphaMapping {
     /**
      * @brief A mapping for any [[Alpha]]. Basically, it transforms a user-defined
@@ -32,6 +35,8 @@ export interface alphaMapping {
  *     max: [180, 3]
  * }
  * ```
+ *
+ * @category mapping
  */
 export type AlphaParameters = {
     min: number[]
@@ -42,8 +47,13 @@ export type AlphaParameters = {
 /**
  * A default mapping for any [[Alpha]]. Basically it return the same alpha.
  * @see [[alphaMapping]]
+ *
+ * @category mapping
  */
 export const defaultMapping: alphaMapping = (params: Alpha) => params
+export const defaultMappingNames = (alpha: Alpha): string[] => {
+    return alpha.map((_, i) => `${i}`)
+}
 
 /**
  * @brief Convert the regional Andersonian stress (theta, R) into the global CSys [xx, xy, yy].
@@ -62,6 +72,8 @@ export const defaultMapping: alphaMapping = (params: Alpha) => params
  * @see [[alphaMapping]]
  * @see publication <br>
  * `Maerten, F., Madden, E. H., Pollard, D. D., & Maerten, L. (2016). Incorporating fault mechanics into inversions of aftershock data for the regional remote stress, with application to the 1992 Landers, California earthquake. Tectonophysics, 674, 52-64.`
+ *
+ * @category mapping
  */
 export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
     const theta = alpha[0]
@@ -87,6 +99,72 @@ export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
     }
     return [R * c2 + s2, (1 - R) * c * s, R * s2 + c2]
 }
+export const simpleAndersonMappingNames = (_alpha: Alpha): string[] => {
+    return ['Theta', 'Rb']
+}
+
+/**
+ * @brief Convert the regional stress parameters given by [theta, Rb, rockDensity] into [xx, xy, yy, zz]
+ * @see [[alphaMapping]]
+ * @see publication <br>
+ * `Maerten, F., Madden, E. H., Pollard, D. D., & Maerten, L. (2016). Incorporating fault mechanics into inversions of aftershock data for the regional remote stress, with application to the 1992 Landers, California earthquake. Tectonophysics, 674, 52-64.`
+ *
+ * @category mapping
+ */
+export const gradientAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
+    if (alpha.length < 3) {
+        throw new Error(`argument alpha should be equal to 3:
+        alpha = [theta, R, rockDensity]. Got ${alpha}`)
+    }
+
+    const theta = alpha[0]
+    const R = alpha[1]
+
+    if (theta < 0 || theta > 180) {
+        throw new Error('Theta must be in [0°..180°]')
+    }
+    if (R < 0 || R > 3) {
+        throw new Error('R must be in [0..3]')
+    }
+
+    const c = Math.cos((theta * Math.PI) / 180)
+    const s = Math.sin((theta * Math.PI) / 180)
+    const c2 = c ** 2
+    const s2 = s ** 2
+
+    let xx = 0
+    let xy = 0
+    let yy = 0
+    let zz = 0
+
+    const rock = alpha[2]
+    const Sv = -rock * 9.81
+
+    if (R <= 1) {
+        const r = R
+        xx = r * s2
+        xy = c * s * r
+        yy = c2 * r
+        zz = 1
+    } else if (R <= 2) {
+        const r = 2 - R
+        xx = s2
+        xy = c * s
+        yy = c2
+        zz = r
+    } else {
+        const r = R - 2
+        xx = r * c2 + s2
+        xy = (1 - r) * c * s
+        yy = r * s2 + c2
+        zz = 0
+    }
+
+    return [xx * Sv, xy * Sv, yy * Sv, zz * Sv]
+}
+export const gradientAndersonMappingNames = (_alpha: Alpha): string[] => {
+    return ['Theta', 'Rb', 'Rock density']
+}
 
 /**
  * Transform the user-parameter-space `[theta, Rh, RH, rockDensity, cavityDensity, shift1, shift2...]`
@@ -106,6 +184,8 @@ export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
  * // provide 2 pressure shifts
  * const alpha = GradientPressureMapping([45, 0.1, 0.2, 2300, 2200, -1e6, -1e7])
  * ```
+ *
+ * @category mapping
  */
 export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
     if (alpha.length < 6) {
@@ -134,4 +214,8 @@ export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
     const shifts = [...alpha].splice(5)
 
     return [xx, xy, yy, zz, magma, ...shifts]
+}
+export const gradientPressureMappingNames = (alpha: Alpha): string[] => {
+    const shifts = [...alpha].splice(5).map((_, i) => `Shift${i + 1}`)
+    return ['Theta', 'Rh', 'RH', 'Rock density', 'Cavity density', ...shifts]
 }

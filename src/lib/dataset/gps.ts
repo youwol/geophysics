@@ -37,6 +37,7 @@ import {
  * @category Geophysics
  */
 export class GpsData extends Data {
+    /* eslint @typescript-eslint/no-explicit-any: off -- Object are differents */
     constructor(params: any) {
         super(params)
         if (this.measure.itemSize !== 3) {
@@ -56,7 +57,7 @@ export class GpsData extends Data {
     }
 
     costs(data: Serie | Alpha): Serie {
-        const d = this.generateData(data)
+        const d = this.generateData(data) as Serie
         if (d.itemSize !== 3) {
             throw new Error('provided Serie must have itemSize = 3 (displ)')
         }
@@ -103,6 +104,7 @@ export class GpsData extends Data {
  * @category Geophysics
  */
 export class VerticalGpsData extends Data {
+    /* eslint @typescript-eslint/no-explicit-any: off -- Object are differents */
     constructor(params: any) {
         super(params)
         if (this.measure.itemSize !== 1) {
@@ -122,7 +124,7 @@ export class VerticalGpsData extends Data {
     }
 
     costs(data: Serie | Alpha): Serie {
-        const d = this.generateData(data)
+        const d = this.generateData(data) as Serie
         if (d.itemSize !== 1) {
             throw new Error('provided Serie must have itemSize = 1')
         }

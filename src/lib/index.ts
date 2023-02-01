@@ -6,6 +6,7 @@ export * from './inversion'
 export * from './monteCarlo'
 export * from './data'
 export * from './forward'
+export * from './attributeDetector'
 
 export * from './dataset'
 export * from './utils'

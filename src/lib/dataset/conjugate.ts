@@ -1,7 +1,10 @@
 import { DataFrame, Serie } from '@youwol/dataframe'
-import { eigen, normalize, rotateAxis, vec, weightedSum } from '@youwol/math'
+import { eigen, Quaternion, vec, weightedSum } from '@youwol/math'
 import { Data } from '../data'
 import { Alpha } from '../types'
+import { deg2rad } from '../utils'
+import { normalize } from '../utils/normalizeSerie'
+import { generatorForNormal } from './generatorForNormal'
 
 const getTheta = (friction: number): number =>
     (Math.PI * (45 - friction / 2)) / 180
@@ -19,10 +22,10 @@ const getTheta = (friction: number): number =>
  * const data = new ConjugateData({
  *     dataframe,
  *     measure: 'n',
- *     compute: ['S1', 'S2', 'S3'],
+ *     compute: ['S1', 'S2', 'S3'], // the 3 serie's names for the stresses
  *     weight: 1,
  *     weights: 'ptsWeights',
- *     friction: 60,
+ *     friction: 60, // friction angle
  *     project: true
  * })
  * ```
@@ -32,8 +35,9 @@ const getTheta = (friction: number): number =>
  * @category Geology
  */
 export class ConjugateData extends Data {
-    theta = (Math.PI * (45 - 60 / 2)) / 180
+    protected theta = getTheta(30)
     protected projected = false
+    protected useAngle = true
     protected friction: number
 
     constructor({
@@ -42,8 +46,9 @@ export class ConjugateData extends Data {
         compute,
         weights,
         weight,
-        friction = 0.3,
+        friction = 30,
         projected = false,
+        useAngle = true,
     }: {
         dataframe: DataFrame
         measure: string
@@ -52,10 +57,12 @@ export class ConjugateData extends Data {
         weight?: number
         friction: number
         projected?: boolean
+        useAngle?: boolean
     }) {
         super({ dataframe, measure, compute, weights, weight })
         this.measure = normalize(this.measure)
         this.projected = projected !== undefined ? projected : false
+        this.useAngle = useAngle !== undefined ? useAngle : true
         if (friction !== undefined) {
             this.friction = friction
             this.theta = (Math.PI * (45 - friction / 2)) / 180
@@ -65,7 +72,14 @@ export class ConjugateData extends Data {
             this.measure = this.measure.map((v) => {
                 const x = v[0]
                 const y = v[1]
-                const l = Math.sqrt(x ** 2 + y ** 2)
+                let l = Math.sqrt(x ** 2 + y ** 2)
+                if (l === 0) {
+                    l = 1
+                    console.warn(
+                        `ConjgateData ctor: measure at index i is horizontal => normalization is null`,
+                        dataframe,
+                    )
+                }
                 return [x / l, y / l, 0]
             })
         }
@@ -76,69 +90,75 @@ export class ConjugateData extends Data {
     }
 
     costs(alpha: Serie | Alpha): Serie {
+        // Here, we are sure that d is of type Serie[]
         const d = this.generateData(alpha)
 
         if (this.projected) {
-            if (d.itemSize !== 3) {
-                throw new Error(
-                    'generateData must have itemSize = 3 (i.e., normal)',
-                )
-            }
-            return this.measure.map((n1: number[], i: number) => {
-                const L = Math.sqrt(n1[0] ** 2 + n1[1] ** 2)
-                const nn = [n1[0] / L, n1[1] / L, 0] as vec.Vector3
-                const N = d.itemAt(i) as vec.Vector3 //this.fractureNormal(d.itemAt(i) as vec.Vector3) // Sigma2, so very simple
-                return this.fractureCost(nn, N)
+            return this.measure.map((n: number[], i: number) => {
+                // Note: measure already normalized after projection
+                //   const L = Math.sqrt(n[0] ** 2 + n[1] ** 2)
+                //   const nn = [n[0] / L, n[1] / L, 0] as vec.Vector3
+
+                const D = d as Serie
+
+                let w = 1
+                if (this.weights) {
+                    w = this.weights.itemAt(i) as number
+                }
+
+                const n1 = D.itemAt(i) as vec.Vector3 // this.fractureNormal(d.itemAt(i) as vec.Vector3) // Sigma2, so very simple
+                const c = this.fractureCost(n1, n as vec.Vector3, w)
+                if (Number.isNaN(c)) {
+                    console.warn(
+                        `ConjugateData: cost is NaN for normals ${n1} and ${n}`,
+                    )
+                }
+                return c
             })
         }
 
-        // we have {n1, n2}
         return this.measure.map((normal, i) => {
-            // const {n1, n2} = this.conjugateNormals(d.itemAt(i) as vec.Vector6)
-            // const dd = d as {n1: Serie, n2: Serie}
-            const n1 = d.n1.itemAt(i)
-            const n2 = d.n2.itemAt(i)
+            let w = 1
+            if (this.weights) {
+                w = this.weights.itemAt(i) as number
+            }
             return Math.min(
-                this.fractureCost(normal, n1 as vec.Vector3),
-                this.fractureCost(normal, n2 as vec.Vector3),
+                this.fractureCost(normal, d[0].itemAt(i), w),
+                this.fractureCost(normal, d[1].itemAt(i), w),
             )
         })
     }
 
-    generate(alpha: Alpha): Serie {
+    generate(alpha: Alpha, forExport: boolean): Serie | Serie[] {
         return generateConjugate({
             stress: weightedSum(this.compute, alpha),
             friction: this.friction,
-            projected: this.projected,
+            projected: forExport ? false : this.projected,
         }) as Serie
     }
 
-    // private conjugateNormals = (stress: vec.Vector6) => {
-    //     const e = eigen(stress)
-    //     const nS3 = [-e.vectors[0], -e.vectors[1], -e.vectors[2]] as vec.Vector3
-    //     const v2  = [-e.vectors[3], -e.vectors[4], -e.vectors[5]] as vec.Vector3
-    //     const v3  = [-e.vectors[6], -e.vectors[7], -e.vectors[8]] as vec.Vector3
-    //     return {
-    //         n1: rotateAxis(v2,  this.theta, v3),
-    //         n2: rotateAxis(v2, -this.theta, nS3)
-    //     }
-    // }
+    generateInDataframe({
+        alpha,
+        prefix,
+        options = undefined,
+    }: {
+        alpha: Alpha
+        prefix: string
+        options?: { [key: string]: object }
+    }): void {
+        generatorForNormal({ data: this, alpha, prefix, options })
+    }
 
-    // private fractureNormal = (stress: vec.Vector6) => {
-    //     // console.log(stress)
-    //     const e = eigen(stress)
-    //     const v2 = [e[3], e[4], e[5]]
-    //     if (this.projected) {
-    //         const d = Math.sqrt(v2[0]**2 + v2[1]**2)
-    //         v2[0] /= d
-    //         v2[1] /= d
-    //         v2[2]  = 0
-    //     }
-    //     return [v2[1], -v2[0], v2[2]] // orthogonal projected
-    // }
-
-    private fractureCost = (n: vec.Vector3, N: vec.Vector3) => {
-        return 1.0 - Math.abs(vec.dot(n, N))
+    private fractureCost = (n: vec.Vector3, N: vec.Vector3, w: number) => {
+        if (this.useAngle) {
+            const W = 2 / Math.PI / this.sumWeights
+            const v = vec.dot(n, N)
+            const a = Math.abs(v)
+            return (Math.acos(a > 1 ? 1 : a) * W) / w
+        } else {
+            // TODO: weights
+            return 1.0 - Math.abs(vec.dot(n, N))
+        }
     }
 }
 
@@ -166,7 +186,7 @@ export function generateConjugate({
     stress: Serie
     friction: number
     projected?: boolean
-}): { n1: Serie; n2: Serie } | Serie {
+}): Serie | Serie[] {
     if (stress === undefined) {
         throw new Error('provided stress Serie is undefined')
     }
@@ -180,7 +200,10 @@ export function generateConjugate({
             const e = eigen(s).vectors
             const v2 = [e[3], e[4], e[5]]
             if (projected === true) {
-                const d = Math.sqrt(v2[0] ** 2 + v2[1] ** 2)
+                let d = Math.sqrt(v2[0] ** 2 + v2[1] ** 2)
+                if (d === 0) {
+                    d = 1
+                }
                 v2[0] /= d
                 v2[1] /= d
                 v2[2] = 0
@@ -189,36 +212,27 @@ export function generateConjugate({
         })
     }
 
-    const theta = getTheta(friction)
-    const eigV = stress.map((s) => eigen(s).vectors)
+    const sp = stress.map((e) => shearPlanes(e, friction))
 
-    return {
-        n1: eigV.map((e) => {
-            const v2 = [-e[3], -e[4], -e[5]] as vec.Vector3
-            const v3 = [-e[6], -e[7], -e[8]] as vec.Vector3
-            return rotateAxis(v2, theta, v3)
-        }),
-        n2: eigV.map((e) => {
-            const nS3 = [-e[0], -e[1], -e[2]] as vec.Vector3
-            const v2 = [-e[3], -e[4], -e[5]] as vec.Vector3
-            return rotateAxis(v2, -theta, nS3)
-        }),
-    }
+    return [
+        sp.map((s) => [s[0], s[1], s[2]]),
+        sp.map((s) => [s[3], s[4], s[5]]),
+    ]
+}
 
-    /*
-    return {
-        n1: stress.map( s => {
-            const e = eigen(s).vectors
-            const v2  = [-e[3], -e[4], -e[5]] as vec.Vector3
-            const v3  = [-e[6], -e[7], -e[8]] as vec.Vector3
-            return rotateAxis(v2,  theta, v3)
-        }),
-        n2: stress.map( s => {
-            const e = eigen(s).vectors
-            const nS3 = [-e[0], -e[1], -e[2]] as vec.Vector3
-            const v2  = [-e[3], -e[4], -e[5]] as vec.Vector3
-            return rotateAxis(v2, -theta, nS3)
-        })
-    }
-    */
+function shearPlanes(stress: vec.Vector6, fric = 30) {
+    const vectors = eigen(stress).vectors
+
+    const S2 = [vectors[3], vectors[4], vectors[5]] as vec.Vector3
+    const S3 = [vectors[6], vectors[7], vectors[8]] as vec.Vector3
+
+    const ang = deg2rad(45.0 - fric / 2.0)
+    let q = Quaternion.fromAxisAngle(S2, ang)
+    const n1 = q.rotate(S3)
+
+    q = Quaternion.fromAxisAngle(S2, -ang)
+    const nS3 = S3.map((v) => -v) as vec.Vector3
+    const n2 = q.rotate(nS3)
+
+    return [...n1, ...n2]
 }

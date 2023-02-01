@@ -81,7 +81,8 @@ export class Domain2D {
      * @param xAxis The index of the xAxis from mapping (user-defined parameters)
      * @param yAxis The index of the yAxis from mapping (user-defined parameters)
      * @param alpha The alpha to use (note that the values used are those differents
-     * from xAxis and yAxis indices)
+     * from xAxis and yAxis indices). This alpha is to fixe the others variables.
+     * The length and order of the array should be the same as the user-alpha.
      */
     evaluate(xAxis = 0, yAxis = 1, alpha: Alpha): Serie {
         const limits: { min: number; max: number }[] = []
@@ -94,7 +95,6 @@ export class Domain2D {
         const yMin = limits[yAxis].min
         const yMax = limits[yAxis].max
 
-        //const r = new Array(this.nx*this.ny).fill(0)
         const r = createEmptySerie({
             Type: undefined,
             count: this.nx * this.ny,
@@ -112,9 +112,15 @@ export class Domain2D {
         for (let i = 0; i < this.nx; ++i) {
             alpha[xAxis] = xMin + (i * (xMax - xMin)) / (this.nx - 1)
             for (let j = 0; j < this.ny; ++j) {
-                alpha[yAxis] = yMin + (i * (yMax - yMin)) / (this.ny - 1)
+                alpha[yAxis] = yMin + (j * (yMax - yMin)) / (this.ny - 1)
                 const newAlpha = this.model.alpha.mapping(alpha)
-                r.array[i * this.nx + j] = cost(this.model.data, newAlpha)
+                const c = cost(this.model.data, newAlpha)
+                if (Number.isNaN(c)) {
+                    console.log(
+                        `While generating the domain: cost is NaN for (x = ${alpha[xAxis]}, y = ${alpha[yAxis]})`,
+                    )
+                }
+                r.array[i * this.nx + j] = c
             }
         }
 

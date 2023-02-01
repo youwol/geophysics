@@ -4,7 +4,7 @@ import {
     eigenVector,
     abs,
     dot,
-    normalize,
+    // normalize,
     square,
     div,
     sub,
@@ -13,6 +13,8 @@ import {
 
 import { Data } from '../data'
 import { Alpha } from '../types'
+import { generatorForNormal } from './generatorForNormal'
+import { normalize } from '../utils/normalizeSerie'
 
 /**
  * Cost for joint fractures. Recall that the stresses from simulations are in
@@ -83,7 +85,14 @@ export class JointData extends Data {
             this.measure = this.measure.map((v) => {
                 const x = v[0]
                 const y = v[1]
-                const l = Math.sqrt(x ** 2 + y ** 2)
+                let l = Math.sqrt(x ** 2 + y ** 2)
+                if (l === 0) {
+                    l = 1
+                    console.warn(
+                        `JointData ctor: measure at index i is horizontal => normalization is null`,
+                        dataframe,
+                    )
+                }
                 return [x / l, y / l, 0]
             })
         }
@@ -94,7 +103,7 @@ export class JointData extends Data {
     }
 
     costs(data: Serie | Alpha): Serie {
-        const d = this.generateData(data)
+        const d = this.generateData(data) as Serie
         if (d.itemSize !== 3) {
             throw new Error(
                 'generateData must have itemSize = 3 (normals to the planes)',
@@ -103,14 +112,13 @@ export class JointData extends Data {
         if (this.useAngle) {
             if (this.weights) {
                 const W = 2 / Math.PI / this.sumWeights
-                //return div(dot(this.measure, d), this.weights).map( v => Math.acos(Math.abs(v))*W )
                 return dot(this.measure, d).map((v, i) => {
                     const w = this.weights.itemAt(i) as number
                     return (Math.acos(Math.abs(v)) * W) / w
                 })
             } else {
                 const W = 2 / Math.PI
-                return dot(this.measure, d).map((v, i) => {
+                return dot(this.measure, d).map((v) => {
                     const a = Math.abs(v)
                     return Math.acos(a > 1 ? 1 : a) * W
                 })
@@ -119,22 +127,59 @@ export class JointData extends Data {
             // (1-|d|)^2
             const s = square(sub(abs(dot(this.measure, d)), 1))
             if (this.weights) {
-                // sum(cost_i/w_i)/sum(1/w_i) = sum(cost_i/w_i)/sumWeights => 2 div
                 return div(div(s, this.weights), this.sumWeights)
             } else {
                 return s
-
-                // DOES NOT WORK §yet?)
-                //this.measure.dot(d).abs().sub(1).square()
             }
         }
     }
 
-    generate(alpha: Alpha): Serie {
+    generate(alpha: Alpha, forExport: boolean): Serie {
         return generateJoints({
             stress: weightedSum(this.compute, alpha),
-            projected: this.projected,
+            projected: forExport ? false : this.projected,
         })
+    }
+
+    /* eslint @typescript-eslint/no-explicit-any: off -- have to keep any here */
+
+    /**
+     * Generate synthetic data (same type a the measures) as well as stress magnitude.
+     * Finally, remove all Series related to superposition.
+     *
+     * @param params All the parameters of the method
+     * @param params.alpha The global weights to perform the superposition.
+     * @param params.prefix The name prefix used to generate the series
+     * @param params.options The optional parameters to generate series
+     * @example
+     * ```ts
+     * data.generateInDataFrame({
+     *      alpha: [1,2,3,4],
+     *      prefix: 'Out',
+     *      options: {
+     *          cost: true,                 // If the costs should be set as a serie
+     *          principalValues: true,      // If the principal values should be set as series
+     *          principalDirections: false, // If the principal vectors should be set as series
+     *          normal: false,              // If the normal vector should be set as a serie
+     *          dipAngleAzim: true,         // If the dip-angle and dip-azimuth should be set as series
+     *          removeSuperposition: true   // If teh series to perform the superposition should be removed
+     *      }
+     * })
+     * ```
+     * @note The alpha vector is NOT the user-alpha, but the result of the mapping of the
+     * user-alpha (see {@link alphaMapping})
+     * @see {@link alphaMapping}
+     */
+    generateInDataframe({
+        alpha,
+        prefix,
+        options = undefined,
+    }: {
+        alpha: Alpha
+        prefix: string
+        options?: { [key: string]: any }
+    }): void {
+        generatorForNormal({ data: this, alpha, prefix, options })
     }
 }
 
@@ -160,13 +205,16 @@ export function generateJoints({
     const ns = eigenVector(stress).map((v) => [v[0], v[1], v[2]]) // SIGMA-1 for engineers
 
     if (projected) {
+        // ERROR: can normalized a [0,0,0] vector
         return normalize(
             apply(ns, (n) => {
                 const x = n[0]
                 const y = n[1]
-                const l = Math.sqrt(x ** 2 + y ** 2)
+                let l = Math.sqrt(x ** 2 + y ** 2)
+                if (l === 0) {
+                    l = 1
+                }
                 return [x / l, y / l, 0]
-                // [n[0], n[1], 0]
             }),
         )
     }

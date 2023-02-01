@@ -10,8 +10,12 @@ export const cost = (data: Data | Data[], alpha: Alpha): number => {
     if (Array.isArray(data)) {
         let w = 0
         return (
-            data.reduce((acc, d) => {
+            data.reduce((acc, d, _i) => {
                 w += d.weight
+                // const c = d.cost(alpha)
+                // if (Number.isNaN(c)) {
+                //     console.warn('cost is NaN')
+                // }
                 return acc + d.cost(alpha)
             }, 0) / w
         )

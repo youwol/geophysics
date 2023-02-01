@@ -2,6 +2,8 @@ import { Serie, DataFrame } from '@youwol/dataframe'
 import { mean } from '@youwol/math'
 import { Alpha } from './types'
 
+/*eslint @typescript-eslint/no-explicit-any: off -- Cannot remove any in Type*/
+
 /**
  * Convenient  function to create a specific [[Data]] with its
  * associated parameters
@@ -18,7 +20,7 @@ import { Alpha } from './types'
  * })
  * ```
  */
-export const createData = (Type: any, param: any): Data => {
+export const createData = (Type: any, param: object): Data => {
     return new Type(param)
 }
 
@@ -69,6 +71,7 @@ export abstract class Data {
                     )
                 }
             })
+            this.computeNames = compute
         }
     }
 
@@ -132,26 +135,69 @@ export abstract class Data {
      *
      *   // --------------
      *
-     *   generate(alpha: Alpha): Serie {
+     *   generate(alpha: Alpha): Serie | Serie[] {
      *     const displ = weightedSum(this.compute, alpha)
      *     return dot(displ, this.sat)
      *   }
      * }
      * ```
      */
-    abstract generate(alpha: Alpha): Serie
+    abstract generate(alpha: Alpha, forExport: boolean): Serie | Serie[]
+
+    /* eslint unused-imports/no-unused-vars: off -- cannot underscorred */
+    /**
+     * Genetate synthetic data after the inversion.
+     * Derived class must implement this method (see Joint or Congugate)
+     * @param options Optional parameters which are specific to any Data
+     * @example
+     * ```ts
+     * data.generateInDataframe({
+     *      alpha: [1,2,3,4],
+     *      prefix: 'F',
+     *      options: {
+     *          cost: true,
+     *          principalValues: true,
+     *          principalDirections: false,
+     *          normal: false,
+     *          dipAngles: true
+     *      }
+     * }
+     * ```
+     * @see {@link JointData}
+     * @see {@link CongugateData}
+     */
+    generateInDataframe({
+        alpha,
+        prefix,
+        options = undefined,
+    }: {
+        alpha: Alpha
+        prefix: string
+        options?: { [key: string]: any }
+    }): void {
+        // generateInDataframe(alpha: Alpha, prefix: string): void {
+        throw new Error(
+            'Derived class must implement this method. See Joint or Congugate',
+        )
+    }
+
+    removeSuperpositionSeries() {
+        this.computeNames.forEach((name) => {
+            this.dataframe.remove(name)
+        })
+    }
 
     // ===================================================================
 
-    protected generateData(data: Serie | Alpha): Serie | any {
+    protected generateData(data: Serie | Alpha): Serie | Serie[] {
         if (Serie.isSerie(data)) {
             return data as Serie
         }
 
-        return this.generate(data as Alpha)
+        return this.generate(data as Alpha, false)
     }
 
-    protected readonly dataframe: DataFrame
+    public readonly dataframe: DataFrame
 
     /**
      * The name of the serie for the measures (must be in the dataframe if any)
@@ -167,7 +213,7 @@ export abstract class Data {
     /**
      * Optional: The names of the series to perform superposition (must be in the dataframe)
      */
-    protected readonly compute: Serie[]
+    public readonly compute: Serie[]
 
     /**
      * The weight of this data. Default value is 1
@@ -175,4 +221,6 @@ export abstract class Data {
     readonly weight: number = 1
 
     protected sumWeights = 1.0
+
+    private computeNames: string[] = undefined
 }

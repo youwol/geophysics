@@ -1,8 +1,8 @@
 import { Alpha } from './types'
-import { Data } from './data'
+import { Data } from './dataset/data'
 
 /**
- * Compute the associated cost to alpha given a [[Data]] or an array of [[Data]].
+ * Compute the associated cost to alpha given a{@link Data} or an array of {@link Data}.
  * @note When data is an array, returns the weighted cost.
  * Otherwise, returns the cost (not multipled by the weight of the data).
  */

@@ -1,15 +1,15 @@
 import { Serie, DataFrame } from '@youwol/dataframe'
 import { mean } from '@youwol/math'
-import { Alpha } from './types'
+import { Alpha } from '../types'
 
 /*eslint @typescript-eslint/no-explicit-any: off -- Cannot remove any in Type*/
 
 /**
- * Convenient  function to create a specific [[Data]] with its
+ * Convenient  function to create a specific {@link Data} with its
  * associated parameters
  * @param Type The type of data (class name)
  * @param param The parameters
- * @see [[Data]]
+ * @see {@link Data}
  * @example
  * ```ts
  * const data = createData(InsarData, {
@@ -75,6 +75,10 @@ export abstract class Data {
         }
     }
 
+    static clone(param: any): Data {
+        throw new Error('Derived class must implement this static method')
+    }
+
     setWeights(w: string) {
         this.weights_ = this.dataframe.series[w]
         if (this.weights_ !== undefined) {
@@ -114,7 +118,7 @@ export abstract class Data {
      *   return square(sub(abs(dot(ns, e)), 1)) // w*(1-d)**2
      * }
      * ```
-     * @see [[JointData]]
+     * @see {@link JointData}
      */
     abstract costs(data: Serie | Alpha): Serie
 
@@ -164,7 +168,7 @@ export abstract class Data {
      * }
      * ```
      * @see {@link JointData}
-     * @see {@link CongugateData}
+     * @see {@link ConjugateData}
      */
     generateInDataframe({
         alpha,

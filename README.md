@@ -1,4 +1,4 @@
-# @youwol/geophysics
+# \@youwol/geophysics
 
 ## Description
 

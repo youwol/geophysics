@@ -11,10 +11,25 @@ import {
     weightedSum,
 } from '@youwol/math'
 
-import { Data } from '../data'
+import { Data } from './data'
 import { Alpha } from '../types'
-import { generatorForNormal } from './generatorForNormal'
+import { generatorForNormal } from './utils/generatorForNormal'
 import { normalize } from '../utils/normalizeSerie'
+
+/**
+ * Parameters for {@link JointData} or {@link DykeData} constructor
+ * @category Geology
+ */
+export type JointDataParams = {
+    dataframe: DataFrame
+    measure: string
+    compute?: string[]
+    weights?: string
+    weight?: number
+    useNormals?: boolean
+    projected?: boolean
+    useAngle?: boolean
+}
 
 /**
  * Cost for joint fractures. Recall that the stresses from simulations are in
@@ -44,15 +59,19 @@ import { normalize } from '../utils/normalizeSerie'
  *     weights   : 'ptsWeights'
  * })
  * ```
- * @see [[Data]]
- * @see [[monteCarlo]]
- * @see [[createData]]
+ * @see {@link Data}
+ * @see {@link monteCarlo}
+ * @see {@link createData}
  * @category Geology
  */
 export class JointData extends Data {
     protected useNormals = true
     protected useAngle = true
     protected projected = false
+
+    static clone(param: JointDataParams): Data {
+        return new JointData(param)
+    }
 
     constructor({
         dataframe,
@@ -63,16 +82,7 @@ export class JointData extends Data {
         useNormals = true,
         projected = false,
         useAngle = true,
-    }: {
-        dataframe: DataFrame
-        measure: string
-        compute?: string[]
-        weights?: string
-        weight?: number
-        useNormals?: boolean
-        projected?: boolean
-        useAngle?: boolean
-    }) {
+    }: JointDataParams) {
         super({ dataframe, measure, compute, weights, weight })
         this.measure = normalize(this.measure)
         this.useNormals = useNormals !== undefined ? useNormals : true
@@ -192,7 +202,7 @@ export class JointData extends Data {
  *      projected: true
  * })
  * ```
- * @see [[JointData]]
+ * @see {@link JointData}
  * @category Geology
  */
 export function generateJoints({

@@ -1,5 +1,5 @@
 import { Serie, apply } from '@youwol/dataframe'
-import { Data } from '../data'
+import { Data } from './data'
 import { Alpha } from '../types'
 import {
     add,
@@ -31,9 +31,9 @@ import {
  *     weights: 'ptsWeights'
  * })
  * ```
- * @see [[Data]]
- * @see [[createData]]
- * @see [[monteCarlo]]
+ * @see {@link Data}
+ * @see {@link createData}
+ * @see {@link monteCarlo}
  * @category Geophysics
  */
 export class GpsData extends Data {
@@ -98,9 +98,9 @@ export class GpsData extends Data {
  *     weights: 'ptsWeights'
  * })
  * ```
- * @see [[Data]]
- * @see [[createData]]
- * @see [[monteCarlo]]
+ * @see {@link Data}
+ * @see {@link createData}
+ * @see {@link monteCarlo}
  * @category Geophysics
  */
 export class VerticalGpsData extends Data {

@@ -13,7 +13,7 @@ import { Alpha } from './types'
  */
 export interface alphaMapping {
     /**
-     * @brief A mapping for any [[Alpha]]. Basically, it transforms a user-defined
+     * @brief A mapping for any {@link Alpha}. Basically, it transforms a user-defined
      * alpha to a global one that can be used by superposition.
      * @param alpha The user-defined alpha vector
      * @returns The converted alpha vector
@@ -22,8 +22,8 @@ export interface alphaMapping {
 }
 
 /**
- * @brief Parameters for defining [[Alpha]], i.e., the min/max of each value as well
- * as an optional [[alphaMapping]] which allows to convert a user-defined parameter space to the
+ * @brief Parameters for defining {@link Alpha}, i.e., the min/max of each value as well
+ * as an optional {@link alphaMapping} which allows to convert a user-defined parameter space to the
  * global one. For stochastic smulation, parameters will be sampled in these ranges.
  * @example
  * ```ts
@@ -45,8 +45,8 @@ export type AlphaParameters = {
 }
 
 /**
- * A default mapping for any [[Alpha]]. Basically it return the same alpha.
- * @see [[alphaMapping]]
+ * A default mapping for any {@link Alpha}. Basically it return the same alpha.
+ * @see {@link alphaMapping}
  *
  * @category mapping
  */
@@ -69,7 +69,7 @@ export const defaultMappingNames = (alpha: Alpha): string[] => {
  *   <li>if R ∈ [1..2], then it is a strike slip fault regime
  *   <li>if R ∈ [2..3], then it is a reverse fault regime
  * </ul>
- * @see [[alphaMapping]]
+ * @see {@link alphaMapping}
  * @see publication <br>
  * `Maerten, F., Madden, E. H., Pollard, D. D., & Maerten, L. (2016). Incorporating fault mechanics into inversions of aftershock data for the regional remote stress, with application to the 1992 Landers, California earthquake. Tectonophysics, 674, 52-64.`
  *
@@ -105,7 +105,7 @@ export const simpleAndersonMappingNames = (_alpha: Alpha): string[] => {
 
 /**
  * @brief Convert the regional stress parameters given by [theta, Rb, rockDensity] into [xx, xy, yy, zz]
- * @see [[alphaMapping]]
+ * @see {@link alphaMapping}
  * @see publication <br>
  * `Maerten, F., Madden, E. H., Pollard, D. D., & Maerten, L. (2016). Incorporating fault mechanics into inversions of aftershock data for the regional remote stress, with application to the 1992 Landers, California earthquake. Tectonophysics, 674, 52-64.`
  *
@@ -177,7 +177,7 @@ export const gradientAndersonMappingNames = (_alpha: Alpha): string[] => {
  * shift pressures as necessary (as long as the number of linearly independent simulations are
  * computed)
  * @param alpha The user-define parameter space
- * @see [[alphaMapping]]
+ * @see {@link alphaMapping}
  * @returns `[Sxx, Sxy, Syy, Szz, cavityDensity, shift1, shift2...]`
  * @example
  * ```ts

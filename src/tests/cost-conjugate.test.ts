@@ -55,7 +55,6 @@ function getConjugate(stress: Serie): Serie | Serie[] {
 
 function getCosts(measure: Serie, compute: Serie /*{ n1: Serie; n2: Serie }*/) {
     return measure.normalize().map((normal, i) => {
-
         // const n1 = compute[0].itemAt(i)
         // const n2 = compute[1].itemAt(i)
         // return Math.min(

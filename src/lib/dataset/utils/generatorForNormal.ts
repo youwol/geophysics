@@ -1,7 +1,7 @@
 import { Serie } from '@youwol/dataframe'
 import { weightedSum } from '@youwol/math'
 import { Data } from '../data'
-import { Alpha } from '../types'
+import { Alpha } from '../../types'
 import { generateDipAnglesInDataFrame } from './generateDipAnglesInDataFrame'
 import { generateNormalInDataFrame } from './generateNormalInDataFrame'
 import { generateStressMagnitudeInDataFrame } from './generateStressMagnitudeInDataFrame'
@@ -9,7 +9,7 @@ import { generateStressVectorsInDataFrame } from './generateStressVectorsInDataF
 
 /* eslint @typescript-eslint/no-explicit-any: off -- don't know how to do it */
 /**
- * Generate synthetic series for {@link Data} based on `normals` (e.g., {@link JointData}, {@link ConjugateData}, {@link StyloliteData} or {@link DikeData})
+ * Generate synthetic series for {@link Data} based on `normals` (e.g., {@link JointData}, {@link ConjugateData}, {@link StyloliteData} or {@link DykeData})
  */
 export function generatorForNormal({
     data,
@@ -35,7 +35,7 @@ export function generatorForNormal({
             generateNormalInDataFrame({
                 serie,
                 prefix,
-                suffix, // because 'plusieurs normales potentielles' (see CongugateData)
+                suffix, // because 'plusieurs normales potentielles' (see ConjugateData)
                 dataframe,
             })
         }
@@ -48,7 +48,7 @@ export function generatorForNormal({
             generateDipAnglesInDataFrame({
                 serie,
                 prefix,
-                suffix, // because 'plusieurs normales potentielles' (see CongugateData)
+                suffix, // because 'plusieurs normales potentielles' (see ConjugateData)
                 dataframe,
             })
         }

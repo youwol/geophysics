@@ -37,7 +37,7 @@ function decompose(str: string): {
     return undefined
 }
 
-/* elsint @typescript-eslint/no-explicit-any: off -- no choice ? */
+/* eslint @typescript-eslint/no-explicit-any: off -- no choice ? */
 function detect(attrsInput: Set<any>) {
     const attrs = new Set(attrsInput)
     const result = []

@@ -20,6 +20,8 @@ examples/galapagos/fernandina/result-forward-insar.ts
 examples/galapagos/fernandina/result-forward-insar.xyz
 examples/galapagos/fernandina/dikes/result-forward-dikes.xyz
 
+src/tests/*.gcd
+
 cdn.zip
 **/.DS_Store
 *.iml

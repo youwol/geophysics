@@ -1,13 +1,28 @@
 import { DataFrame, Serie } from '@youwol/dataframe'
 import { eigen, Quaternion, vec, weightedSum } from '@youwol/math'
-import { Data } from '../data'
+import { Data } from './data'
 import { Alpha } from '../types'
 import { deg2rad } from '../utils'
 import { normalize } from '../utils/normalizeSerie'
-import { generatorForNormal } from './generatorForNormal'
+import { generatorForNormal } from './utils/generatorForNormal'
 
 const getTheta = (friction: number): number =>
     (Math.PI * (45 - friction / 2)) / 180
+
+/**
+ * Parameters for {@link ConjugateData} constructor
+ * @category Geology
+ */
+export type ConjugateDataParams = {
+    dataframe: DataFrame
+    measure: string
+    compute?: string[]
+    weights?: string
+    weight?: number
+    friction: number
+    projected?: boolean
+    useAngle?: boolean
+}
 
 /**
  * Cost for conjugate planes
@@ -25,13 +40,13 @@ const getTheta = (friction: number): number =>
  *     compute: ['S1', 'S2', 'S3'], // the 3 serie's names for the stresses
  *     weight: 1,
  *     weights: 'ptsWeights',
- *     friction: 60, // friction angle
+ *     friction: 30, // friction angle
  *     project: true
  * })
  * ```
- * @see [[Data]]
- * @see [[monteCarlo]]
- * @see [[createData]]
+ * @see {@link Data}
+ * @see {@link monteCarlo}
+ * @see {@link createData}
  * @category Geology
  */
 export class ConjugateData extends Data {
@@ -39,6 +54,10 @@ export class ConjugateData extends Data {
     protected projected = false
     protected useAngle = true
     protected friction: number
+
+    static clone(params: ConjugateDataParams): Data {
+        return new ConjugateData(params)
+    }
 
     constructor({
         dataframe,
@@ -49,16 +68,7 @@ export class ConjugateData extends Data {
         friction = 30,
         projected = false,
         useAngle = true,
-    }: {
-        dataframe: DataFrame
-        measure: string
-        compute?: string[]
-        weights?: string
-        weight?: number
-        friction: number
-        projected?: boolean
-        useAngle?: boolean
-    }) {
+    }: ConjugateDataParams) {
         super({ dataframe, measure, compute, weights, weight })
         this.measure = normalize(this.measure)
         this.projected = projected !== undefined ? projected : false
@@ -76,7 +86,7 @@ export class ConjugateData extends Data {
                 if (l === 0) {
                     l = 1
                     console.warn(
-                        `ConjgateData ctor: measure at index i is horizontal => normalization is null`,
+                        `ConjugateData ctor: measure at index i is horizontal => normalization is null`,
                         dataframe,
                     )
                 }
@@ -175,7 +185,7 @@ export class ConjugateData extends Data {
  * })
  * console.log( n1, n2 )
  * ```
- * @see [[ConjugateData]]
+ * @see {@link ConjugateData}
  * @category Geology
  */
 export function generateConjugate({

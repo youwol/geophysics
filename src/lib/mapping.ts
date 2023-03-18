@@ -6,7 +6,71 @@
  * @module mapping
  */
 
-import { Alpha } from './types'
+import { Alpha, UserAlpha } from './types'
+import { deg2rad } from './utils'
+
+export namespace MappingFactory {
+
+    const map_: Map<string, alphaMapping> = new Map()
+
+    export const bind = (obj: alphaMapping, name: string = '') => {
+        name.length === 0 ? map_.set(obj.name, obj) : map_.set(name, obj)
+    }
+
+    export const call = (name: string, params: any = undefined) => {
+        const fct = map_.get(name)
+        if (fct) {
+            return fct(params)
+        }
+        return undefined
+    }
+
+    export const exists = (name: string): boolean => {
+        return map_.get(name) !== undefined
+    }
+
+    export const names = (): string[] => {
+        return Array.from(map_.keys())
+    }
+
+}
+
+/**
+ * Not used for the moment but we are thinking to replace {@link alphaMapping}
+ * by this interface. All derived functions from {@link alphaMapping} will be
+ * replaced by classes implenting {@link AlphaMapping}.
+ * @note NOT USED FOR THE MOMENT
+ */
+export interface AlphaMapping {
+    /**
+     * The method which transform a user alpha space to a one suitable for the
+     * superposition, i.e., the components of the stress tensor, densities and
+     * pressures (therefore not readable for the user).
+     */
+    map(userAlpha: UserAlpha): Alpha
+
+    /**
+     * The `user` dimension of the mapping
+     */
+    dim(userAlpha: UserAlpha): number
+
+    /**
+     * The minima of the user parameters
+     */
+    min(userAlpha: UserAlpha): number[]
+
+    /**
+     * The maxima of the user parameters
+     */
+    max(userAlpha: UserAlpha): number[]
+
+    /**
+     * The names of the user parameters
+     */
+    names(userAlpha: UserAlpha): string[]
+}
+
+// ----------------------------------------------------
 
 /**
  * @category mapping
@@ -54,6 +118,9 @@ export const defaultMapping: alphaMapping = (params: Alpha) => params
 export const defaultMappingNames = (alpha: Alpha): string[] => {
     return alpha.map((_, i) => `${i}`)
 }
+export const defaultMappingBounds = (alpha: Alpha): Array<[number, number]> => {
+    return alpha.map(() => [Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY])
+}
 
 /**
  * @brief Convert the regional Andersonian stress (theta, R) into the global CSys [xx, xy, yy].
@@ -86,8 +153,8 @@ export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
         throw new Error('R must be in [0..3]')
     }
 
-    const c = Math.cos((theta * Math.PI) / 180)
-    const s = Math.sin((theta * Math.PI) / 180)
+    const c = Math.cos(deg2rad(theta))
+    const s = Math.sin(deg2rad(theta))
     const c2 = c ** 2
     const s2 = s ** 2
 
@@ -101,6 +168,9 @@ export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
 }
 export const simpleAndersonMappingNames = (_alpha: Alpha): string[] => {
     return ['Theta', 'Rb']
+}
+export const simpleAndersonMappingBounds = (alpha: Alpha): Array<[number, number]> => {
+    return [[0, 180], [0, 3]]
 }
 
 /**
@@ -127,8 +197,8 @@ export const gradientAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
         throw new Error('R must be in [0..3]')
     }
 
-    const c = Math.cos((theta * Math.PI) / 180)
-    const s = Math.sin((theta * Math.PI) / 180)
+    const c = Math.cos(deg2rad(theta))
+    const s = Math.sin(deg2rad(theta))
     const c2 = c ** 2
     const s2 = s ** 2
 
@@ -165,6 +235,95 @@ export const gradientAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
 export const gradientAndersonMappingNames = (_alpha: Alpha): string[] => {
     return ['Theta', 'Rb', 'Rock density']
 }
+export const gradientAndersonMappingBounds = (alpha: Alpha): Array<[number, number]> => {
+    return [[0, 180], [0, 3], [0, 10000]]
+}
+
+const cos = Math.cos
+const sin = Math.sin
+
+/**
+ * @brief Convert the regional stress parameters given by [theta, alphShape, rockDensity] into [xx, xy, yy, zz]
+ * @param alpha The user parameters. The alpha-shape parameter in alpha (teh second one) varies between -90° and 90°.
+ * - The normal regime is between -90° and 0°
+ * - The strike-slip regime is between 0° and 45°
+ * - The reverse regime is between 45° and 90°
+ * @see {@link alphaMapping}
+ * @category mapping
+ */
+export const gradientAndersonAlphaShapeMapping: alphaMapping = (alpha: Alpha): Alpha => {
+    if (alpha.length < 3) {
+        throw new Error(`argument alpha should be equal to 3:
+        alpha = [theta, alphaShape, rockDensity]. Got ${alpha}`)
+    }
+
+    const theta = alpha[0]
+    const alphaShape = alpha[1]
+    const rock = alpha[2]
+
+    const Sv = -rock * 9.81
+
+    if (theta < 0 || theta > 180) {
+        throw new Error('Theta must be in [0°..180°]')
+    }
+    if (alphaShape < -90 || alphaShape > 90) {
+        throw new Error('alphaShape must be in [-90°..90°]')
+    }
+
+    const Alpha = deg2rad(alphaShape)
+    const Theta = deg2rad(theta)
+    return [
+        (sin(Alpha) - cos(Alpha) * cos(Theta) ** 2) * Sv,
+        cos(Alpha) * sin(Theta) * cos(Theta) * Sv,
+        (sin(Alpha) - cos(Alpha) * sin(Theta) ** 2) * Sv,
+        0,
+    ]
+}
+export const gradientAndersonAlphaShapeMappingNames = (
+    _alpha: Alpha,
+): string[] => {
+    return ['Theta', 'alpha-shape', 'Rock density']
+}
+export const gradientAndersonAlphaShapeMappingBounds = (alpha: Alpha): Array<[number, number]> => {
+    return [[0, 180], [-90, 90], [0, 10000]]
+}
+
+/**
+ * Same as {@link gradientAndersonAlphaShapeMapping} but with the normal regime squizzed between -45° and 0°.
+ * - The normal regime is between -45° and 0°
+ * - The strike-slip regime is between 0° and 45°
+ * - The reverse regime is between 45° and 90°
+ * @category mapping
+ */
+export const gradientAndersonAlphaShapeMapping2: alphaMapping = (alpha: Alpha): Alpha => {
+    if (alpha.length < 3) {
+        throw new Error(`argument alpha should be equal to 3:
+        alpha = [theta, alphaShape, rockDensity]. Got ${alpha}`)
+    }
+
+    const theta = alpha[0]
+    const alphaShape = alpha[1]
+    const rock = alpha[2]
+
+    const Sv = -rock * 9.81
+
+    if (theta < 0 || theta > 180) {
+        throw new Error('Theta must be in [0°..180°]')
+    }
+    if (alphaShape < -45 || alphaShape > 90) {
+        throw new Error('alphaShape must be in [-45°..90°]')
+    }
+
+    let Alpha = deg2rad(alphaShape)
+    if (Alpha < 0) Alpha *= 2
+    const Theta = deg2rad(theta)
+    return [
+        (sin(Alpha) - cos(Alpha) * cos(Theta) ** 2) * Sv,
+        cos(Alpha) * sin(Theta) * cos(Theta) * Sv,
+        (sin(Alpha) - cos(Alpha) * sin(Theta) ** 2) * Sv,
+        0,
+    ]
+}
 
 /**
  * Transform the user-parameter-space `[theta, Rh, RH, rockDensity, cavityDensity, shift1, shift2...]`
@@ -195,7 +354,7 @@ export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
 
     let theta = alpha[0]
     //if (theta<0 || theta>180) throw new Error('Theta must be in [0°..180°]')
-    theta = (theta * Math.PI) / 180
+    theta = deg2rad(theta)
 
     const Kh = alpha[1]
     const KH = alpha[2]
@@ -219,3 +378,16 @@ export const gradientPressureMappingNames = (alpha: Alpha): string[] => {
     const shifts = [...alpha].splice(5).map((_, i) => `Shift${i + 1}`)
     return ['Theta', 'Rh', 'RH', 'Rock density', 'Cavity density', ...shifts]
 }
+export const gradientPressureMappingBounds = (alpha: Alpha): Array<[number, number]> => {
+    const shifts = [...alpha].splice(5).map(() => [-1e9, 1e9]) as Array<[number, number]>
+    return [[0, 180], [0, 10], [0, 10], [0, 10000], [0, 10000], ...shifts]
+}
+
+// ----------------------------
+
+MappingFactory.bind(defaultMapping)
+MappingFactory.bind(simpleAndersonMapping)
+MappingFactory.bind(gradientAndersonMapping)
+MappingFactory.bind(gradientAndersonAlphaShapeMapping)
+MappingFactory.bind(gradientAndersonAlphaShapeMapping2)
+MappingFactory.bind(gradientPressureMapping)

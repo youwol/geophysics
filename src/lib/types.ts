@@ -30,3 +30,5 @@ export interface CostFunction {
  * in order to match [this publication](https://www.sciencedirect.com/science/article/abs/pii/S0040195116000731)
  */
 export type Alpha = number[]
+
+export type UserAlpha = number[]

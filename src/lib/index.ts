@@ -7,6 +7,7 @@ export * from './monteCarlo'
 export * from './dataset/data'
 export * from './forward'
 export * from './attributeDetector'
+export * from './CircularDomain'
 
 export * from './dataset'
 export * from './utils'

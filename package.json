@@ -1,6 +1,6 @@
 {
     "name": "@youwol/geophysics",
-    "version": "0.0.9",
+    "version": "0.0.10-wip",
     "license": "MIT",
     "description": "geophysics package for YouWol",
     "author": "fmaerten@youwol.com",

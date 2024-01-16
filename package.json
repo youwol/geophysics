@@ -1,6 +1,6 @@
 {
     "name": "@youwol/geophysics",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "license": "MIT",
     "description": "geophysics package for YouWol",
     "author": "fmaerten@youwol.com",
@@ -19,7 +19,9 @@
         "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public",
         "doc": "typedoc src/ --excludePrivate --disableSources -name 'Geophysics js library API' --media ./media --out dist/docs --includeVersion --hideGenerator"
     },
-    "dependencies": {},
+    "dependencies": {
+        "@youwol/geometry": "^0.1.3"
+    },
     "peerDependencies": {
         "@youwol/dataframe": "0.x",
         "@youwol/math": "0.x"

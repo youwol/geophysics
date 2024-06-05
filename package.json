@@ -1,7 +1,7 @@
 {
     "name": "@youwol/geophysics",
     "description": "geophysics package for YouWol",
-    "version": "0.1.23-wip",
+    "version": "0.1.24-wip",
     "author": "fmaerten@youwol.com",
     "homepage": "https://github.com/youwol/geophysics#README.md",
     "main": "dist/@youwol/geophysics.js",
@@ -20,7 +20,7 @@
         "test-coverage": "jest -i --collect-coverage",
         "doc": "typedoc",
         "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public",
-        "test-debug": "node --inspect-brk node_modules/.bin/jest --runInBand ./src/tests/cost-joint.test.ts"
+        "test-debug": "node --inspect-brk node_modules/.bin/jest --runInBand ./src/tests/cost-conjugate.test.ts"
     },
     "prettier": "@youwol/prettier-config",
     "eslintConfig": {

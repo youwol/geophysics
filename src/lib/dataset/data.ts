@@ -153,7 +153,7 @@ export abstract class Data {
      * }
      * ```
      */
-    abstract generate(alpha: Alpha, forExport: boolean): Serie
+    abstract generate(alpha: Alpha, forExport: boolean): Serie | Serie[]
 
     /* eslint unused-imports/no-unused-vars: off -- cannot underscorred */
     /**
@@ -206,10 +206,15 @@ export abstract class Data {
      * alpha is considered as Data directly.
      * @returns 
      */
-    protected generateData(alpha: Serie | Alpha): Serie {
+    protected generateData(alpha: Serie | Serie[] | Alpha): Serie | Serie[] {
         if (Serie.isSerie(alpha)) {
             // The passed 'alpha' is implicitly a data (as a Serie)
             return alpha as Serie
+        }
+
+        if (isNaN(alpha[0])) {
+            // The passed 'alpha' is implicitly a data (as a Serie)
+            return alpha as Serie[]
         }
 
         // Otherwise, the passed alpha is realy a Alpha => perform a weigthed sum

@@ -110,7 +110,7 @@ export class ConjugateData extends Data {
         //   1) Data.generateData,
         //   2) then this.generate below,
         //   3) and therefore the function generateConjugate also below
-        const d = this.generateData(alpha) as Serie
+        const d = this.generateData(alpha)
 
         if (this.projected) {
             return this.measure.map((n: number[], i: number) => {
@@ -138,38 +138,38 @@ export class ConjugateData extends Data {
 
         // XALI: 20240604
         // ==============
-        // return this.measure.map((normal, i) => {
-        //     let w = 1
-        //     if (this.weights) {
-        //         w = this.weights.itemAt(i) as number
-        //     }
-        //     return Math.min(
-        //         this.fractureCost(normal, d[0].itemAt(i), w),
-        //         this.fractureCost(normal, d[1].itemAt(i), w),
-        //     )
-        // })
-
         return this.measure.map((normal, i) => {
-            const j = 2 * i
             let w = 1
-
             if (this.weights) {
                 w = this.weights.itemAt(i) as number
             }
-
             return Math.min(
-                this.fractureCost(normal, d.itemAt(j) as vec.Vector3, w),
-                this.fractureCost(normal, d.itemAt(j + 1) as vec.Vector3, w)
+                this.fractureCost(normal, d[0].itemAt(i), w),
+                this.fractureCost(normal, d[1].itemAt(i), w),
             )
         })
+
+        // return this.measure.map((normal, i) => {
+        //     const j = 2 * i
+        //     let w = 1
+
+        //     if (this.weights) {
+        //         w = this.weights.itemAt(i) as number
+        //     }
+
+        //     return Math.min(
+        //         this.fractureCost(normal, d.itemAt(j) as vec.Vector3, w),
+        //         this.fractureCost(normal, d.itemAt(j + 1) as vec.Vector3, w)
+        //     )
+        // })
     }
 
-    generate(alpha: Alpha, forExport: boolean): Serie {
+    generate(alpha: Alpha, forExport: boolean): Serie | Serie[] {
         return generateConjugate({
             stress: weightedSum(this.compute, alpha),
             friction: this.friction,
             projected: forExport ? false : this.projected,
-        }) as Serie
+        })
     }
 
     generateInDataframe({
@@ -221,7 +221,7 @@ export function generateConjugate({
     stress: Serie
     friction: number
     projected?: boolean
-}): Serie {
+}): Serie | Serie[] {
     if (stress === undefined) {
         throw new Error('provided stress Serie is undefined')
     }
@@ -251,12 +251,12 @@ export function generateConjugate({
 
     // XALI: 20240604
     // ==============
-    // return [
-    //     sp.map(s => [s[0], s[1], s[2]]),
-    //     sp.map(s => [s[3], s[4], s[5]])
-    // ]
+    return [
+        sp.map(s => [s[0], s[1], s[2]]),
+        sp.map(s => [s[3], s[4], s[5]])
+    ]
 
-    return Serie.create({array: sp.array, itemSize: 3, dimension: 3})
+    // return Serie.create({array: sp.array, itemSize: 3, dimension: 3})
 }
 
 function shearPlanes(stress: vec.Vector6, fric = 30) {

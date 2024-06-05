@@ -47,14 +47,14 @@ test('shear planes', () => {
         const expected = shears[index]
 
         // Plane 1
-        expect(generated.array[0]).toBeCloseTo(expected[0])
-        expect(generated.array[1]).toBeCloseTo(expected[1])
-        expect(generated.array[2]).toBeCloseTo(expected[2])
+        expect(generated[0].array[0]).toBeCloseTo(expected[0])
+        expect(generated[0].array[1]).toBeCloseTo(expected[1])
+        expect(generated[0].array[2]).toBeCloseTo(expected[2])
 
         // Plane 2
-        expect(generated.array[3]).toBeCloseTo(expected[3])
-        expect(generated.array[4]).toBeCloseTo(expected[4])
-        expect(generated.array[5]).toBeCloseTo(expected[5])
+        expect(generated[1].array[0]).toBeCloseTo(expected[3])
+        expect(generated[1].array[1]).toBeCloseTo(expected[4])
+        expect(generated[1].array[2]).toBeCloseTo(expected[5])
 
     })
 })

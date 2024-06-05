@@ -15,6 +15,7 @@ import { vec } from '@youwol/math'
  *
  * const results = plines.map( pline => pl2XyzWithNormals(pline) )
  * ```
+ * @category Dataframe
  */
 export function segments2PointsWithNormals(
     df: DataFrame,

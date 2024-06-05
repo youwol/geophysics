@@ -1,5 +1,5 @@
 import { Serie, apply, DataFrame, map } from '@youwol/dataframe'
-import { Data } from '../data'
+import { Data } from './data'
 import { Alpha } from '../types'
 import { dot, square, div, weightedSum, vec, minMax } from '@youwol/math'
 
@@ -12,7 +12,7 @@ import { dot, square, div, weightedSum, vec, minMax } from '@youwol/math'
  * <center><img style="width:25%; height:25%;" src="media://insar.png"></center>
  * <center><blockquote><i>
  * Equation for an Insar data. Upper sripts m and c stand for measured and computed, respectively.
- * Computed Insar is using the function [[generateInsar]], which makes use of the satellite line
+ * Computed Insar is using the function {@link generateInsar}, which makes use of the satellite line
  * of sight.
  * </i></blockquote></center>
  *
@@ -28,11 +28,11 @@ import { dot, square, div, weightedSum, vec, minMax } from '@youwol/math'
  *     weights: 'ptsWeights'
  * })
  * ```
- * @see [[Data]]
- * @see [[generateInsar]]
- * @see [[monteCarlo]]
- * @see [[createData]]
- * @category Geophysics
+ * @see {@link Data}
+ * @see {@link generateInsar}
+ * @see {@link monteCarlo}
+ * @see {@link createData}
+ * @category Data/Geophysics
  */
 export class InsarData extends Data {
     los: vec.Vector3 = [0, 0, 1]
@@ -94,7 +94,7 @@ export class InsarData extends Data {
     }
 
     costs(alpha: Serie | Alpha): Serie {
-        let d = this.generateData(alpha)
+        let d = this.generateData(alpha) as Serie
         if (d.itemSize !== 1) {
             throw new Error(
                 'provided Serie must have itemSize = 1 (displ along los)',
@@ -127,7 +127,7 @@ export class InsarData extends Data {
  * corresponding Insar data.
  * @param displ The displacement field as a flat array
  * @param satellite The satellite line of sight
- * @see [[InsarData]]
+ * @see {@link InsarData}
  * @example
  * In the following example, the displacement field `displ` is computed using
  * numerically, and the `measuredInsar` are the measures (observations).
@@ -143,7 +143,7 @@ export class InsarData extends Data {
  * }
  * cost /= computedInsar.length
  * ```
- * @see [[Data]]
+ * @see {@link Data}
  * @category Dataframe
  */
 export function generateInsar({
@@ -160,7 +160,7 @@ export function generateInsar({
  * Generate fringes given fringe spacing.
  * @param serie The serie with itemSize of 1
  * @param fringeSpacing The spacing of the fringes
- * @returns A new [[Serie]]
+ * @returns A new Serie
  * @example
  * ```ts
  * const displ   = dataframe.series['Displ']

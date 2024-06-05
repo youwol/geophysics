@@ -1,16 +1,29 @@
 # @youwol/geophysics
 
-## Description
+geophysics package for YouWol
 
-Online documentation can be found [here](https://youwol.github.io/geophysics/dist/docs/)
+This library is part of the hybrid cloud/local ecosystem
+[YouWol](https://platform.youwol.com/applications/@youwol/platform/latest).
 
-## Use
+## Links
+
+[Online user-guide](https://l.youwol.com/doc/@youwol/geophysics)
+
+[Developers documentation](https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/geophysics&tab=doc)
+
+[Package on npm](https://www.npmjs.com/package/@youwol/geophysics)
+
+[Source on GitHub](https://github.com/youwol/geophysics)
+
+# Installation, Build, Test
 
 To install the required dependencies:
 
 ```shell
 yarn
 ```
+
+---
 
 To build for development:
 
@@ -24,8 +37,26 @@ To build for production:
 yarn build:prod
 ```
 
-To test:
+---
+
+<!-- no specific test configuration documented -->
+
+To run tests:
 
 ```shell
 yarn test
+```
+
+Coverage can be evaluated using:
+
+```shell
+yarn test-coverage
+```
+
+---
+
+To generate code's documentation:
+
+```shell
+yarn doc
 ```

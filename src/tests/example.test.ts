@@ -2,7 +2,7 @@ import * as geophysics from '../lib'
 //import * as df from '@youwol/dataframe'
 import * as math from '@youwol/math'
 import { GpsData, InsarData } from '../lib'
-import { createData } from '../lib/data'
+import { createData } from '../lib/dataset/data'
 import { Serie, DataFrame, append } from '@youwol/dataframe'
 
 test('inverse', () => {
@@ -99,6 +99,6 @@ test('inverse', () => {
         50000,
     )
 
-    console.log(result)
+    // console.log(result)
     expect(result.cost).toBeCloseTo(0)
 })

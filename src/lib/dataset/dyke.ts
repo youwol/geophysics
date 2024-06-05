@@ -1,15 +1,15 @@
 import { Serie } from '@youwol/dataframe'
-import { generateJoints } from '.'
+import { generateJoint } from '.'
 import { JointData } from './joint'
 
-export class DikeData extends JointData {
+export class DykeData extends JointData {
     name() {
-        return 'DikeData'
+        return 'DykeData'
     }
 }
 
 /**
- * Generate dikes from stress data. This is essentially the same as [[generateJoints]].
+ * Generate dikes from stress data. This is essentially the same as {@link generateJoint}.
  * A dike is represented by its normal
  * @example
  * ```ts
@@ -18,16 +18,16 @@ export class DikeData extends JointData {
  *      projected: false
  * })
  * ```
- * @see [[generateJoints]]
- * @see [[JointData]]
- * @category Geology
+ * @see {@link generateJoint}
+ * @see {@link JointData}
+ * @category Dataframe
  */
-export function generateDikes({
+export function generateDike({
     stress,
     projected = false,
 }: {
     stress: Serie
     projected?: boolean
 }): Serie {
-    return generateJoints({ stress, projected })
+    return generateJoint({ stress, projected })
 }

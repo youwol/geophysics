@@ -1,5 +1,5 @@
 import { Serie, apply } from '@youwol/dataframe'
-import { Data } from '../data'
+import { Data } from './data'
 import { Alpha } from '../types'
 import {
     add,
@@ -31,12 +31,13 @@ import {
  *     weights: 'ptsWeights'
  * })
  * ```
- * @see [[Data]]
- * @see [[createData]]
- * @see [[monteCarlo]]
- * @category Geophysics
+ * @see {@link Data}
+ * @see {@link createData}
+ * @see {@link monteCarlo}
+ * @category Data/Geophysics
  */
 export class GpsData extends Data {
+    /* eslint @typescript-eslint/no-explicit-any: off -- Object are differents */
     constructor(params: any) {
         super(params)
         if (this.measure.itemSize !== 3) {
@@ -55,8 +56,8 @@ export class GpsData extends Data {
         return 'GpsData'
     }
 
-    costs(data: Serie | Alpha): Serie {
-        const d = this.generateData(data)
+    costs(alpha: Serie | Alpha): Serie {
+        const d = this.generateData(alpha) as Serie
         if (d.itemSize !== 3) {
             throw new Error('provided Serie must have itemSize = 3 (displ)')
         }
@@ -97,12 +98,13 @@ export class GpsData extends Data {
  *     weights: 'ptsWeights'
  * })
  * ```
- * @see [[Data]]
- * @see [[createData]]
- * @see [[monteCarlo]]
- * @category Geophysics
+ * @see {@link Data}
+ * @see {@link createData}
+ * @see {@link monteCarlo}
+ * @category Data/Geophysics
  */
 export class VerticalGpsData extends Data {
+    /* eslint @typescript-eslint/no-explicit-any: off -- Object are differents */
     constructor(params: any) {
         super(params)
         if (this.measure.itemSize !== 1) {
@@ -121,8 +123,8 @@ export class VerticalGpsData extends Data {
         return 'VerticalGpsData'
     }
 
-    costs(data: Serie | Alpha): Serie {
-        const d = this.generateData(data)
+    costs(alpha: Serie | Alpha): Serie {
+        const d = this.generateData(alpha) as Serie
         if (d.itemSize !== 1) {
             throw new Error('provided Serie must have itemSize = 1')
         }

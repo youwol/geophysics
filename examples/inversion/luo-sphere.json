@@ -1,0 +1,121 @@
+{
+    "path": "../../../../../consulting/models/luo-sphere/out/",
+
+    "C41": "---------------------------",
+    "C42": "Data used for the inversion",
+    "C43": "---------------------------",
+    "datas": [
+        {
+            "file":     "simulations/grids/data_for_inversion_01.xyz",
+            "out": {
+                "file": "inversion/data_for_inversion_01.xyz",
+                "prefix": "C",
+                "options": {
+                    "cost": true,
+                    "principalValues": true,
+                    "principalDirections": false,
+                    "normal": false,
+                    "dipAngles": true,
+                    "removeSuperposition": true
+                }
+            },
+            "measure": "Szz",
+            "compute": "S",
+            "type": "scalar",
+            "projected": true,
+            "useNormals": true,
+            "active": true,
+            "weight": 1
+        },
+        {
+            "file":     "simulations/grids/data_for_inversion_02.xyz",
+            "out": {
+                "file": "inversion/data_for_inversion_02.xyz",
+                "prefix": "C",
+                "options": {
+                    "cost": true,
+                    "principalValues": true,
+                    "principalDirections": false,
+                    "normal": false,
+                    "dipAngles": true,
+                    "removeSuperposition": true
+                }
+            },
+            "measure": "Szz",
+            "compute": "S",
+            "type": "scalar",
+            "projected": true,
+            "useNormals": true,
+            "active": true,
+            "weight": 1
+        }
+    ],
+    "C61": "----------------------------",
+    "C62": "Parameters for the inversion",
+    "C63": "----------------------------",
+    "logFile": "luo-sphere.log",
+    "dim": 6,
+    "C72": "Order is [theta, Rh, RH, rockDensity]",
+    "min": [
+        0,
+        0,
+        0,
+        2200,
+        2076,
+        -1e7
+    ],
+    "max": [
+        0,
+        1,
+        1,
+        2200,
+        2076,
+        1e7
+    ],
+    "__INFO_MAPPING__": "from [theta, Rh, RH, rockDensity, cavityDensity, shift1...] to [Sxx, Sxy, Syy, Szz, density, shift1...]",
+    "mapping": "constrainedGradientPressureMapping",
+    "nbSimulations": 50000,
+    "C51": "------------------------------------------------------",
+    "C52": "After the inversion compute the grid and faults if any.",
+    "C53": "Note that superposition should be computed on the grid,",
+    "C54": "the faults and the cavities (if any).",
+    "C55": "Otherwise, you will have to perform a forward model.",
+    "C59": "------------------------------------------------------",
+
+    "postprocess": {
+        "active": true,
+        "grids": {
+            "active": false,
+            "removeSuperposition": true,
+            "in": [],
+            "out": []
+        },
+        "faults": {
+            "active": false,
+            "in": [],
+            "out": []
+        },
+        "cavities": {
+            "active": true,
+            "in": [
+                "simulations/cavities/sphere_5120.ts"
+            ],
+            "out": [
+                "inversion/sphere_5120.ts"
+            ]
+        },
+        "domain": {
+            "active": true,
+            "out": "inversion/domain.ts",
+            "nx": 51,
+            "ny": 51,
+            "xAxis": 1,
+            "yAxis": 5,
+            "flatten": true
+        },
+        "estimate": {
+            "_doc_": "   theta, rh, RH, rockD, saltD, shift",
+            "userAlpha": [0, 0.7, 0.7, 2220, 2076, -14.6e6]
+        }
+    }
+}

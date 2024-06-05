@@ -1,14 +1,18 @@
 import { AlphaParameters } from './mapping'
-import { Data } from './data'
+import { Data } from './dataset/data'
+
+export type MessageCB = (msg: string) => void
+export type ProgressCB = (iter: number, percent: number) => void
 
 /**
  * @brief Parameters for the inversion, which are the measured and the calculated
- * data along with their associated cost function and weight. The [[AlphaParameters]]
+ * data along with their associated cost function and weight. The {@link AlphaParameters}
  * has to be provided as well with the number of iterations for the inversion algorithm.
+ * @category Inversion
  */
 export type InversionModel = {
     /**
-     * All the provided [[Data]] to constrain the inversion
+     * All the provided {@link Data} to constrain the inversion
      */
     data: Data[]
 
@@ -20,20 +24,21 @@ export type InversionModel = {
     /**
      * The progression callback for the method of inversion (monte-carlo, mcmc, Bees, ...)
      */
-    onProgress?: Function
+    onProgress?: ProgressCB
 
     /**
      * The messages callback
      */
-    onMessage?: Function
+    onMessage?: MessageCB
 }
 
 /**
  * @brief The inversion solution
+ * @category Inversion
  */
 export type InversionResult = {
     /**
-     * The inverted [[Alpha]] parameters
+     * The inverted {@link Alpha} parameters
      */
     alpha: number[]
 

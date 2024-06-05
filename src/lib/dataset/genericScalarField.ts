@@ -1,7 +1,24 @@
 import { Serie, DataFrame, Manager } from '@youwol/dataframe'
 import { weightedSum, PositionDecomposer, normalize } from '@youwol/math'
-import { Data } from '../data'
+import { Data } from './data'
 import { Alpha } from '../types'
+
+/**
+ * Parameters for {@link GenericScalarFieldData} constructor
+ * @category Data
+ */
+export type GenericScalarFieldDataParams = {
+    dataframe: DataFrame
+    measure: string
+    coordIndex: number
+    compute?: string[]
+    weights?: string
+    weight?: number
+    xScale?: number
+    yScale?: number
+    positions?: string
+    useDerivative?: boolean
+}
 
 /**
  * Cost for any scalar field. This data uses the derivative along a given direction in order to
@@ -10,11 +27,12 @@ import { Alpha } from '../types'
  * The `xScale` and `yScale` are only applied to the computed data, not the measurements!
  *
  * If `useDerivative=false`, then the measures and the computations are normalized separately.
- * ```
- * @see [[Data]]
- * @see [[monteCarlo]]
- * @see [[createData]]
- * @category Geology
+ *
+ * @see {@link Data}
+ * @see {@link monteCarlo}
+ * @see {@link createData}
+ * 
+ * @category Data
  */
 export class GenericScalarFieldData extends Data {
     private positions: Serie = undefined
@@ -23,6 +41,13 @@ export class GenericScalarFieldData extends Data {
     private yScale = 1
     private useDerivative = false
 
+    static clone(param: GenericScalarFieldDataParams): Data {
+        return new GenericScalarFieldData(param)
+    }
+
+    /**
+     * @param parameters
+     */
     constructor({
         dataframe,
         positions,
@@ -34,18 +59,7 @@ export class GenericScalarFieldData extends Data {
         xScale = 1,
         yScale = 1,
         useDerivative = false,
-    }: {
-        dataframe: DataFrame
-        positions: string
-        measure: string
-        coordIndex: number
-        compute?: string[]
-        weights?: string
-        weight?: number
-        xScale?: number
-        yScale?: number
-        useDerivative?: boolean
-    }) {
+    }: GenericScalarFieldDataParams) {
         super({ dataframe, measure, compute, weights, weight })
 
         this.xScale = xScale
@@ -70,28 +84,30 @@ export class GenericScalarFieldData extends Data {
             )
         }
 
-        // Use the manager
-        this.positions = mng.serie(1, positions)
-        if (this.positions === undefined) {
-            throw new Error(
-                'Cannot find serie named ' + positions + ' in the dataframe',
-            )
-        }
-        if (this.positions.itemSize !== 1) {
-            throw new Error(
-                'Positions (' + positions + ') must have itemSize=1',
-            )
-        }
-
-        // Compute the derivatives of the measure
         if (useDerivative) {
+            // Compute the derivatives of the measure
+            this.positions = mng.serie(1, positions)
+            
+            if (this.positions === undefined) {
+                throw new Error(
+                    `Cannot find serie named "${positions}" in the dataframe`,
+                )
+            }
+
+            if (this.positions.itemSize !== 1) {
+                throw new Error(
+                    `position serie named ${positions} must have itemSize = 1 (got ${this.positions.itemSize})`,
+                )
+            }
+
             this.measure = derivative({
                 data: this.measure,
                 positions: this.positions,
                 xScale: 1,
                 yScale: 1,
             })
-        } else {
+        }
+        else {
             // Normalize the measures
             this.measure = normalize(this.measure)
         }
@@ -101,13 +117,11 @@ export class GenericScalarFieldData extends Data {
         return 'GenericScalarFieldData'
     }
 
-    costs(data: Serie | Alpha): Serie {
-        const compute = this.generateData(data)
+    costs(alpha: Serie | Alpha): Serie {
+        const compute = this.generateData(alpha) as Serie
         if (compute.itemSize !== 1) {
             throw new Error('generateData must have itemSize = 1')
         }
-
-        // console.log(this.measure, '\n', compute, '\n----------------------\n')
 
         // TODO: add the weights and this.sumWeights
 
@@ -117,9 +131,9 @@ export class GenericScalarFieldData extends Data {
         // |--- - 1|
         // | M'    |
         //
-        // with:
-        // C' = derivative of the computed
-        // M' = derivative of the measured
+        // where
+        //   C' = derivative of the computed
+        //   M' = derivative of the measured
 
         const r = compute.clone()
 
@@ -129,10 +143,9 @@ export class GenericScalarFieldData extends Data {
             if (m === 0) {
                 r.setItemAt(i, 0)
             } else {
-                r.setItemAt(i, Math.abs(m / c - 1))
+                r.setItemAt(i, Math.abs(c / m - 1))
             }
         }
-        // const r = abs(sub(div(compute, this.measure), 1))
 
         return r
     }
@@ -147,8 +160,38 @@ export class GenericScalarFieldData extends Data {
             useDerivative: this.useDerivative,
         })
     }
+
+    /* eslint unused-imports/no-unused-vars: off -- no choise */
+    /* eslint @typescript-eslint/no-explicit-any: off -- no choise */
+    generateInDataframe({
+        alpha,
+        prefix,
+        options = undefined,
+    }: {
+        alpha: Alpha
+        prefix: string
+        options?: { [key: string]: any }
+    }): void {
+        const serie = generateGenericScalarField({
+            data: weightedSum(this.compute, alpha),
+            coordIndex: this.coordIndex,
+            positions: this.positions,
+            xScale: this.xScale,
+            yScale: this.yScale,
+            useDerivative: this.useDerivative
+        })
+
+        this.dataframe.series[prefix] = serie
+
+        if (options?.removeSuperposition || !options) {
+            this.removeSuperpositionSeries()
+        }
+    }
 }
 
+/**
+ * @category Dataframe
+ */
 export function generateGenericScalarField({
     data,
     coordIndex,
@@ -190,8 +233,6 @@ function derivative({
     xScale: number
     yScale: number
 }): Serie {
-    // console.log(xScale, yScale)
-
     const n = data.count
     let prevDat = data.itemAt(0) as number
     let prevPos = positions.itemAt(0) as number

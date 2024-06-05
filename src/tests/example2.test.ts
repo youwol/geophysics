@@ -43,7 +43,7 @@ test('inverse', () => {
 
     expect(result.cost).toBeCloseTo(0)
 
-    console.log('inversion result:', result)
-    console.log('measured ', dataframe.series['insar'].array)
-    console.log('recovered', insar.generate(result.alpha).array)
+    // console.log('inversion result:', result)
+    // console.log('measured ', dataframe.series['insar'].array)
+    // console.log('recovered', insar.generate(result.alpha).array)
 })

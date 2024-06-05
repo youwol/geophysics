@@ -30,9 +30,9 @@ import { randomMT } from '@youwol/math'
  *     }
  * }, 10000)
  * ```
- * @see [[alphaMapping]]
- * @see [[AlphaParameters]]
- * @see [[Data]]
+ * @see {@link alphaMapping}
+ * @see {@link AlphaParameters}
+ * @see {@link Data}
  * @category Inversion
  */
 export const monteCarlo = (

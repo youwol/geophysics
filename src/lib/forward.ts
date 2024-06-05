@@ -2,15 +2,18 @@ import { Serie, DataFrame } from '@youwol/dataframe'
 import { weightedSum } from '@youwol/math'
 import { Alpha } from './types'
 
+/**
+ * @category Inversion
+ */
 export namespace forward {
     /**
      * Compute an attribute by superposition given some predefined simulations
      * @param simulations The dataframe containing al the necessary simulations
-     * @param alpha The [[Alpha]] parameter to perform the linear combination
-     * @param name The prefix of the series in the [[Dataframe]]
+     * @param alpha The {@link Alpha} parameter to perform the linear combination
+     * @param name The prefix of the series in the {@link Dataframe}
      * @param startIndex The starting index which concatenate to the name gives the
-     * name of the first [[Serie]]. Default value is 1
-     * @returns A new [[Serie]] which is the linear combination of the provided series
+     * name of the first Serie. Default value is 1
+     * @returns A new Serie which is the linear combination of the provided series
      * @example
      * ```ts
      * import { DataFrame, Serie } from '@youwol/dataframe'

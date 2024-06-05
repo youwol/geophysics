@@ -1,5 +1,5 @@
 /**
- * Invert for the far field stress + 1 pressure ina cavity
+ * Invert for the far field stress + 1 pressure in a cavity
  */
 const io = require('@youwol/io')
 const geo = require('../../dist/@youwol/geophysics')

@@ -22,13 +22,13 @@ const vGps = new Array(size).fill(0)
 const computed = new Array(size).fill(0)
 let j = 0
 for (let i = 0; i < horizon.length; i += 3) {
-    const p = [horizon[i], horizon[i + 1], horizon[i + 2]]
-    vGps[j] = utils.distanceFromPointToPlane(p, plane)
-    computed[j++] = displ[2]
+  const p = [horizon[i], horizon[i + 1], horizon[i + 2]]
+  vGps[j] = utils.distanceFromPointToPlane(p, plane)
+  computed[j++] = displ[2]
 }
 
 // and compute the cost
 const cost = computedGps.reduce(
-    (acc, v, i) => acc + phy.costVerticalGps(vGps[i], v) / size,
+  (acc, v, i) => acc + phy.costVerticalGps(vGps[i], v) / size,
 )
 ```

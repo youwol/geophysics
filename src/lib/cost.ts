@@ -12,8 +12,11 @@ import { Data } from './dataset/data'
  */
 export const cost = (data: Data | Data[], alpha: Alpha): number => {
     if (Array.isArray(data)) {
-        return data.reduce((acc, d) => acc + d.cost(alpha), 0) / data.reduce((acc, d) => acc + d.weight, 0)
+        return (
+            data.reduce((acc, d) => acc + d.cost(alpha), 0) /
+            data.reduce((acc, d) => acc + d.weight, 0)
+        )
     }
-    
+
     return data.cost(alpha)
 }

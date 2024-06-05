@@ -201,10 +201,10 @@ export abstract class Data {
     // ===================================================================
 
     /**
-     * 
+     *
      * @param alpha If alpha is of type {@link Alpha}, then a weighted sum is done. Otherwise (alpha is a {@link Serie}),
      * alpha is considered as Data directly.
-     * @returns 
+     * @returns
      */
     protected generateData(alpha: Serie | Serie[] | Alpha): Serie | Serie[] {
         if (Serie.isSerie(alpha)) {

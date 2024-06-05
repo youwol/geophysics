@@ -6,7 +6,7 @@
     "C43": "---------------------------",
     "datas": [
         {
-            "file":     "simulations/grids/data_for_inversion_01.xyz",
+            "file": "simulations/grids/data_for_inversion_01.xyz",
             "out": {
                 "file": "inversion/data_for_inversion_01.xyz",
                 "prefix": "C",
@@ -28,7 +28,7 @@
             "weight": 1
         },
         {
-            "file":     "simulations/grids/data_for_inversion_02.xyz",
+            "file": "simulations/grids/data_for_inversion_02.xyz",
             "out": {
                 "file": "inversion/data_for_inversion_02.xyz",
                 "prefix": "C",
@@ -56,22 +56,8 @@
     "logFile": "luo-sphere.log",
     "dim": 6,
     "C72": "Order is [theta, Rh, RH, rockDensity]",
-    "min": [
-        0,
-        0,
-        0,
-        2200,
-        2076,
-        -1e7
-    ],
-    "max": [
-        0,
-        1,
-        1,
-        2200,
-        2076,
-        1e7
-    ],
+    "min": [0, 0, 0, 2200, 2076, -1e7],
+    "max": [0, 1, 1, 2200, 2076, 1e7],
     "__INFO_MAPPING__": "from [theta, Rh, RH, rockDensity, cavityDensity, shift1...] to [Sxx, Sxy, Syy, Szz, density, shift1...]",
     "mapping": "constrainedGradientPressureMapping",
     "nbSimulations": 50000,
@@ -97,12 +83,8 @@
         },
         "cavities": {
             "active": true,
-            "in": [
-                "simulations/cavities/sphere_5120.ts"
-            ],
-            "out": [
-                "inversion/sphere_5120.ts"
-            ]
+            "in": ["simulations/cavities/sphere_5120.ts"],
+            "out": ["inversion/sphere_5120.ts"]
         },
         "domain": {
             "active": true,

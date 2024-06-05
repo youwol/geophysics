@@ -2,7 +2,6 @@ import * as geo from '../lib'
 import { Serie, DataFrame } from '@youwol/dataframe'
 
 test('cost stylolite', () => {
-
     // [xx, xy, xz, yy, yz, zz]
     const stresses = [
         [0.5, 0, 0, 0.75, 0, 1],
@@ -16,7 +15,7 @@ test('cost stylolite', () => {
         [51, 0, 0, 50, 0, 100],
         [90.138496, -23.085006, 0, 38.861504, 0, 100],
         [2.5348782, 0.49878203, 0, 2.4651218, 0, 1],
-        [2991.9217, -3.9400538, 0, 2998.0783, 0, 1000]
+        [2991.9217, -3.9400538, 0, 2998.0783, 0, 1000],
     ]
 
     // [nx, ny, nz]
@@ -32,30 +31,27 @@ test('cost stylolite', () => {
         [0, 0, 1],
         [0, 0, 1],
         [0.731353702, 0.68199836, 0],
-        [-0.438371147, 0.898794046, 0]
+        [-0.438371147, 0.898794046, 0],
     ]
 
-
     stresses.forEach((stress, index) => {
-
         const generated = geo.generateStylolite({
             stress: Serie.create({ array: stress, itemSize: 6 }),
-            projected: false
+            projected: false,
         })
 
         const dataframe = DataFrame.create({
             series: {
                 normal: Serie.create({ array: stylolites[index], itemSize: 3 }),
-            }
+            },
         })
 
         const measure = new geo.StyloliteData({
             dataframe,
-            measure: 'normal'
+            measure: 'normal',
         })
 
         const c = measure.costs(generated)
         expect(c.array[0]).toBeCloseTo(0)
     })
-
 })

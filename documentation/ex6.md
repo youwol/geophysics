@@ -20,29 +20,29 @@ const displField2 = arche.computeDispl(points)
 const displField3 = arche.computeDispl(points)
 
 let dataframe = new DataFrame({
-    U1: createSerie({ data: displField1, itemSize: 3 }),
-    U2: createSerie({ data: displField2, itemSize: 3 }),
-    U3: createSerie({ data: displField3, itemSize: 3 }),
-    gps: createSerie({ data: vectors }),
+  U1: createSerie({ data: displField1, itemSize: 3 }),
+  U2: createSerie({ data: displField2, itemSize: 3 }),
+  U3: createSerie({ data: displField3, itemSize: 3 }),
+  gps: createSerie({ data: vectors }),
 })
 
 // The gps dataset
 const gps = new GpsData({
-    dataframe,
-    measure: 'gps',
-    compute: ['U1', 'U2', 'U3'],
+  dataframe,
+  measure: 'gps',
+  compute: ['U1', 'U2', 'U3'],
 })
 
 // The stochastic inversion
 const result = monteCarlo(
-    {
-        data: [gps],
-        alpha: {
-            mapping: undefined,
-            min: [-10, -5, 0],
-            max: [-7, 0, 10],
-        },
+  {
+    data: [gps],
+    alpha: {
+      mapping: undefined,
+      min: [-10, -5, 0],
+      max: [-7, 0, 10],
     },
-    100000,
+  },
+  100000,
 )
 ```

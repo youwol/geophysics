@@ -13,14 +13,13 @@ import { deg2rad } from './utils'
  * @category Mapping
  */
 export namespace MappingFactory {
-
     const map_: Map<string, alphaMapping> = new Map()
 
     export const bind = (obj: alphaMapping, name: string = '') => {
         name.length === 0 ? map_.set(obj.name, obj) : map_.set(name, obj)
     }
 
-    export const resolve = (name: string): alphaMapping => map_.get(name) 
+    export const resolve = (name: string): alphaMapping => map_.get(name)
 
     export const call = (name: string, params: any = undefined) => {
         const fct = map_.get(name)
@@ -37,7 +36,6 @@ export namespace MappingFactory {
     export const names = (): string[] => {
         return Array.from(map_.keys())
     }
-
 }
 
 /**
@@ -191,8 +189,13 @@ export const simpleAndersonMappingNames = (_alpha: Alpha): string[] => {
 /**
  * @category Mapping
  */
-export const simpleAndersonMappingBounds = (alpha: Alpha): Array<[number, number]> => {
-    return [[0, 180], [0, 3]]
+export const simpleAndersonMappingBounds = (
+    _alpha: Alpha,
+): Array<[number, number]> => {
+    return [
+        [0, 180],
+        [0, 3],
+    ]
 }
 
 /**
@@ -265,8 +268,14 @@ export const gradientAndersonMappingNames = (_alpha: Alpha): string[] => {
 /**
  * @category Mapping
  */
-export const gradientAndersonMappingBounds = (alpha: Alpha): Array<[number, number]> => {
-    return [[0, 180], [0, 3], [0, 10000]]
+export const gradientAndersonMappingBounds = (
+    _alpha: Alpha,
+): Array<[number, number]> => {
+    return [
+        [0, 180],
+        [0, 3],
+        [0, 10000],
+    ]
 }
 
 const cos = Math.cos
@@ -281,7 +290,9 @@ const sin = Math.sin
  * @see {@link alphaMapping}
  * @category Mapping
  */
-export const gradientAndersonAlphaShapeMapping: alphaMapping = (alpha: Alpha): Alpha => {
+export const gradientAndersonAlphaShapeMapping: alphaMapping = (
+    alpha: Alpha,
+): Alpha => {
     if (alpha.length < 3) {
         throw new Error(`argument alpha should be equal to 3:
         alpha = [theta, alphaShape, rockDensity]. Got ${alpha}`)
@@ -322,8 +333,14 @@ export const gradientAndersonAlphaShapeMappingNames = (
 /**
  * @category Mapping
  */
-export const gradientAndersonAlphaShapeMappingBounds = (alpha: Alpha): Array<[number, number]> => {
-    return [[0, 180], [-90, 90], [0, 10000]]
+export const gradientAndersonAlphaShapeMappingBounds = (
+    _alpha: Alpha,
+): Array<[number, number]> => {
+    return [
+        [0, 180],
+        [-90, 90],
+        [0, 10000],
+    ]
 }
 
 /**
@@ -333,7 +350,9 @@ export const gradientAndersonAlphaShapeMappingBounds = (alpha: Alpha): Array<[nu
  * - The reverse regime is between 45° and 90°
  * @category Mapping
  */
-export const gradientAndersonAlphaShapeMapping2: alphaMapping = (alpha: Alpha): Alpha => {
+export const gradientAndersonAlphaShapeMapping2: alphaMapping = (
+    alpha: Alpha,
+): Alpha => {
     if (alpha.length < 3) {
         throw new Error(`argument alpha should be equal to 3:
         alpha = [theta, alphaShape, rockDensity]. Got ${alpha}`)
@@ -353,8 +372,12 @@ export const gradientAndersonAlphaShapeMapping2: alphaMapping = (alpha: Alpha): 
     }
 
     let Alpha = deg2rad(alphaShape)
-    if (Alpha < 0) Alpha *= 2
+    if (Alpha < 0) {
+        Alpha *= 2
+    }
+
     const Theta = deg2rad(theta)
+
     return [
         (sin(Alpha) - cos(Alpha) * cos(Theta) ** 2) * Sv,
         cos(Alpha) * sin(Theta) * cos(Theta) * Sv,
@@ -424,8 +447,12 @@ export const gradientPressureMappingNames = (alpha: Alpha): string[] => {
 /**
  * @category Mapping
  */
-export const gradientPressureMappingBounds = (alpha: Alpha): Array<[number, number]> => {
-    const shifts = [...alpha].splice(5).map(() => [-1e9, 1e9]) as Array<[number, number]>
+export const gradientPressureMappingBounds = (
+    alpha: Alpha,
+): Array<[number, number]> => {
+    const shifts = [...alpha].splice(5).map(() => [-1e9, 1e9]) as Array<
+        [number, number]
+    >
     return [[0, 180], [0, 10], [0, 10], [0, 10000], [0, 10000], ...shifts]
 }
 
@@ -436,7 +463,9 @@ export const gradientPressureMappingBounds = (alpha: Alpha): Array<[number, numb
  * For this mapping, theta is irrelevant.
  * @category Mapping
  */
-export const constrainedGradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
+export const constrainedGradientPressureMapping: alphaMapping = (
+    alpha: Alpha,
+): Alpha => {
     if (alpha.length < 6) {
         throw new Error(`argument alpha should be of size greater or equal to 6:
         alpha = [theta, r, r, rockDensity, cavityDensity, shift1, shift2, ...], where r is Rh and RH (same value). In that case, theta is irrelevant`)
@@ -461,7 +490,9 @@ export const constrainedGradientPressureMapping: alphaMapping = (alpha: Alpha): 
 /**
  * @category Mapping
  */
-export const constrainedGradientPressureMappingNames = (alpha: Alpha): string[] => {
+export const constrainedGradientPressureMappingNames = (
+    alpha: Alpha,
+): string[] => {
     const shifts = [...alpha].splice(5).map((_, i) => `Shift${i + 1}`)
     return ['theta', 'r', 'r', 'Rock density', 'Cavity density', ...shifts]
 }
@@ -469,8 +500,12 @@ export const constrainedGradientPressureMappingNames = (alpha: Alpha): string[] 
 /**
  * @category Mapping
  */
-export const constrainedGradientPressureMappingBounds = (alpha: Alpha): Array<[number, number]> => {
-    const shifts = [...alpha].splice(5).map(() => [-1e9, 1e9]) as Array<[number, number]>
+export const constrainedGradientPressureMappingBounds = (
+    alpha: Alpha,
+): Array<[number, number]> => {
+    const shifts = [...alpha].splice(5).map(() => [-1e9, 1e9]) as Array<
+        [number, number]
+    >
     return [[0, 180], [0, 10], [0, 10], [0, 10000], [0, 10000], ...shifts]
 }
 
@@ -479,7 +514,16 @@ export const constrainedGradientPressureMappingBounds = (alpha: Alpha): Array<[n
 MappingFactory.bind(defaultMapping, 'defaultMapping')
 MappingFactory.bind(simpleAndersonMapping, 'simpleAndersonMapping')
 MappingFactory.bind(gradientAndersonMapping, 'gradientAndersonMapping')
-MappingFactory.bind(gradientAndersonAlphaShapeMapping, 'gradientAndersonAlphaShapeMapping')
-MappingFactory.bind(gradientAndersonAlphaShapeMapping2, 'gradientAndersonAlphaShapeMapping2')
+MappingFactory.bind(
+    gradientAndersonAlphaShapeMapping,
+    'gradientAndersonAlphaShapeMapping',
+)
+MappingFactory.bind(
+    gradientAndersonAlphaShapeMapping2,
+    'gradientAndersonAlphaShapeMapping2',
+)
 MappingFactory.bind(gradientPressureMapping, 'gradientPressureMapping')
-MappingFactory.bind(constrainedGradientPressureMapping, 'constrainedGradientPressureMapping')
+MappingFactory.bind(
+    constrainedGradientPressureMapping,
+    'constrainedGradientPressureMapping',
+)

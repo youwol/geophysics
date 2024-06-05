@@ -1,4 +1,4 @@
-import { DataFrame, Serie, Vector } from '@youwol/dataframe'
+import { DataFrame, Serie } from '@youwol/dataframe'
 import { eigen, Quaternion, vec, weightedSum } from '@youwol/math'
 import { Data } from './data'
 import { Alpha } from '../types'
@@ -252,8 +252,8 @@ export function generateConjugate({
     // XALI: 20240604
     // ==============
     return [
-        sp.map(s => [s[0], s[1], s[2]]),
-        sp.map(s => [s[3], s[4], s[5]])
+        sp.map((s) => [s[0], s[1], s[2]]),
+        sp.map((s) => [s[3], s[4], s[5]]),
     ]
 
     // return Serie.create({array: sp.array, itemSize: 3, dimension: 3})

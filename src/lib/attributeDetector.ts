@@ -1,10 +1,10 @@
 import { DataFrame, getNameSeries } from '@youwol/dataframe'
 
 export type ReturnType = {
-    itemSize: number,
-    name: string,
-    start: number,
-    end: number,
+    itemSize: number
+    name: string
+    start: number
+    end: number
 }[]
 
 /**

@@ -12,8 +12,8 @@ const dataframe = df.create(10000)
 // For each linearly independent simulation (i.e., 3), compute the
 // stress and displacement, and add them in the dataframe
 for (let i = 0; i < 3; ++i) {
-    df.add(dataframe, 0, computedDispl())
-    df.add(dataframe, 1, computedStress())
+  df.add(dataframe, 0, computedDispl())
+  df.add(dataframe, 1, computedStress())
 }
 
 // Display some info about the dataframe

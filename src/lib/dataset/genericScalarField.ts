@@ -31,7 +31,7 @@ export type GenericScalarFieldDataParams = {
  * @see {@link Data}
  * @see {@link monteCarlo}
  * @see {@link createData}
- * 
+ *
  * @category Data
  */
 export class GenericScalarFieldData extends Data {
@@ -87,7 +87,7 @@ export class GenericScalarFieldData extends Data {
         if (useDerivative) {
             // Compute the derivatives of the measure
             this.positions = mng.serie(1, positions)
-            
+
             if (this.positions === undefined) {
                 throw new Error(
                     `Cannot find serie named "${positions}" in the dataframe`,
@@ -106,8 +106,7 @@ export class GenericScalarFieldData extends Data {
                 xScale: 1,
                 yScale: 1,
             })
-        }
-        else {
+        } else {
             // Normalize the measures
             this.measure = normalize(this.measure)
         }
@@ -178,7 +177,7 @@ export class GenericScalarFieldData extends Data {
             positions: this.positions,
             xScale: this.xScale,
             yScale: this.yScale,
-            useDerivative: this.useDerivative
+            useDerivative: this.useDerivative,
         })
 
         this.dataframe.series[prefix] = serie

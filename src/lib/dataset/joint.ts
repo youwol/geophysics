@@ -211,7 +211,6 @@ export function generateJoint({
     stress: Serie
     projected?: boolean
 }): Serie {
-
     // const ns = eigenVector(stress).map((v) => [v[0], v[1], v[2]]) // SIGMA-1 for engineers
     const ns = eigenVector(stress).map((v) => [v[6], v[7], v[8]])
 

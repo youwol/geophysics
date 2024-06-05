@@ -28,17 +28,17 @@ const insar = [-8.732, 45.8457, 22.518, -20.6505, -25.394]
 dataframe.add(measure, 0, insar)
 
 const invParams = {
-    n: 100000,
-    alpha: {
-        dim: 3,
-        mapping: undefined,
-        min: [-10, -5, 0],
-        max: [-7, 0, 10],
-    },
-    calculus,
-    measure,
-    weights: [1],
-    costFunctions: [geophysics.costInsar],
+  n: 100000,
+  alpha: {
+    dim: 3,
+    mapping: undefined,
+    min: [-10, -5, 0],
+    max: [-7, 0, 10],
+  },
+  calculus,
+  measure,
+  weights: [1],
+  costFunctions: [geophysics.costInsar],
 }
 
 const result = inversion.monteCarlo(invParams)

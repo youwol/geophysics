@@ -2,7 +2,6 @@ import * as geo from '../lib'
 import { Serie, DataFrame } from '@youwol/dataframe'
 
 test('cost joint', () => {
-
     // [xx, xy, xz, yy, yz, zz]
     const stresses = [
         [0.5, 0, 0, 0.75, 0, 1],
@@ -16,7 +15,7 @@ test('cost joint', () => {
         [51, 0, 0, 50, 0, 100],
         [90.138496, -23.085006, 0, 38.861504, 0, 100],
         [2.5348782, 0.49878203, 0, 2.4651218, 0, 1],
-        [2991.9217, -3.9400538, 0, 2998.0783, 0, 1000]
+        [2991.9217, -3.9400538, 0, 2998.0783, 0, 1000],
     ]
 
     // [nx, ny, nz]
@@ -32,29 +31,27 @@ test('cost joint', () => {
         [0, 1, 0],
         [0.35836795, 0.933580426, 0],
         [0, 0, 1],
-        [0, 0, 1]
+        [0, 0, 1],
     ]
 
     stresses.forEach((stress, index) => {
-
         const generated = geo.generateJoint({
             stress: Serie.create({ array: stress, itemSize: 6 }),
-            projected: false
+            projected: false,
         })
 
         const dataframe = DataFrame.create({
             series: {
                 normal: Serie.create({ array: joints[index], itemSize: 3 }),
-            }
+            },
         })
 
         const measure = new geo.JointData({
             dataframe,
-            measure: 'normal'
+            measure: 'normal',
         })
-    
+
         const c = measure.costs(generated)
         expect(c.array[0]).toBeCloseTo(0)
     })
-
 })

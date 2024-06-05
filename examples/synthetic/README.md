@@ -1,6 +1,6 @@
 # Setting up the libraries
 
--   Put the latest `arch.js` library in `geophysics/node_modules/@youwol/`
+- Put the latest `arch.js` library in `geophysics/node_modules/@youwol/`
 
 # Model setup
 

@@ -1,8 +1,7 @@
 import { cost } from './cost'
 import { InversionModel } from './inversion'
-import { defaultMapping } from './mapping'
 import { Alpha } from './types'
-import { Serie, createEmptySerie, DataFrame } from '@youwol/dataframe'
+import { Serie } from '@youwol/dataframe'
 import { deg2rad } from './utils'
 
 /**
@@ -41,7 +40,7 @@ export class CircularDomain {
         model,
         nx = 10, // theta
         ny = 10, // Rb
-        innerRadius = 0
+        innerRadius = 0,
     }: {
         model: InversionModel
         nx?: number // theta

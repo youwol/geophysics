@@ -11,16 +11,16 @@ The weight for insar data is 3 (see [[costInsar]]), while the cost for dike is 1
 import { geology as geol, geophysics as phy, utils } from 'fast-computation'
 
 const cost =
-    (phy
-        .generateInsar(displs, [0.01, -0.1, -0.9856])
-        .reduce(
-            (acc, v, i) => acc + phy.costInsar(insars[i], v, 3) / insars.length,
-        ) +
-        utils
-            .chuncks(stresses, 6)
-            .reduce(
-                (acc, s, i) =>
-                    acc + geol.costDike(dikes[i], s, 1) / stresses.length / 6,
-            )) /
-    2
+  (phy
+    .generateInsar(displs, [0.01, -0.1, -0.9856])
+    .reduce(
+      (acc, v, i) => acc + phy.costInsar(insars[i], v, 3) / insars.length,
+    ) +
+    utils
+      .chuncks(stresses, 6)
+      .reduce(
+        (acc, s, i) =>
+          acc + geol.costDike(dikes[i], s, 1) / stresses.length / 6,
+      )) /
+  2
 ```

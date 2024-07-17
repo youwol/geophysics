@@ -2,28 +2,29 @@ import { DataFrame, Serie } from '@youwol/dataframe'
 import { AnglesToNormal } from '@youwol/geometry'
 
 /**
+ * Generate the dip angle and dip azimuth angle in a dataframe according to the given normals.
  * @category Dataframe
  */
 export function generateDipAnglesInDataFrame({
-    serie,
-    prefix,
-    suffix,
+    normals,
     dataframe,
+    dipName = 'dip',
+    dipAzimName = 'dipAzim'
 }: {
-    serie: Serie
-    prefix: string
-    suffix: string
-    dataframe: DataFrame
+    normals: Serie,
+    dataframe: DataFrame,
+    dipName?: string,
+    dipAzimName?: string
 }) {
     // const n = serie
 
     const a = new AnglesToNormal()
-    dataframe.series[prefix + `dip${suffix}`] = serie.map((n) => {
-        a.setNormal(n)
-        return a.dipAngle
-    })
-    dataframe.series[prefix + `dipAzim${suffix}`] = serie.map((n) => {
+    dataframe.series[dipAzimName] = normals.map((n) => {
         a.setNormal(n)
         return a.dipAzimuth
+    })
+    dataframe.series[dipName] = normals.map((n) => {
+        a.setNormal(n)
+        return a.dipAngle
     })
 }

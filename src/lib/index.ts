@@ -8,6 +8,7 @@ export * from './dataset/data'
 export * from './forward'
 export * from './attributeDetector'
 export * from './CircularDomain'
+export * from './randomDomain'
 
 export * from './dataset'
 export * from './utils'

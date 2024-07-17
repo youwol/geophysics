@@ -9,7 +9,10 @@ import { generateStressVectorsInDataFrame } from './generateStressVectorsInDataF
 
 /* eslint @typescript-eslint/no-explicit-any: off -- don't know how to do it */
 /**
- * Generate synthetic series for {@link Data} based on `normals` (e.g., {@link JointData}, {@link ConjugateData}, {@link StyloliteData} or {@link DykeData})
+ * Thsi function generates synthetic series (dip and dipAzim angles, principal stress vectors and magnitudes
+ * as well as normals) for {@link Data} based on `normals` (e.g., {@link JointData}, {@link ConjugateData},
+ * {@link StyloliteData} or {@link DykeData}).
+ * It removes also all simulations for superposition.
  * @category Dataframe
  */
 export function generatorForNormal({
@@ -29,17 +32,16 @@ export function generatorForNormal({
     const doit = (serie: Serie, suffix = '') => {
         if (options?.normal || !options) {
             generateNormalInDataFrame({
-                serie,
-                prefix,
-                suffix, // because 'plusieurs normales potentielles' (see ConjugateData)
+                normals: serie,
+                name: `${prefix}n${suffix}`,
                 dataframe,
             })
         }
         if (options?.dipAngles || !options) {
             generateDipAnglesInDataFrame({
-                serie,
-                prefix,
-                suffix, // because 'plusieurs normales potentielles' (see ConjugateData)
+                normals: serie,
+                dipName: `${prefix}dip${suffix}`,
+                dipAzimName: `${prefix}dipAzim${suffix}`, // because 'plusieurs normales potentielles' (see ConjugateData)
                 dataframe,
             })
         }

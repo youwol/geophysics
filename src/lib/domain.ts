@@ -71,9 +71,7 @@ export class Domain2D {
         this.model = model
         this.nx = nX
         this.ny = nY
-        if (this.model.alpha.mapping === undefined) {
-            this.model.alpha.mapping = defaultMapping
-        }
+        this.model.alpha.mapping ??= defaultMapping
     }
 
     /**
@@ -85,8 +83,9 @@ export class Domain2D {
      * from xAxis and yAxis indices). This alpha is to fixe the others variables.
      * The length and order of the array should be the same as the user-alpha.
      */
-    evaluate(xAxis = 0, yAxis = 1, alpha: Alpha): Serie {
+    evaluate(xAxis = 0, yAxis = 1, userAlpha: Alpha): Serie {
         const limits: { min: number; max: number }[] = []
+
         this.model.alpha.min.forEach((m: number, i: number) => {
             limits.push({ min: m, max: this.model.alpha.max[i] })
         })
@@ -111,17 +110,15 @@ export class Domain2D {
         }
 
         for (let i = 0; i < this.nx; ++i) {
-            alpha[xAxis] = xMin + (i * (xMax - xMin)) / (this.nx - 1)
+            userAlpha[xAxis] = xMin + (i * (xMax - xMin)) / (this.nx - 1)
             for (let j = 0; j < this.ny; ++j) {
-                alpha[yAxis] = yMin + (j * (yMax - yMin)) / (this.ny - 1)
-                const newAlpha = this.model.alpha.mapping(alpha)
+                userAlpha[yAxis] = yMin + (j * (yMax - yMin)) / (this.ny - 1)
+                const alpha = this.model.alpha.mapping(userAlpha)
 
-                // console.log(newAlpha)
-
-                const c = cost(this.model.data, newAlpha)
+                const c = cost(this.model.data, alpha)
                 if (Number.isNaN(c)) {
                     console.log(
-                        `While generating the domain: cost is NaN for (x = ${alpha[xAxis]}, y = ${alpha[yAxis]})`,
+                        `While generating the domain: cost is NaN for (x = ${userAlpha[xAxis]}, y = ${userAlpha[yAxis]})`,
                     )
                 }
                 r.array[i * this.nx + j] = c

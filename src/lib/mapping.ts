@@ -82,7 +82,7 @@ export interface AlphaMapping {
 export interface alphaMapping {
     /**
      * @brief A mapping for any {@link Alpha}. Basically, it transforms a user-defined
-     * alpha to a global one that can be used by superposition.
+     * alpha to a linear one that can be used with the principle of superposition.
      * @param alpha The user-defined alpha vector
      * @returns The converted alpha vector
      */
@@ -155,6 +155,11 @@ export const defaultMappingBounds = (alpha: Alpha): Array<[number, number]> => {
  * @category Mapping
  */
 export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
+    if (alpha.length < 2) {
+        throw new Error(`argument alpha should be equal to 2:
+        alpha = [theta, R]. Got ${alpha}`)
+    }
+
     const theta = alpha[0]
     const R = alpha[1]
 
@@ -171,12 +176,26 @@ export const simpleAndersonMapping: alphaMapping = (alpha: Alpha): Alpha => {
     const s2 = s ** 2
 
     if (R <= 1) {
-        return [-c2 + (R - 1) * s2, R * c * s, -s2 + (R - 1) * c2]
+        return [
+            -c2 + (R - 1) * s2,
+            R * c * s,
+            -s2 + (R - 1) * c2
+        ]
     }
+
     if (R <= 2) {
-        return [-R * c2 + (1 - R) * s2, c * s, -R * s2 + (1 - R) * c2]
+        return [
+            -R * c2 + (1 - R) * s2,
+            c * s,
+            -R * s2 + (1 - R) * c2
+        ]
     }
-    return [R * c2 + s2, (1 - R) * c * s, R * s2 + c2]
+
+    return [
+        R * c2 + s2,
+        (1 - R) * c * s,
+        R * s2 + c2
+    ]
 }
 
 /**
@@ -413,9 +432,7 @@ export const gradientPressureMapping: alphaMapping = (alpha: Alpha): Alpha => {
         alpha = [theta, Rh, RH, rockDensity, cavityDensity, shift1, shift2, ...]`)
     }
 
-    let theta = alpha[0]
-    //if (theta<0 || theta>180) throw new Error('Theta must be in [0°..180°]')
-    theta = deg2rad(theta)
+    const theta = deg2rad(alpha[0])
 
     const Kh = alpha[1]
     const KH = alpha[2]
@@ -514,16 +531,7 @@ export const constrainedGradientPressureMappingBounds = (
 MappingFactory.bind(defaultMapping, 'defaultMapping')
 MappingFactory.bind(simpleAndersonMapping, 'simpleAndersonMapping')
 MappingFactory.bind(gradientAndersonMapping, 'gradientAndersonMapping')
-MappingFactory.bind(
-    gradientAndersonAlphaShapeMapping,
-    'gradientAndersonAlphaShapeMapping',
-)
-MappingFactory.bind(
-    gradientAndersonAlphaShapeMapping2,
-    'gradientAndersonAlphaShapeMapping2',
-)
+MappingFactory.bind(gradientAndersonAlphaShapeMapping, 'gradientAndersonAlphaShapeMapping')
+MappingFactory.bind(gradientAndersonAlphaShapeMapping2, 'gradientAndersonAlphaShapeMapping2')
 MappingFactory.bind(gradientPressureMapping, 'gradientPressureMapping')
-MappingFactory.bind(
-    constrainedGradientPressureMapping,
-    'constrainedGradientPressureMapping',
-)
+MappingFactory.bind(constrainedGradientPressureMapping, 'constrainedGradientPressureMapping')

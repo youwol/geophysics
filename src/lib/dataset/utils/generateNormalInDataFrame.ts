@@ -4,15 +4,13 @@ import { DataFrame, Serie } from '@youwol/dataframe'
  * @category Dataframe
  */
 export function generateNormalInDataFrame({
-    serie,
-    prefix,
-    suffix,
+    normals,
+    name='n',
     dataframe,
 }: {
-    serie: Serie
-    prefix: string
-    suffix: string
+    normals: Serie,
+    name?: string,
     dataframe: DataFrame
 }) {
-    dataframe.series[prefix + `n${suffix}`] = serie
+    dataframe.series[name] = normals
 }
